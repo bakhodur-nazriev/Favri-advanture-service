@@ -1,11 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
-body {
-  font-family: 'PT Sans', sans-serif;
+:root {
+  --primary-color: #00B06C;
+  --seconday-text-color: #1D2935;
 }
 
-.divider {
-  height: 1px;
-  border-radius: 1px;
-  background-color: #ECF0F1;
+body {
+  font-family: 'PT Sans', sans-serif;
+  margin: 0;
+  padding: 0;
 }

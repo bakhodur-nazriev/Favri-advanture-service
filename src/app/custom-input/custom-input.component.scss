@@ -1,5 +1,10 @@
 input {
   border: none;
-  height: 30px;
+  height: 40px;
   width: 100%;
+  font-size: 18px;
+
+  &:focus-visible {
+    outline: none;
+  }
 }
