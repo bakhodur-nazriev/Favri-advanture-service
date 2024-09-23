@@ -1,0 +1,106 @@
+<div *ngIf="isVisible" class="modal-background" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="holder-button">
+      <svg width="35" height="4" viewBox="0 0 35 4" fill="none">
+        <rect width="35" height="4" rx="2" fill="#95A5A6" fill-opacity="0.5"/>
+      </svg>
+    </div>
+
+    <h2>Пассажиры</h2>
+    <ul class="passengers-list__item">
+      <li class="passengers-list__item-details">
+        <div class="left-block">
+          <h4>Взрослые</h4>
+          <small>Старше 12 лет</small>
+        </div>
+
+        <div class="right-block">
+          <button>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+
+          </button>
+          <span>1</span>
+          <button>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </li>
+      <li class="passengers-list__item-details">
+        <div class="left-block">
+          <h4>Дети</h4>
+          <small>От 2 до 12 лет</small>
+        </div>
+
+        <div class="right-block">
+          <button>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+
+          </button>
+          <span>0</span>
+          <button>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </li>
+
+      <li class="passengers-list__item-details">
+        <div class="left-block">
+          <h4>Младенцы</h4>
+          <small>До 2 лет, без места</small>
+        </div>
+
+        <div class="right-block">
+          <button>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+
+          </button>
+          <span>0</span>
+          <button>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </li>
+    </ul>
+
+    <h4>Класс перелета</h4>
+    <ul class="passengers-class__item">
+      <li >
+        <button class="passengers-class__button active">Эконом</button>
+      </li>
+      <li >
+        <button class="passengers-class__button">Бизнес</button>
+      </li>
+      <li >
+        <button class="passengers-class__button">Первый</button>
+      </li>
+    </ul>
+    <!--    <button (click)="closeModal()">Закрыть</button>-->
+  </div>
+</div>
