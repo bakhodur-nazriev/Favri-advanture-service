@@ -1,15 +1,17 @@
-import {Component} from '@angular/core';
-import {NgIf} from "@angular/common";
+import { Component } from '@angular/core';
 import {animate, style, transition, trigger, AnimationEvent} from "@angular/animations";
+import {NgIf} from "@angular/common";
+import {CustomDatePickerComponent} from "../custom-date-picker/custom-date-picker.component";
 
 @Component({
-  selector: 'app-modal-passengers',
+  selector: 'app-datepicker-modal',
   standalone: true,
   imports: [
-    NgIf
+    NgIf,
+    CustomDatePickerComponent
   ],
-  templateUrl: './modal-passengers.component.html',
-  styleUrl: './modal-passengers.component.scss',
+  templateUrl: './datepicker-modal.component.html',
+  styleUrl: './datepicker-modal.component.scss',
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
@@ -22,8 +24,7 @@ import {animate, style, transition, trigger, AnimationEvent} from "@angular/anim
     ])
   ]
 })
-
-export class ModalPassengersComponent {
+export class DatepickerModalComponent {
   public isVisible = false;
   public isAnimating = false;
 
