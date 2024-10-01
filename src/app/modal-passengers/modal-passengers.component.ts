@@ -26,6 +26,10 @@ import {animate, style, transition, trigger, AnimationEvent} from "@angular/anim
 export class ModalPassengersComponent {
   public isVisible = false;
   public isAnimating = false;
+  public selectedClass: string = 'Эконом';
+  public adults: number = 1;
+  public children: number = 0;
+  public infants: number = 0
 
   openModal() {
     this.isVisible = true;
@@ -42,6 +46,40 @@ export class ModalPassengersComponent {
     if (event.phaseName === 'done' && event.toState === 'void') {
       this.isVisible = false;
       this.isAnimating = false;
+    }
+  }
+
+  selectClass(flightClass: string) {
+    this.selectedClass = flightClass
+  }
+
+  increaseAdults() {
+    this.adults++;
+  }
+
+  decreaseAdults() {
+    if (this.adults >= 1) {
+      this.adults--;
+    }
+  }
+
+  increaseChildren() {
+    this.children++;
+  }
+
+  decreaseChildren() {
+    if (this.children >= 1) {
+      this.children--;
+    }
+  }
+
+  increaseInfants() {
+    this.infants++;
+  }
+
+  decreaseInfants() {
+    if (this.infants >= 1) {
+      this.infants--;
     }
   }
 }

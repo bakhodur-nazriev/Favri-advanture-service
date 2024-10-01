@@ -22,8 +22,9 @@
     margin-top: 0;
     margin-bottom: 40px;
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--seconday-text-color);
+    text-align: center;
   }
 
   h4 {
@@ -40,4 +41,122 @@
   align-items: center;
   margin-bottom: 54px;
   cursor: pointer;
+}
+
+.booking-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+
+  .date-input-fields {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 85%;
+    margin-bottom: 20px;
+    font-family: "PT Sans", serif;
+
+    mat-form-field {
+      width: 45%;
+
+      input {
+        font-size: 16px;
+        color: #333;
+      }
+
+      .mat-form-field-outline {
+        border-color: #2ECC71;
+      }
+
+      .mat-form-field-label {
+        color: #16A085;
+      }
+    }
+
+    .form-fields {
+      display: flex;
+      align-items: center;
+      position: relative;
+
+      .input-block {
+        height: 44px;
+
+        input {
+          outline: none;
+          max-width: 160px;
+          border-radius: 8px;
+          border: 0.7px solid #ECF0F1;
+          box-shadow: 0 4px 13px 0 #2B454E1A;
+          font-size: 12px;
+          padding: 0 8px;
+          height: 100%;
+        }
+
+        input:focus + label,
+        label.active {
+          top: 2px;
+          left: 6px;
+          font-size: 12px;
+        }
+
+        label {
+          position: absolute;
+          top: 10px;
+          left: 5px;
+          font-size: 16px;
+          color: #999;
+          pointer-events: none;
+          transition: all 0.3s ease;
+        }
+      }
+
+      .clear-button {
+        all: unset;
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        right: 8px;
+      }
+    }
+  }
+
+  .calendar-card {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 85%;
+  }
+}
+
+::ng-deep .mat-calendar-body-selected {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .mat-calendar-body-today {
+  border-color: var(--primary-color) !important;
+}
+
+.search-ticket__block {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+
+  .btn-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: 8px;
+    text-align: center;
+    height: 45px;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    padding: 10px 60px;
+  }
 }

@@ -95,7 +95,7 @@ export class DirectionFromModalComponent {
   ]
   public filteredDirections = [...this.directionsCity];
   public searchTerm = '';
-  public isVisible = true;
+  public isVisible = false;
   public isAnimating = false;
 
   constructor(private cityService: CityService) {
