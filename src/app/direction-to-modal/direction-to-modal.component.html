@@ -1,0 +1,62 @@
+<div class="direction-modal__background" *ngIf="isVisible" (click)="closeModal()">
+  <div
+    class="direction-modal__content"
+    @slideInOut
+    (@slideInOut.done)="onAnimationEvent($event)"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="top-actions__block">
+      <button (click)="closeModal()">
+        <svg viewBox="0 0 50 50" width="20px" height="20px">
+          <path
+            d="M 9.15625 6.3125 L 6.3125 9.15625 L 22.15625 25 L 6.21875 40.96875 L 9.03125 43.78125 L 25 27.84375 L 40.9375 43.78125 L 43.78125 40.9375 L 27.84375 25 L 43.6875 9.15625 L 40.84375 6.3125 L 25 22.15625 Z"/>
+        </svg>
+      </button>
+
+      <h2>Куда</h2>
+
+      <button class="clear-input__button" (click)="resetSearch()">Сбросить</button>
+    </div>
+
+    <div class="search-input__block">
+      <svg viewBox="0 0 30 30" width="20px" height="20px">
+        <path
+          d="M 13 3 C 7.4889971 3 3 7.4889971 3 13 C 3 18.511003 7.4889971 23 13 23 C 15.396508 23 17.597385 22.148986 19.322266 20.736328 L 25.292969 26.707031 A 1.0001 1.0001 0 1 0 26.707031 25.292969 L 20.736328 19.322266 C 22.148986 17.597385 23 15.396508 23 13 C 23 7.4889971 18.511003 3 13 3 z M 13 5 C 17.430123 5 21 8.5698774 21 13 C 21 17.430123 17.430123 21 13 21 C 8.5698774 21 5 17.430123 5 13 C 5 8.5698774 8.5698774 5 13 5 z"/>
+      </svg>
+      <input type="text" [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Поиск...">
+
+      <!-- Loader -->
+      <div *ngIf="isLoading" class="loader-block">
+        <svg viewBox="20 20 60 60" width="20px" height="20px">
+          <path fill="#00B06C"
+                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+            <animateTransform
+              attributeName="transform"
+              attributeType="XML"
+              type="rotate"
+              dur="1s"
+              from="0 50 50"
+              to="360 50 50"
+              repeatCount="indefinite"
+            />
+          </path>
+        </svg>
+      </div>
+    </div>
+
+    <ul class="directions-list">
+      <li
+        *ngFor="let direction of filteredDirections"
+        [ngClass]="{'highlight-country': !direction.country}"
+        class="directions-list__item"
+      >
+        <div class="cities-airportCode__block">
+          <span>{{ direction.city }}</span>
+          <span class="countries">{{ direction.country || '' }}</span>
+        </div>
+
+        <span>{{ direction.airportCode }}</span>
+      </li>
+    </ul>
+  </div>
+</div>

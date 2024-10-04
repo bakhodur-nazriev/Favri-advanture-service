@@ -97,6 +97,7 @@ export class DirectionFromModalComponent {
   public searchTerm = '';
   public isVisible = false;
   public isAnimating = false;
+  public isLoading = false;
 
   constructor(private cityService: CityService) {
   }
@@ -105,6 +106,7 @@ export class DirectionFromModalComponent {
     const searchTermTrimmed = this.searchTerm.trim();
 
     if (searchTermTrimmed.length > 0) {
+      this.isLoading = true;
       this.cityService.searchCities(searchTermTrimmed).subscribe({
         next: (res) => {
           console.log(res.data)
@@ -113,19 +115,23 @@ export class DirectionFromModalComponent {
             airportCode: item.item_code,
             country: item.country.ru || item.country.en || item.country.tj || item.country.uz,
           }));
+          this.isLoading = false;
         },
         error: (err) => {
           console.error('Ошибка при поиске городов:', err);
+          this.isLoading = false;
         }
       });
     } else {
-      this.filteredDirections = [...this.directionsCity]
+      this.filteredDirections = [...this.directionsCity];
+      this.isLoading = false;
     }
   }
 
   resetSearch() {
-    this.searchTerm = ''
-    this.filteredDirections = [...this.directionsCity]
+    this.searchTerm = '';
+    this.filteredDirections = [...this.directionsCity];
+    this.isLoading = false
   }
 
   openModal() {

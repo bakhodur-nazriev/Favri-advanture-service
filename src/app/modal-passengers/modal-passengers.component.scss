@@ -95,7 +95,7 @@
   display: flex;
   padding: 0;
   gap: 6px;
-  margin: 0 0 80px;
+  margin: 0 0 70px;
 
   .passengers-class__button {
     background-color: #fff;
@@ -120,5 +120,24 @@
     &:hover {
       background-color: #e0e0e0;
     }
+  }
+}
+
+.choose-class__block {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  .btn-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: 8px;
+    text-align: center;
+    height: 45px;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    padding: 0 60px;
   }
 }

@@ -39,44 +39,35 @@ import {MatIcon} from "@angular/material/icon";
   ]
 })
 export class DatepickerModalComponent {
-  public isVisible = true;
+  public isVisible = false;
   public isAnimating = false;
   selected = model<Date | null>(null);
   public startDate: Date | null = null;
   public endDate: Date | null = null;
   public selectedDate: Date | null = null;
-  minDate: Date = new Date();
-  inputFromValue: string = '';
-  inputToValue: string = '';
-  isFromFocused: boolean = false;
-  isToFocused: boolean = false;
+  public minDate: Date = new Date();
 
   clearStartDate() {
     this.startDate = null;
   }
-
   clearEndDate() {
     this.endDate = null;
   }
-
   openModal() {
     this.isVisible = true;
   }
-
   closeModal() {
     if (!this.isAnimating) {
       this.isAnimating = true;
       this.isVisible = false;
     }
   }
-
   onAnimationEvent(event: AnimationEvent) {
     if (event.phaseName === 'done' && event.toState === 'void') {
       this.isVisible = false;
       this.isAnimating = false;
     }
   }
-
   onDateSelected(date: Date | null) {
     if (!this.startDate) {
       this.startDate = date;
@@ -86,21 +77,5 @@ export class DatepickerModalComponent {
       this.startDate = date;
       this.endDate = null;
     }
-  }
-
-  onFromFocus() {
-    this.isFromFocused = true;
-  }
-
-  onFromBlur() {
-    this.isFromFocused = false;
-  }
-
-  onToFocus() {
-    this.isToFocused = true;
-  }
-
-  onToBlur() {
-    this.isToFocused = false;
   }
 }

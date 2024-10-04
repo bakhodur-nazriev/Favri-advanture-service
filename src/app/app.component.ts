@@ -8,6 +8,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import {MatNativeDateModule} from '@angular/material/core';
 import {DirectionFromModalComponent} from './direction-from-modal/direction-from-modal.component'
+import {DirectionToModalComponent} from "./direction-to-modal/direction-to-modal.component";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-root',
@@ -21,16 +23,38 @@ import {DirectionFromModalComponent} from './direction-from-modal/direction-from
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
-    DirectionFromModalComponent
+    DirectionFromModalComponent,
+    DirectionToModalComponent,
+    FormsModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'Favri-advanture-service';
-  @ViewChild(DirectionFromModalComponent) directionModalComponent!: DirectionFromModalComponent;
+  public from = '';
+  public to = '';
+  public fromPlaceholder: string = 'Откуда';
+  public toPlaceholder: string = 'Куда';
+
+  @ViewChild('directionFromModalComponent') directionFromModalComponent!: DirectionFromModalComponent;
+  @ViewChild('directionToModalComponent') directionToModalComponent!: DirectionToModalComponent;
 
   openDirectionFromModal() {
-    this.directionModalComponent.closeModal()
+    this.directionFromModalComponent.openModal();
+  }
+
+  openDirectionToModal() {
+    this.directionToModalComponent.openModal();
+  }
+
+  swapLocations() {
+    const temp = this.from;
+    this.from = this.to;
+    this.to = temp;
+
+    const tempPlaceholder = this.fromPlaceholder;
+    this.fromPlaceholder = this.toPlaceholder;
+    this.toPlaceholder = tempPlaceholder;
   }
 }

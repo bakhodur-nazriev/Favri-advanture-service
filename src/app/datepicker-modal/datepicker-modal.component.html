@@ -17,11 +17,9 @@
       <div class="date-input-fields">
         <div class="form-fields">
           <div class="input-block">
-            <label [class.active]="inputFromValue || isFromFocused">Туда</label>
             <input
               readonly
-              (blur)="onFromBlur()"
-              (focus)="onFromFocus()"
+              placeholder="Туда"
               [value]="startDate | date: 'dd.MM.yy'"
             >
           </div>
@@ -39,11 +37,9 @@
 
         <div class="form-fields">
           <div class="input-block">
-            <label [class.active]="inputToValue || isToFocused">Обратно</label>
             <input
               readonly
-              (blur)="onToBlur()"
-              (focus)="onToFocus()"
+              placeholder="Обратно"
               [value]="endDate | date: 'dd.MM.yy'"
             >
           </div>
