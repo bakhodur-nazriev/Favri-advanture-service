@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {animate, style, transition, trigger, AnimationEvent} from "@angular/animations";
 
@@ -30,6 +30,16 @@ export class ModalPassengersComponent {
   public adults: number = 1;
   public children: number = 0;
   public infants: number = 0
+
+  @Output() selectPassengersAndClass = new EventEmitter<{ passengers: number, travelClass: string }>();
+
+  confirmSelection() {
+    this.selectPassengersAndClass.emit({
+      passengers: this.adults + this.children + this.infants,
+      travelClass: this.selectedClass
+    });
+    this.closeModal();
+  }
 
   openModal() {
     this.isVisible = true;

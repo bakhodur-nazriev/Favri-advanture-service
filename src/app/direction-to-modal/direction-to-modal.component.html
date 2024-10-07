@@ -49,6 +49,7 @@
         *ngFor="let direction of filteredDirections"
         [ngClass]="{'highlight-country': !direction.country}"
         class="directions-list__item"
+        (click)="chooseDirection(direction)"
       >
         <div class="cities-airportCode__block">
           <span>{{ direction.city }}</span>

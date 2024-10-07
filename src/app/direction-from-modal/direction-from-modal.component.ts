@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {AnimationEvent} from "@angular/animations";
@@ -99,6 +99,8 @@ export class DirectionFromModalComponent {
   public isAnimating = false;
   public isLoading = false;
 
+  @Output() selectDirection = new EventEmitter<any>();
+
   constructor(private cityService: CityService) {
   }
 
@@ -109,7 +111,6 @@ export class DirectionFromModalComponent {
       this.isLoading = true;
       this.cityService.searchCities(searchTermTrimmed).subscribe({
         next: (res) => {
-          console.log(res.data)
           this.filteredDirections = res.data.map((item: any) => ({
             city: item.item.ru || item.item.en || item.item.tj || item.item.uz,
             airportCode: item.item_code,
@@ -128,6 +129,11 @@ export class DirectionFromModalComponent {
     }
   }
 
+  chooseDirection(direction: any) {
+    this.selectDirection.emit(direction);
+    this.closeModal();
+  }
+
   resetSearch() {
     this.searchTerm = '';
     this.filteredDirections = [...this.directionsCity];
@@ -135,7 +141,8 @@ export class DirectionFromModalComponent {
   }
 
   openModal() {
-    this.isVisible = true
+    this.isVisible = true;
+    this.isAnimating = false;
   }
 
   closeModal() {

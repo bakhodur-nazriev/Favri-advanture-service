@@ -1,4 +1,4 @@
-import {Component, model} from '@angular/core';
+import {Component, EventEmitter, model, Output} from '@angular/core';
 import {animate, style, transition, trigger, AnimationEvent} from "@angular/animations";
 import {DatePipe, NgIf} from "@angular/common";
 import {CustomDatePickerComponent} from "../custom-date-picker/custom-date-picker.component";
@@ -46,6 +46,7 @@ export class DatepickerModalComponent {
   public endDate: Date | null = null;
   public selectedDate: Date | null = null;
   public minDate: Date = new Date();
+  @Output() datesSelected = new EventEmitter<{ startDate: Date, endDate: Date | null }>();
 
   clearStartDate() {
     this.startDate = null;
@@ -77,5 +78,12 @@ export class DatepickerModalComponent {
       this.startDate = date;
       this.endDate = null;
     }
+  }
+
+  confirmDates() {
+    if (this.startDate) {
+      this.datesSelected.emit({ startDate: this.startDate, endDate: this.endDate });
+    }
+    this.closeModal();
   }
 }
