@@ -10,6 +10,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {DirectionFromModalComponent} from './direction-from-modal/direction-from-modal.component'
 import {DirectionToModalComponent} from "./direction-to-modal/direction-to-modal.component";
 import {FormsModule} from "@angular/forms";
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -44,6 +45,8 @@ export class AppComponent {
   @ViewChild('directionToModalComponent') directionToModalComponent!: DirectionToModalComponent;
   @ViewChild('modalPassengers') modalPassengers!: ModalPassengersComponent;
   @ViewChild('datepickerModalComponent') datepickerModalComponent!: DatepickerModalComponent;
+
+  constructor(private http: HttpClient) {}
 
   handlePassengersAndClass(data: { passengers: number, travelClass: string }) {
     this.totalPassengers = data.passengers;
@@ -85,7 +88,7 @@ export class AppComponent {
 
   handleSelectedDates(startDate: Date, endDate: Date | null) {
     const formatMonth = (date: Date) => {
-      const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' }; // Уточняем тип для параметров
+      const options: Intl.DateTimeFormatOptions = {month: 'short', day: 'numeric'};
       return date.toLocaleDateString('ru-RU', options);
     };
 
@@ -96,5 +99,29 @@ export class AppComponent {
     } else {
       this.selectedDateText = 'Сегодня';
     }
+  }
+
+  searchTickets() {
+    const url = 'https://bft-alpha.55fly.ru/api/search';
+
+    let params = new HttpParams()
+      .set('passengers[adt]', '1')
+      .set('passengers[chd]', '0')
+      .set('passengers[ins]', '0')
+      .set('passengers[inf]', '0')
+      .set('routes[0][from]', 'DYU')
+      .set('routes[0][to]', 'MOW')
+      .set('routes[0][date]', '2024-10-08')  // Нужно изменить на выбранную дату
+      // .set('routes[1][from]', this.to)
+      // .set('routes[1][to]', this.from)
+      // .set('routes[1][date]', '2024-10-12')  // Нужно изменить на выбранную дату
+      .set('flight_type', 'OW')
+      .set('cabin', 'economy')
+      .set('company_req_id', '26')
+      .set('language', 'ru');
+
+    this.http.get(url, { params }).subscribe((response: any) => {
+      console.log('Результаты поиска:', response);
+    });
   }
 }

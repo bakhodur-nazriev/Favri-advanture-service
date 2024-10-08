@@ -120,6 +120,15 @@
           Первый
         </button>
       </li>
+      <li>
+        <button
+          class="passengers-class__button"
+          [class.active]="selectedClass === 'all'"
+          (click)="selectClass('all')"
+        >
+          Без привязки к классу
+        </button>
+      </li>
     </ul>
 
     <div class="choose-class__block" (click)="confirmSelection()">

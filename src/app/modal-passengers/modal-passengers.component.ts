@@ -64,7 +64,9 @@ export class ModalPassengersComponent {
   }
 
   increaseAdults() {
-    this.adults++;
+    if (this.adults < 8) {
+      this.adults++;
+    }
   }
 
   decreaseAdults() {
@@ -74,7 +76,9 @@ export class ModalPassengersComponent {
   }
 
   increaseChildren() {
-    this.children++;
+    if (this.children < 8) {
+      this.children++;
+    }
   }
 
   decreaseChildren() {
@@ -84,7 +88,9 @@ export class ModalPassengersComponent {
   }
 
   increaseInfants() {
-    this.infants++;
+    if (this.infants < 8) {
+      this.infants++;
+    }
   }
 
   decreaseInfants() {

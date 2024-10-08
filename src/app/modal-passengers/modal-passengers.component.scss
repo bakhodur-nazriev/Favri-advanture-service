@@ -28,8 +28,7 @@
 
   h4 {
     font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 25px;
+    font-weight: 400;
   }
 }
 
@@ -93,6 +92,7 @@
 .passengers-class__item {
   list-style: none;
   display: flex;
+  flex-wrap: wrap;
   padding: 0;
   gap: 6px;
   margin: 0 0 70px;

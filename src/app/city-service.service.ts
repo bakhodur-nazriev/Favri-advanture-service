@@ -14,7 +14,7 @@ export class CityService {
   // @ts-ignore
   searchCities(value: string): Observable<any> {
     const body = {
-      company_req_id: 10,
+      company_req_id: 26,
       language: 'ru',
       value: value,
       limit: 10
