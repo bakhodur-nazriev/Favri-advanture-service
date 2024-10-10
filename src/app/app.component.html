@@ -12,8 +12,8 @@
       <app-custom-input
         type="text"
         [placeholder]="fromPlaceholder"
-        [(ngModel)]="from"
-        [name]="from"
+        [(ngModel)]="fromCity"
+        [name]="fromCity"
         class="custom-input"
         (click)="openDirectionFromModal()"
       />
@@ -45,8 +45,8 @@
       <app-custom-input
         type="text"
         [placeholder]="toPlaceholder"
-        [(ngModel)]="to"
-        [name]="to"
+        [(ngModel)]="toCity"
+        [name]="toCity"
         class="custom-input"
         (click)="openDirectionToModal()"
       />
@@ -97,7 +97,8 @@
                 stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
 
-        <span>{{ totalPassengers }} пасс, {{ travelClass }}</span>
+        <span>{{ passengers.adults + passengers.children + passengers.infantsWithoutSeat + passengers.infantsWithSeat }}
+          пасс, {{ travelClass }}</span>
       </button>
     </div>
   </div>
@@ -105,6 +106,16 @@
   <div class="search-ticket__block">
     <button class="btn-primary" (click)="searchTickets()">Найти билеты</button>
   </div>
+
+  <app-direction-from-modal
+    #directionFromModalComponent
+    (selectDirection)="onDirectionFromSelected($event)"
+  ></app-direction-from-modal>
+
+  <app-direction-to-modal
+    #directionToModalComponent
+    (selectDirection)="onDirectionToSelected($event)"
+  ></app-direction-to-modal>
 
   <app-modal-passengers
     #modalPassengers
@@ -116,15 +127,9 @@
     (datesSelected)="handleSelectedDates($event.startDate, $event.endDate)"
   ></app-datepicker-modal>
 
-  <app-direction-from-modal
-    #directionFromModalComponent
-    (selectDirection)="onDirectionFromSelected($event)"
-  ></app-direction-from-modal>
-
-  <app-direction-to-modal
-    #directionToModalComponent
-    (selectDirection)="onDirectionToSelected($event)"
-  ></app-direction-to-modal>
+  <app-tickets-modal
+    #ticketsModal
+  ></app-tickets-modal>
 </main>
 
 <router-outlet/>

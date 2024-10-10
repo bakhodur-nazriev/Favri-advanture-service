@@ -11,6 +11,8 @@ import {DirectionFromModalComponent} from './direction-from-modal/direction-from
 import {DirectionToModalComponent} from "./direction-to-modal/direction-to-modal.component";
 import {FormsModule} from "@angular/forms";
 import {HttpClient, HttpParams} from '@angular/common/http';
+import {Passengers} from "./models/passengers.interface";
+import {TicketsModalComponent} from "./tickets-modal/tickets-modal.component";
 
 @Component({
   selector: 'app-root',
@@ -26,34 +28,52 @@ import {HttpClient, HttpParams} from '@angular/common/http';
     MatNativeDateModule,
     DirectionFromModalComponent,
     DirectionToModalComponent,
-    FormsModule
+    FormsModule,
+    TicketsModalComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
+
 export class AppComponent {
-  title = 'Favri-advanture-service';
-  public from = '';
-  public to = '';
   public fromPlaceholder: string = 'Откуда';
   public toPlaceholder: string = 'Куда';
-  public totalPassengers: number = 1;
+  public passengers: Passengers = {
+    adults: 1,
+    children: 0,
+    infantsWithSeat: 0,
+    infantsWithoutSeat: 0,
+    travelClass: 'economy'
+  }
   public travelClass: string = 'Эконом';
   public selectedDateText: string = 'Сегодня'
+
+  public fromCity = '';
+  public toCity = '';
+  public fromAirportCode = '';
+  public toAirportCode = '';
+
+  // public travelClassMapping: { [key: string]: string } = {
+  //   'Эконом': 'economy',
+  //   'Бизнес': 'business',
+  //   'Первый': 'first',
+  //   'Без привязки': 'all'
+  // };
 
   @ViewChild('directionFromModalComponent') directionFromModalComponent!: DirectionFromModalComponent;
   @ViewChild('directionToModalComponent') directionToModalComponent!: DirectionToModalComponent;
   @ViewChild('modalPassengers') modalPassengers!: ModalPassengersComponent;
   @ViewChild('datepickerModalComponent') datepickerModalComponent!: DatepickerModalComponent;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
-  handlePassengersAndClass(data: { passengers: number, travelClass: string }) {
-    this.totalPassengers = data.passengers;
-    this.travelClass = data.travelClass;
-
-    console.log('Количество пассажиров:', this.totalPassengers);
-    console.log('Класс перелета:', this.travelClass);
+  handlePassengersAndClass(event: Passengers) {
+    this.passengers.adults = event.adults;
+    this.passengers.children = event.children;
+    this.passengers.infantsWithSeat = event.infantsWithSeat;
+    this.passengers.infantsWithoutSeat = event.infantsWithoutSeat;
+    this.passengers.travelClass = event.travelClass;
   }
 
   openDirectionFromModal() {
@@ -65,9 +85,9 @@ export class AppComponent {
   }
 
   swapLocations() {
-    const temp = this.from;
-    this.from = this.to;
-    this.to = temp;
+    const temp = this.fromAirportCode;
+    this.fromAirportCode = this.toAirportCode;
+    this.toAirportCode = temp;
 
     const tempPlaceholder = this.fromPlaceholder;
     this.fromPlaceholder = this.toPlaceholder;
@@ -75,11 +95,15 @@ export class AppComponent {
   }
 
   onDirectionFromSelected(direction: any) {
-    this.from = direction.city;
+    this.fromCity = direction.city;
+    this.fromAirportCode = direction.airportCode;
+    console.log('Выбранный город:', this.fromCity, 'Код аэропорта:', this.fromAirportCode);
   }
 
   onDirectionToSelected(direction: any) {
-    this.to = direction.city;
+    this.toCity = direction.city;
+    this.toAirportCode = direction.airportCode;
+    console.log('Выбранный город:', this.toCity, 'Код аэропорта:', this.toAirportCode);
   }
 
   openModalPassengers() {
@@ -105,22 +129,22 @@ export class AppComponent {
     const url = 'https://bft-alpha.55fly.ru/api/search';
 
     let params = new HttpParams()
-      .set('passengers[adt]', '1')
-      .set('passengers[chd]', '0')
-      .set('passengers[ins]', '0')
-      .set('passengers[inf]', '0')
-      .set('routes[0][from]', 'DYU')
-      .set('routes[0][to]', 'MOW')
-      .set('routes[0][date]', '2024-10-08')  // Нужно изменить на выбранную дату
+      .set('passengers[adt]', this.passengers.adults.toString())
+      .set('passengers[chd]', this.passengers.children.toString())
+      .set('passengers[ins]', this.passengers.infantsWithSeat.toString())
+      .set('passengers[inf]', this.passengers.infantsWithoutSeat.toString())
+      .set('routes[0][from]', this.fromAirportCode)
+      .set('routes[0][to]', this.toAirportCode)
+      .set('routes[0][date]', '2024-10-20')  // Нужно изменить на выбранную дату
       // .set('routes[1][from]', this.to)
       // .set('routes[1][to]', this.from)
       // .set('routes[1][date]', '2024-10-12')  // Нужно изменить на выбранную дату
       .set('flight_type', 'OW')
-      .set('cabin', 'economy')
+      .set('cabin', this.passengers.travelClass.toLowerCase())
       .set('company_req_id', '26')
       .set('language', 'ru');
 
-    this.http.get(url, { params }).subscribe((response: any) => {
+    this.http.get(url, {params}).subscribe((response: any) => {
       console.log('Результаты поиска:', response);
     });
   }

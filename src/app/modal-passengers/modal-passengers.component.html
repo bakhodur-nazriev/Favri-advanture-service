@@ -71,15 +71,41 @@
         </div>
 
         <div class="right-block">
-          <button (click)="decreaseInfants()">
+          <button (click)="decreaseinfantsWithSeat()">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
                     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
-          <span>{{ infants }}</span>
-          <button (click)="increaseInfants()">
+          <span>{{ infantsWithSeat }}</span>
+          <button (click)="increaseinfantsWithSeat()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </li>
+
+      <li class="passengers-list__item-details">
+        <div class="left-block">
+          <h4>Младенцы</h4>
+          <small>До 2 лет, с местом</small>
+        </div>
+
+        <div class="right-block">
+          <button (click)="decreaseinfantsWithoutSeat()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <span>{{ infantsWithoutSeat }}</span>
+          <button (click)="increaseinfantsWithoutSeat()">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -96,8 +122,8 @@
       <li>
         <button
           class="passengers-class__button active"
-          [class.active]="selectedClass === 'Эконом'"
-          (click)="selectClass('Эконом')"
+          [class.active]="selectedClass === 'economy'"
+          (click)="selectClass('economy')"
         >
           Эконом
         </button>
@@ -105,8 +131,8 @@
       <li>
         <button
           class="passengers-class__button"
-          [class.active]="selectedClass === 'Бизнес'"
-          (click)="selectClass('Бизнес')"
+          [class.active]="selectedClass === 'business'"
+          (click)="selectClass('business')"
         >
           Бизнес
         </button>
@@ -114,8 +140,8 @@
       <li>
         <button
           class="passengers-class__button"
-          [class.active]="selectedClass === 'Первый'"
-          (click)="selectClass('Первый')"
+          [class.active]="selectedClass === 'first'"
+          (click)="selectClass('first')"
         >
           Первый
         </button>

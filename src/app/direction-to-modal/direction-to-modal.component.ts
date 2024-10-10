@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {CityService} from "../city-service.service";
+import {CityService} from "../services/city-service.service";
 import {AnimationEvent} from "@angular/animations";
 
 @Component({

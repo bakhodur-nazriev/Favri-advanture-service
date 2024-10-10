@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {animate, style, transition, trigger, AnimationEvent} from "@angular/animations";
+import {Passengers} from "../models/passengers.interface";
 
 @Component({
   selector: 'app-modal-passengers',
@@ -24,18 +25,22 @@ import {animate, style, transition, trigger, AnimationEvent} from "@angular/anim
 })
 
 export class ModalPassengersComponent {
+  @Output() selectPassengersAndClass = new EventEmitter<Passengers>();
+
   public isVisible = false;
   public isAnimating = false;
-  public selectedClass: string = 'Эконом';
+  public selectedClass: string = 'economy';
   public adults: number = 1;
   public children: number = 0;
-  public infants: number = 0
-
-  @Output() selectPassengersAndClass = new EventEmitter<{ passengers: number, travelClass: string }>();
+  public infantsWithSeat: number = 0
+  public infantsWithoutSeat: number = 0
 
   confirmSelection() {
     this.selectPassengersAndClass.emit({
-      passengers: this.adults + this.children + this.infants,
+      adults: this.adults,
+      children: this.children,
+      infantsWithSeat: this.infantsWithSeat,
+      infantsWithoutSeat: this.infantsWithoutSeat,
       travelClass: this.selectedClass
     });
     this.closeModal();
@@ -87,15 +92,27 @@ export class ModalPassengersComponent {
     }
   }
 
-  increaseInfants() {
-    if (this.infants < 8) {
-      this.infants++;
+  increaseinfantsWithSeat() {
+    if (this.infantsWithSeat < 8) {
+      this.infantsWithSeat++;
     }
   }
 
-  decreaseInfants() {
-    if (this.infants >= 1) {
-      this.infants--;
+  decreaseinfantsWithSeat() {
+    if (this.infantsWithSeat >= 1) {
+      this.infantsWithSeat--;
+    }
+  }
+
+  increaseinfantsWithoutSeat() {
+    if (this.infantsWithoutSeat < 8) {
+      this.infantsWithoutSeat++;
+    }
+  }
+
+  decreaseinfantsWithoutSeat() {
+    if (this.infantsWithoutSeat >= 1) {
+      this.infantsWithoutSeat--;
     }
   }
 }
