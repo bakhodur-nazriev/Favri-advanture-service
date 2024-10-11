@@ -19,13 +19,25 @@
       <span class="directions-title">Москва</span>
     </div>
 
-    <ul class="tickets-list">
-      <li class="tickets-list__item">
+    <div class="loader-block" *ngIf="isLoading">
+      <div class="loader"></div>
+    </div>
+
+    <ul class="tickets-list" *ngIf="!isLoading">
+      <li
+        class="tickets-list__item"
+        *ngFor="let ticket of tickets | keyvalue"
+      >
         <div class="tickets-list__item-top">
-          <img ngSrc="assets/suppliers/SZ.png" alt="Somon Air" height="30" width="90">
+          <img
+            ngSrc="assets/suppliers/{{ ticket.value.validating_supplier }}.png"
+            alt="Somon Air"
+            height="30"
+            width="90"
+          >
 
           <div class="amount-money__block">
-            <span class="amount-title">2 435 TJS</span>
+            <span class="amount-title">{{ ticket.value.total_price.TJS }} TJS</span>
             <small>В одну сторону</small>
           </div>
         </div>
@@ -49,11 +61,15 @@
         <div class="divider"></div>
 
         <div class="tickets-list__item-bottom">
-          <span class="">DYU</span>
+          <span class="">{{ ticket.value.routes[0].segments[0].departure.airport }}</span>
           <span class="">Прямой</span>
-          <span class="">VKO</span>
+          <span class="">{{ ticket.value.routes[0].segments[0].arrival.airport }}</span>
         </div>
       </li>
     </ul>
+
+    <div *ngIf="!isLoading && tickets.length === 0">
+      <p>Билеты не найдены</p>
+    </div>
   </div>
 </div>

@@ -36,6 +36,12 @@ import {TicketsModalComponent} from "./tickets-modal/tickets-modal.component";
 })
 
 export class AppComponent {
+  @ViewChild('directionFromModalComponent') directionFromModalComponent!: DirectionFromModalComponent;
+  @ViewChild('directionToModalComponent') directionToModalComponent!: DirectionToModalComponent;
+  @ViewChild('modalPassengers') modalPassengers!: ModalPassengersComponent;
+  @ViewChild('datepickerModalComponent') datepickerModalComponent!: DatepickerModalComponent;
+  @ViewChild('ticketsModal') ticketsModal!: TicketsModalComponent;
+
   public fromPlaceholder: string = 'Откуда';
   public toPlaceholder: string = 'Куда';
   public passengers: Passengers = {
@@ -47,23 +53,13 @@ export class AppComponent {
   }
   public travelClass: string = 'Эконом';
   public selectedDateText: string = 'Сегодня'
+  public isLoading: boolean = false;
 
   public fromCity = '';
   public toCity = '';
   public fromAirportCode = '';
   public toAirportCode = '';
-
-  // public travelClassMapping: { [key: string]: string } = {
-  //   'Эконом': 'economy',
-  //   'Бизнес': 'business',
-  //   'Первый': 'first',
-  //   'Без привязки': 'all'
-  // };
-
-  @ViewChild('directionFromModalComponent') directionFromModalComponent!: DirectionFromModalComponent;
-  @ViewChild('directionToModalComponent') directionToModalComponent!: DirectionToModalComponent;
-  @ViewChild('modalPassengers') modalPassengers!: ModalPassengersComponent;
-  @ViewChild('datepickerModalComponent') datepickerModalComponent!: DatepickerModalComponent;
+  public tickets: any[] = [];
 
   constructor(private http: HttpClient) {
   }
@@ -127,14 +123,18 @@ export class AppComponent {
 
   searchTickets() {
     const url = 'https://bft-alpha.55fly.ru/api/search';
+    this.ticketsModal.openModal();
+    this.isLoading = true;
 
     let params = new HttpParams()
       .set('passengers[adt]', this.passengers.adults.toString())
       .set('passengers[chd]', this.passengers.children.toString())
       .set('passengers[ins]', this.passengers.infantsWithSeat.toString())
       .set('passengers[inf]', this.passengers.infantsWithoutSeat.toString())
-      .set('routes[0][from]', this.fromAirportCode)
-      .set('routes[0][to]', this.toAirportCode)
+      // .set('routes[0][from]', this.fromAirportCode)
+      // .set('routes[0][to]', this.toAirportCode)
+      .set('routes[0][from]', 'DYU')
+      .set('routes[0][to]', 'MOW')
       .set('routes[0][date]', '2024-10-20')  // Нужно изменить на выбранную дату
       // .set('routes[1][from]', this.to)
       // .set('routes[1][to]', this.from)
@@ -146,6 +146,9 @@ export class AppComponent {
 
     this.http.get(url, {params}).subscribe((response: any) => {
       console.log('Результаты поиска:', response);
+      this.tickets = response.data.flights;
+      localStorage.setItem('tickets', JSON.stringify(response.data));
+      this.isLoading = false;
     });
   }
 }
