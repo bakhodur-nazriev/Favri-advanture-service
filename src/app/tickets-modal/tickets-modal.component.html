@@ -11,12 +11,11 @@
     </button>
 
     <div class="directions-title__block">
-      <span class="directions-title">Душанбе</span>
+      <span class="directions-title">{{ fromCity }}</span>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round"
-              stroke-linejoin="round"/>
+        <path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <span class="directions-title">Москва</span>
+      <span class="directions-title">{{ toCity }}</span>
     </div>
 
     <div class="loader-block" *ngIf="isLoading">
@@ -26,18 +25,18 @@
     <ul class="tickets-list" *ngIf="!isLoading">
       <li
         class="tickets-list__item"
-        *ngFor="let ticket of tickets | keyvalue"
+        *ngFor="let flight of flights | keyvalue"
       >
         <div class="tickets-list__item-top">
           <img
-            ngSrc="assets/suppliers/{{ ticket.value.validating_supplier }}.png"
+            ngSrc="assets/suppliers/{{ flight.value.validating_supplier }}.png"
             alt="Somon Air"
             height="30"
             width="90"
           >
 
           <div class="amount-money__block">
-            <span class="amount-title">{{ ticket.value.total_price.TJS }} TJS</span>
+            <span class="amount-title">{{ flight.value.total_price.TJS }} TJS</span>
             <small>В одну сторону</small>
           </div>
         </div>
@@ -52,23 +51,32 @@
           </div>
 
           <div class="times-block">
-            <span class="times-block__item">16:30</span>
-            <span class="times-block__title">В пути 4ч 35 мин</span>
-            <span class="times-block__item">19:05</span>
+            <span class="times-block__item">{{ extractHours(flight.value.routes[0].segments[0].departure.time) }}</span>
+            <span class="times-block__title">{{ convertDuration(flight.value.routes[0].duration) }}</span>
+            <span class="times-block__item">{{ extractHours(flight.value.routes[0].segments[0].arrival.time) }}</span>
           </div>
         </div>
 
         <div class="divider"></div>
 
         <div class="tickets-list__item-bottom">
-          <span class="">{{ ticket.value.routes[0].segments[0].departure.airport }}</span>
-          <span class="">Прямой</span>
-          <span class="">{{ ticket.value.routes[0].segments[0].arrival.airport }}</span>
+          <span>{{ flight.value.routes[0].segments[0].departure.airport }}</span>
+
+          <span>
+            <ng-container *ngIf="flight.value.routes[0].segments.length === 1; else transfer">
+              Прямой
+            </ng-container>
+            <ng-template #transfer>
+              {{ flight.value.routes[0].segments.length - 1 }} пересадка(и)
+            </ng-template>
+          </span>
+
+          <span>{{ flight.value.routes[0].segments[flight.value.routes[0].segments.length - 1].arrival.airport }}</span>
         </div>
       </li>
     </ul>
 
-    <div *ngIf="!isLoading && tickets.length === 0">
+    <div *ngIf="!isLoading && flights.length === 0">
       <p>Билеты не найдены</p>
     </div>
   </div>

@@ -124,12 +124,14 @@
 
   <app-datepicker-modal
     #datepickerModalComponent
-    (datesSelected)="handleSelectedDates($event.startDate, $event.endDate)"
+    (datesSelected)="handleSelectedDates($event)"
   ></app-datepicker-modal>
 
   <app-tickets-modal
     #ticketsModal
-    [tickets]="tickets"
+    [flights]="flights"
+    [fromCity]="fromCity"
+    [toCity]="toCity"
     [isLoading]="isLoading"
   ></app-tickets-modal>
 </main>

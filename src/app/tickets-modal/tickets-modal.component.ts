@@ -25,7 +25,9 @@ export class TicketsModalComponent {
     this.initializeFlightData();
   }
 
-  @Input() tickets: any[] = [localStorage.getItem('tickets')];
+  @Input() flights: any[] = ['flights'];
+  @Input() fromCity!: string;
+  @Input() toCity!: string;
   @Input() isLoading!: boolean;
 
   openModal() {
@@ -42,8 +44,8 @@ export class TicketsModalComponent {
       duration: 16800,
       segments: [
         {
-          departure: { time: "20.10.2024 08:00", airport: "DYU", city: "Душанбе", terminal: "" },
-          arrival: { time: "20.10.2024 10:40", airport: "VKO", city: "Москва", terminal: "A" },
+          departure: {time: "20.10.2024 08:00", airport: "DYU", city: "Душанбе", terminal: ""},
+          arrival: {time: "20.10.2024 10:40", airport: "NYC", city: "Нью-Йорк", terminal: ""},
           baggage: "20KG",
         },
       ],
@@ -64,5 +66,26 @@ export class TicketsModalComponent {
     const hours = Math.floor(firstRoute.duration / 3600);
     const minutes = Math.floor((firstRoute.duration % 3600) / 60);
     this.flightDuration = `${hours}ч ${minutes}мин`;
+  }
+
+  convertDuration(duration: number): string {
+    const hours = Math.floor(duration / 3600)
+    const minutes = Math.floor(duration % 3600) / 60;
+
+    let result = 'В пути ';
+
+    if (hours > 0) {
+      result += `${hours}ч `;
+    }
+
+    if (minutes > 0) {
+      result += `${minutes} мин`
+    }
+
+    return result.trim();
+  }
+
+  extractHours(time: string): string {
+    return time.split(' ')[1]
   }
 }

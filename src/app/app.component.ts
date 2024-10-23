@@ -59,7 +59,10 @@ export class AppComponent {
   public toCity = '';
   public fromAirportCode = '';
   public toAirportCode = '';
-  public tickets: any[] = [];
+  public flights: any[] = [];
+  public included: any[] = [];
+  public selectedStartDate: Date | null = null;
+  public selectedEndDate: Date | null = null;
 
   constructor(private http: HttpClient) {
   }
@@ -106,16 +109,19 @@ export class AppComponent {
     this.modalPassengers.openModal();
   }
 
-  handleSelectedDates(startDate: Date, endDate: Date | null) {
+  handleSelectedDates(dates: { startDate: Date, endDate: Date | null }) {
+    this.selectedStartDate = dates.startDate;
+    this.selectedEndDate = dates.endDate;
+
     const formatMonth = (date: Date) => {
-      const options: Intl.DateTimeFormatOptions = {month: 'short', day: 'numeric'};
+      const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
       return date.toLocaleDateString('ru-RU', options);
     };
 
-    if (startDate && endDate) {
-      this.selectedDateText = `${formatMonth(startDate)} - ${formatMonth(endDate)}`;
-    } else if (startDate) {
-      this.selectedDateText = formatMonth(startDate);
+    if (dates.startDate && dates.endDate) {
+      this.selectedDateText = `${formatMonth(dates.startDate)} - ${formatMonth(dates.endDate)}`;
+    } else if (dates.startDate) {
+      this.selectedDateText = formatMonth(dates.startDate);
     } else {
       this.selectedDateText = 'Сегодня';
     }
@@ -131,11 +137,9 @@ export class AppComponent {
       .set('passengers[chd]', this.passengers.children.toString())
       .set('passengers[ins]', this.passengers.infantsWithSeat.toString())
       .set('passengers[inf]', this.passengers.infantsWithoutSeat.toString())
-      // .set('routes[0][from]', this.fromAirportCode)
-      // .set('routes[0][to]', this.toAirportCode)
-      .set('routes[0][from]', 'DYU')
-      .set('routes[0][to]', 'MOW')
-      .set('routes[0][date]', '2024-10-20')  // Нужно изменить на выбранную дату
+      .set('routes[0][from]', this.fromAirportCode)
+      .set('routes[0][to]', this.toAirportCode)
+      .set('routes[0][date]', this.selectedStartDate ? this.selectedStartDate.toISOString().split('T')[0] : '')
       // .set('routes[1][from]', this.to)
       // .set('routes[1][to]', this.from)
       // .set('routes[1][date]', '2024-10-12')  // Нужно изменить на выбранную дату
@@ -145,9 +149,9 @@ export class AppComponent {
       .set('language', 'ru');
 
     this.http.get(url, {params}).subscribe((response: any) => {
-      console.log('Результаты поиска:', response);
-      this.tickets = response.data.flights;
-      localStorage.setItem('tickets', JSON.stringify(response.data));
+      console.log('Результаты поиска:', response.data);
+      this.flights = response.data.flights;
+      this.included = response.data.included;
       this.isLoading = false;
     });
   }
