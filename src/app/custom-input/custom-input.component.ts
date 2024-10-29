@@ -31,30 +31,22 @@ export class CustomInputComponent {
 
   onChange: any = () => {
   };
+
   onTouched: any = () => {
   };
 
-  // Изменение значения
   writeValue(value: string): void {
     this.value = value;
   }
-
-  // Обработка изменений
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
-
-  // Отслеживание касания
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
-
-  // Блокировка ввода
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
-
-  // Метод для передачи изменения в форму
   handleInputChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     this.value = target.value;

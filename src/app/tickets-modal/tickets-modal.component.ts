@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {JsonPipe, KeyValuePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 
 @Component({
@@ -15,7 +15,7 @@ import {JsonPipe, KeyValuePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/
   styleUrl: './tickets-modal.component.scss'
 })
 export class TicketsModalComponent {
-  public isVisible = true;
+  public isVisible = false;
 
   departureAirport: any;
   arrivalAirport: any;
@@ -29,11 +29,16 @@ export class TicketsModalComponent {
   @Input() fromCity!: string;
   @Input() toCity!: string;
   @Input() isLoading!: boolean;
+  @Output() flightSelected = new EventEmitter<any>();
 
-  openModal() {
-    this.isVisible = true
+  selectFlight(flight: any) {
+    console.log('Выбор рейса в TicketsModalComponent:', flight);
+    this.flightSelected.emit(flight);
   }
 
+  openModal() {
+    this.isVisible = true;
+  }
   closeModal() {
     this.isVisible = false
   }
@@ -53,16 +58,13 @@ export class TicketsModalComponent {
   ];
 
   initializeFlightData() {
-    const firstRoute = this.routes[0]; // Предположим, выбираем первый маршрут
-    const firstSegment = firstRoute.segments[0]; // Извлекаем первый сегмент
+    const firstRoute = this.routes[0];
+    const firstSegment = firstRoute.segments[0];
 
-    // Данные аэропорта вылета
     this.departureAirport = firstSegment.departure;
 
-    // Данные аэропорта прибытия
     this.arrivalAirport = firstSegment.arrival;
 
-    // Продолжительность рейса (преобразуем секунды в часы и минуты)
     const hours = Math.floor(firstRoute.duration / 3600);
     const minutes = Math.floor((firstRoute.duration % 3600) / 60);
     this.flightDuration = `${hours}ч ${minutes}мин`;
@@ -75,7 +77,7 @@ export class TicketsModalComponent {
     let result = 'В пути ';
 
     if (hours > 0) {
-      result += `${hours}ч `;
+      result += `${hours} ч `;
     }
 
     if (minutes > 0) {

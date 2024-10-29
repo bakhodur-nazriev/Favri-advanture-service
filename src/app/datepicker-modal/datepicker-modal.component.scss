@@ -147,19 +147,6 @@
   display: flex;
   justify-content: center;
   margin: 40px 0;
-
-  .btn-primary {
-    background-color: var(--primary-color);
-    color: #fff;
-    border-radius: 8px;
-    text-align: center;
-    height: 45px;
-    font-size: 16px;
-    font-weight: 700;
-    border: none;
-    cursor: pointer;
-    padding: 10px 60px;
-  }
 }
 
 .mat-calendar-body-cell .range-start {

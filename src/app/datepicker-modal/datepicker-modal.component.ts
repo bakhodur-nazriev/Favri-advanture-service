@@ -70,18 +70,15 @@ export class DatepickerModalComponent {
     }
   }
   onDateSelected(date: Date | null) {
-    // Если выбрана новая дата и уже есть стартовая дата, очищаем предыдущие значения
     if (!this.startDate) {
       this.startDate = date;
     } else if (!this.endDate) {
       this.endDate = date;
     } else {
-      // Если обе даты уже выбраны, очищаем их и устанавливаем новую стартовую дату
       this.startDate = date;
       this.endDate = null;
     }
 
-    // Уведомляем родительский компонент о выборе дат
     // @ts-ignore
     this.datesSelected.emit({ startDate: this.startDate, endDate: this.endDate });
   }

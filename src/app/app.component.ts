@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {CustomInputComponent} from "./custom-input/custom-input.component";
-import {NgOptimizedImage} from "@angular/common";
+import {NgIf, NgOptimizedImage} from "@angular/common";
 import {ModalPassengersComponent} from "./modal-passengers/modal-passengers.component";
 import {DatepickerModalComponent} from "./datepicker-modal/datepicker-modal.component";
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -13,6 +13,7 @@ import {FormsModule} from "@angular/forms";
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Passengers} from "./models/passengers.interface";
 import {TicketsModalComponent} from "./tickets-modal/tickets-modal.component";
+import {PreorderModalComponent} from "./preorder-modal/preorder-modal.component";
 
 @Component({
   selector: 'app-root',
@@ -29,7 +30,9 @@ import {TicketsModalComponent} from "./tickets-modal/tickets-modal.component";
     DirectionFromModalComponent,
     DirectionToModalComponent,
     FormsModule,
-    TicketsModalComponent
+    TicketsModalComponent,
+    PreorderModalComponent,
+    NgIf,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -41,6 +44,7 @@ export class AppComponent {
   @ViewChild('modalPassengers') modalPassengers!: ModalPassengersComponent;
   @ViewChild('datepickerModalComponent') datepickerModalComponent!: DatepickerModalComponent;
   @ViewChild('ticketsModal') ticketsModal!: TicketsModalComponent;
+  @ViewChild('preorderModal') preorderModal!: PreorderModalComponent;
 
   public fromPlaceholder: string = 'Откуда';
   public toPlaceholder: string = 'Куда';
@@ -52,19 +56,31 @@ export class AppComponent {
     travelClass: 'economy'
   }
   public travelClass: string = 'Эконом';
-  public selectedDateText: string = 'Сегодня'
+  public selectedDateText: string;
   public isLoading: boolean = false;
 
-  public fromCity = '';
-  public toCity = '';
-  public fromAirportCode = '';
-  public toAirportCode = '';
+  public fromCity = 'Душанбе';
+  public toCity = 'Москва';
+  public fromAirportCode = 'DYU';
+  public toAirportCode = 'MOW';
   public flights: any[] = [];
   public included: any[] = [];
   public selectedStartDate: Date | null = null;
   public selectedEndDate: Date | null = null;
+  selectedFlight: any;
 
   constructor(private http: HttpClient) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    this.selectedStartDate = tomorrow;
+
+    this.selectedDateText = tomorrow.toLocaleDateString('ru-RU', {month: 'short', day: 'numeric'});
+  }
+
+  onFlightSelected(flight: any) {
+    console.log('Выбранный рейс:', flight);
+    this.selectedFlight = flight;
+    this.preorderModal.openModal(flight);
   }
 
   handlePassengersAndClass(event: Passengers) {
@@ -114,7 +130,7 @@ export class AppComponent {
     this.selectedEndDate = dates.endDate;
 
     const formatMonth = (date: Date) => {
-      const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
+      const options: Intl.DateTimeFormatOptions = {month: 'short', day: 'numeric'};
       return date.toLocaleDateString('ru-RU', options);
     };
 
@@ -123,7 +139,7 @@ export class AppComponent {
     } else if (dates.startDate) {
       this.selectedDateText = formatMonth(dates.startDate);
     } else {
-      this.selectedDateText = 'Сегодня';
+      this.selectedDateText = new Date().toLocaleDateString('ru-RU', {month: 'short', day: 'numeric'});
     }
   }
 
@@ -132,6 +148,11 @@ export class AppComponent {
     this.ticketsModal.openModal();
     this.isLoading = true;
 
+    const today = new Date();
+    const formattedDate = this.selectedStartDate
+      ? this.selectedStartDate.toISOString().split('T')[0]
+      : `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+
     let params = new HttpParams()
       .set('passengers[adt]', this.passengers.adults.toString())
       .set('passengers[chd]', this.passengers.children.toString())
@@ -139,10 +160,10 @@ export class AppComponent {
       .set('passengers[inf]', this.passengers.infantsWithoutSeat.toString())
       .set('routes[0][from]', this.fromAirportCode)
       .set('routes[0][to]', this.toAirportCode)
-      .set('routes[0][date]', this.selectedStartDate ? this.selectedStartDate.toISOString().split('T')[0] : '')
+      .set('routes[0][date]', formattedDate)
       // .set('routes[1][from]', this.to)
       // .set('routes[1][to]', this.from)
-      // .set('routes[1][date]', '2024-10-12')  // Нужно изменить на выбранную дату
+      // .set('routes[1][date]', '2024-10-12')
       .set('flight_type', 'OW')
       .set('cabin', this.passengers.travelClass.toLowerCase())
       .set('company_req_id', '26')
