@@ -9,65 +9,66 @@
     (click)="$event.stopPropagation()"
   >
     <div>
-      <button class="arrow-left__button" (click)="closeModal()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M15 19.92L8.48 13.4C7.71 12.63 7.71 11.37 8.48 10.6L15 4.08" stroke="#1D2935" stroke-width="1.5"
-                stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-
-      <div class="top-titles__block">
-        <h4>Душанбе - Москва</h4>
-        <span>{{ convertDuration(flight.value.routes[0].duration) }}</span>
-
-        <h1>{{ flight.value.total_price.TJS }}</h1>
-      </div>
-    </div>
-
-    <div class="overflow-a">
       <div>
-        <span>Туда</span>
+        <button class="arrow-left__button" (click)="closeModal()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M15 19.92L8.48 13.4C7.71 12.63 7.71 11.37 8.48 10.6L15 4.08" stroke="#1D2935" stroke-width="1.5"
+                  stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
 
-        <div class="ticket-from__block">
-          <div class="ticket-from__block-top">
-            <div class="">
-              <h3>Рейс {{ flight.value.routes[0].segments[0].operation_supplier }}
-                - {{ flight.value.routes[0].segments[0].carrier_number }}</h3>
-              <span>{{ convertDuration(flight.value.routes[0].duration) }}</span>
-            </div>
-            <img ngSrc="assets/suppliers/{{ flight.value.validating_supplier }}.png" width="90" height="30" alt="">
-          </div>
+        <div class="top-titles__block">
+          <h4>{{ fromCity }} - {{ toCity }}</h4>
+          <span>{{ convertDuration(flight.value.routes[0].duration) }}</span>
 
-          <div class="ticket-from__block-center">
-            <div class="d-flex flex-column align-start time-departure__block">
-              <span>{{ extractHours(flight.value.routes[0].segments[0].departure.time) }}</span>
-              <small>26 октября</small>
-            </div>
-            <div class="d-flex flex-column align-center passenger-class__block">
-              <span>Класс: {{ getServiceClassInCyrillic(flight.value.routes[0].segments[0].service_class.name) }}</span>
-              <small>Багаж: {{ flight.value.routes[0].segments[0].baggage.replace('KG', 'КГ') }}</small>
-            </div>
-            <div class="d-flex flex-column align-end time-arrival__block">
-              <span>{{ extractHours(flight.value.routes[0].segments[0].arrival.time) }}</span>
-              <small>26 октября</small>
-            </div>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="ticket-from__block-bottom">
-            <div class="d-flex flex-column align-start">
-              <span>Dushanbe</span>
-              <span>Dushanbe</span>
-            </div>
-            <div class="d-flex flex-column align-end">
-              <span>Moscow</span>
-              <span>Domodedovo</span>
-            </div>
-          </div>
+          <h1>{{ flight.value.total_price.TJS }} TJS</h1>
         </div>
+      </div>
 
-        <div class="ticket-actions__block">
+      <div class="overflow-a">
+        <div>
+          <span>Туда</span>
+
+          <div class="ticket-from__block">
+            <div class="ticket-from__block-top">
+              <div class="">
+                <h3>Рейс {{ flight.value.routes[0].segments[0].operation_supplier }}
+                  - {{ flight.value.routes[0].segments[0].carrier_number }}</h3>
+                <span>{{ convertDuration(flight.value.routes[0].duration) }}</span>
+              </div>
+              <img ngSrc="assets/suppliers/{{ flight.value.validating_supplier }}.png" width="90" height="30" alt="">
+            </div>
+
+            <div class="ticket-from__block-center">
+              <div class="d-flex flex-column align-start time-departure__block">
+                <span>{{ extractHours(flight.value.routes[0].segments[0].departure.time) }}</span>
+                <small>{{ formatDate(flight.value.routes[0].segments[0].departure.time) }}</small>
+              </div>
+              <div class="d-flex flex-column align-center passenger-class__block">
+                <span>Класс: {{ getServiceClassInCyrillic(flight.value.routes[0].segments[0].service_class.name) }}</span>
+                <small>Багаж: {{ flight.value.routes[0].segments[0].baggage.replace('KG', 'КГ') }}</small>
+              </div>
+              <div class="d-flex flex-column align-end time-arrival__block">
+                <span>{{ extractHours(flight.value.routes[0].segments[0].arrival.time) }}</span>
+                <small>{{ formatDate(flight.value.routes[0].segments[0].arrival.time) }}</small>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="ticket-from__block-bottom">
+              <div class="d-flex flex-column align-start">
+                <span>{{ getCityName(flight.value.routes[0].segments[0].departure.city) }}</span>
+                <span>{{ getAirportName(flight.value.routes[0].segments[0].departure.airport) }}</span>
+              </div>
+              <div class="d-flex flex-column align-end">
+                <span>{{ getCityName(flight.value.routes[0].segments[0].arrival.city) }}</span>
+                <span>{{ getAirportName(flight.value.routes[0].segments[0].arrival.airport) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticket-actions__block">
         <span>
           Возврат билета
           <svg viewBox="0 0 72 72" width="16px" height="16px">
@@ -77,7 +78,7 @@
             />
           </svg>
         </span>
-          <span>
+            <span>
           Обмен билета
           <svg viewBox="0 0 72 72" width="16px" height="16px">
             <path
@@ -86,78 +87,79 @@
             />
           </svg>
         </span>
+          </div>
+
+          <span class="time-warning__title">Везде указано местное время вылета и прибытия</span>
         </div>
 
-        <span class="time-warning__title">Везде указано местное время вылета и прибытия</span>
-      </div>
+        <!--<div>
+          <span>Обратно</span>
 
-      <div>
-        <span>Обратно</span>
+          <div class="ticket-from__block">
+            <div class="ticket-from__block-top">
+              <div class="">
+                <h3>Рейс SZ - 201</h3>
+                <span>4 ч 40 мин</span>
+              </div>
+              <img src="assets/suppliers/SZ.png" width="90" height="30" alt="">
+            </div>
 
-        <div class="ticket-from__block">
-          <div class="ticket-from__block-top">
-            <div class="">
-              <h3>Рейс SZ - 201</h3>
-              <span>4 ч 40 мин</span>
+            <div class="ticket-from__block-center">
+              <div class="d-flex flex-column align-start time-departure__block">
+                <span>19:30</span>
+                <small>26 октября</small>
+              </div>
+              <div class="d-flex flex-column align-center passenger-class__block">
+                <span>Класс: эконом</span>
+                <small>Багаж: 20КГ</small>
+              </div>
+              <div class="d-flex flex-column align-end time-arrival__block">
+                <span>22:30</span>
+                <small>26 октября</small>
+              </div>
             </div>
-            <img src="assets/suppliers/SZ.png" width="90" height="30" alt="">
-          </div>
 
-          <div class="ticket-from__block-center">
-            <div class="d-flex flex-column align-start time-departure__block">
-              <span>19:30</span>
-              <small>26 октября</small>
-            </div>
-            <div class="d-flex flex-column align-center passenger-class__block">
-              <span>Класс: эконом</span>
-              <small>Багаж: 20КГ</small>
-            </div>
-            <div class="d-flex flex-column align-end time-arrival__block">
-              <span>22:30</span>
-              <small>26 октября</small>
-            </div>
-          </div>
+            <div class="divider"></div>
 
-          <div class="divider"></div>
-
-          <div class="ticket-from__block-bottom">
-            <div class="d-flex flex-column align-start">
-              <span>Dushanbe</span>
-              <span>Dushanbe</span>
-            </div>
-            <div class="d-flex flex-column align-end">
-              <span>Moscow</span>
-              <span>Domodedovo</span>
+            <div class="ticket-from__block-bottom">
+              <div class="d-flex flex-column align-start">
+                <span>Dushanbe</span>
+                <span>Dushanbe</span>
+              </div>
+              <div class="d-flex flex-column align-end">
+                <span>Moscow</span>
+                <span>Domodedovo</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="ticket-actions__block">
-        <span>
-          Возврат билета
-          <svg viewBox="0 0 72 72" width="16px" height="16px">
-            <path
-              d="M 19 15 C 17.977 15 16.951875 15.390875 16.171875 16.171875 C 14.609875 17.733875 14.609875 20.266125 16.171875 21.828125 L 30.34375 36 L 16.171875 50.171875 C 14.609875 51.733875 14.609875 54.266125 16.171875 55.828125 C 16.951875 56.608125 17.977 57 19 57 C 20.023 57 21.048125 56.609125 21.828125 55.828125 L 36 41.65625 L 50.171875 55.828125 C 51.731875 57.390125 54.267125 57.390125 55.828125 55.828125 C 57.391125 54.265125 57.391125 51.734875 55.828125 50.171875 L 41.65625 36 L 55.828125 21.828125 C 57.390125 20.266125 57.390125 17.733875 55.828125 16.171875 C 54.268125 14.610875 51.731875 14.609875 50.171875 16.171875 L 36 30.34375 L 21.828125 16.171875 C 21.048125 15.391875 20.023 15 19 15 z"
-              fill="#999999"
-            />
-          </svg>
-        </span>
+          <div class="ticket-actions__block">
           <span>
-          Обмен билета
-          <svg viewBox="0 0 72 72" width="16px" height="16px">
-            <path
-              d="M 19 15 C 17.977 15 16.951875 15.390875 16.171875 16.171875 C 14.609875 17.733875 14.609875 20.266125 16.171875 21.828125 L 30.34375 36 L 16.171875 50.171875 C 14.609875 51.733875 14.609875 54.266125 16.171875 55.828125 C 16.951875 56.608125 17.977 57 19 57 C 20.023 57 21.048125 56.609125 21.828125 55.828125 L 36 41.65625 L 50.171875 55.828125 C 51.731875 57.390125 54.267125 57.390125 55.828125 55.828125 C 57.391125 54.265125 57.391125 51.734875 55.828125 50.171875 L 41.65625 36 L 55.828125 21.828125 C 57.390125 20.266125 57.390125 17.733875 55.828125 16.171875 C 54.268125 14.610875 51.731875 14.609875 50.171875 16.171875 L 36 30.34375 L 21.828125 16.171875 C 21.048125 15.391875 20.023 15 19 15 z"
-              fill="#999999"
-            />
-          </svg>
-        </span>
-        </div>
+            Возврат билета
+            <svg viewBox="0 0 72 72" width="16px" height="16px">
+              <path
+                d="M 19 15 C 17.977 15 16.951875 15.390875 16.171875 16.171875 C 14.609875 17.733875 14.609875 20.266125 16.171875 21.828125 L 30.34375 36 L 16.171875 50.171875 C 14.609875 51.733875 14.609875 54.266125 16.171875 55.828125 C 16.951875 56.608125 17.977 57 19 57 C 20.023 57 21.048125 56.609125 21.828125 55.828125 L 36 41.65625 L 50.171875 55.828125 C 51.731875 57.390125 54.267125 57.390125 55.828125 55.828125 C 57.391125 54.265125 57.391125 51.734875 55.828125 50.171875 L 41.65625 36 L 55.828125 21.828125 C 57.390125 20.266125 57.390125 17.733875 55.828125 16.171875 C 54.268125 14.610875 51.731875 14.609875 50.171875 16.171875 L 36 30.34375 L 21.828125 16.171875 C 21.048125 15.391875 20.023 15 19 15 z"
+                fill="#999999"
+              />
+            </svg>
+          </span>
+            <span>
+            Обмен билета
+            <svg viewBox="0 0 72 72" width="16px" height="16px">
+              <path
+                d="M 19 15 C 17.977 15 16.951875 15.390875 16.171875 16.171875 C 14.609875 17.733875 14.609875 20.266125 16.171875 21.828125 L 30.34375 36 L 16.171875 50.171875 C 14.609875 51.733875 14.609875 54.266125 16.171875 55.828125 C 16.951875 56.608125 17.977 57 19 57 C 20.023 57 21.048125 56.609125 21.828125 55.828125 L 36 41.65625 L 50.171875 55.828125 C 51.731875 57.390125 54.267125 57.390125 55.828125 55.828125 C 57.391125 54.265125 57.391125 51.734875 55.828125 50.171875 L 41.65625 36 L 55.828125 21.828125 C 57.390125 20.266125 57.390125 17.733875 55.828125 16.171875 C 54.268125 14.610875 51.731875 14.609875 50.171875 16.171875 L 36 30.34375 L 21.828125 16.171875 C 21.048125 15.391875 20.023 15 19 15 z"
+                fill="#999999"
+              />
+            </svg>
+          </span>
+          </div>
 
-        <span class="time-warning__title">Везде указано местное время вылета и прибытия</span>
+          <span class="time-warning__title">Везде указано местное время вылета и прибытия</span>
+        </div>-->
       </div>
     </div>
 
-    <div class="choose-class__block">
+    <div class="choose-class__block" (click)="selectFlight(flight)">
       <button class="btn-primary">Выбрать</button>
     </div>
   </div>

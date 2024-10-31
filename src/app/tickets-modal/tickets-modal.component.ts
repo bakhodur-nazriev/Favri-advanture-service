@@ -16,7 +16,6 @@ import {JsonPipe, KeyValuePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/
 })
 export class TicketsModalComponent {
   public isVisible = false;
-
   departureAirport: any;
   arrivalAirport: any;
   flightDuration: string = '';

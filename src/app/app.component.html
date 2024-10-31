@@ -140,14 +140,23 @@
     [fromCity]="fromCity"
     [toCity]="toCity"
     [isLoading]="isLoading"
-    (flightSelected)="onFlightSelected($event)">
-    >
-  </app-tickets-modal>
+    (flightSelected)="onFlightSelected($event)"
+  ></app-tickets-modal>
 
   <app-preorder-modal
     #preorderModal
+    [fromCity]="fromCity"
+    [toCity]="toCity"
+    [included]="included"
     [flight]="selectedFlight"
+    (flightSelected)="orderFlightSelected($event)"
   ></app-preorder-modal>
+
+  <app-order-ticket-modal
+    #orderTicketModal
+    [flight]="selectedFlight"
+  >
+  </app-order-ticket-modal>
 </main>
 
 <router-outlet/>

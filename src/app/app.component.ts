@@ -14,6 +14,8 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Passengers} from "./models/passengers.interface";
 import {TicketsModalComponent} from "./tickets-modal/tickets-modal.component";
 import {PreorderModalComponent} from "./preorder-modal/preorder-modal.component";
+import {Included} from "./models/flights-included.interface";
+import {OrderTicketModalComponent} from "./order-ticket-modal/order-ticket-modal.component";
 
 @Component({
   selector: 'app-root',
@@ -33,6 +35,7 @@ import {PreorderModalComponent} from "./preorder-modal/preorder-modal.component"
     TicketsModalComponent,
     PreorderModalComponent,
     NgIf,
+    OrderTicketModalComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -45,6 +48,7 @@ export class AppComponent {
   @ViewChild('datepickerModalComponent') datepickerModalComponent!: DatepickerModalComponent;
   @ViewChild('ticketsModal') ticketsModal!: TicketsModalComponent;
   @ViewChild('preorderModal') preorderModal!: PreorderModalComponent;
+  @ViewChild('orderTicketModal') orderTicketModal!: OrderTicketModalComponent;
 
   public fromPlaceholder: string = 'Откуда';
   public toPlaceholder: string = 'Куда';
@@ -64,7 +68,7 @@ export class AppComponent {
   public fromAirportCode = 'DYU';
   public toAirportCode = 'MOW';
   public flights: any[] = [];
-  public included: any[] = [];
+  public included: Included | undefined;
   public selectedStartDate: Date | null = null;
   public selectedEndDate: Date | null = null;
   selectedFlight: any;
@@ -81,6 +85,12 @@ export class AppComponent {
     console.log('Выбранный рейс:', flight);
     this.selectedFlight = flight;
     this.preorderModal.openModal(flight);
+  }
+
+  orderFlightSelected(flight: any){
+    this.selectedFlight = flight;
+    this.preorderModal.closeModal();
+    this.orderTicketModal.openModal();
   }
 
   handlePassengersAndClass(event: Passengers) {

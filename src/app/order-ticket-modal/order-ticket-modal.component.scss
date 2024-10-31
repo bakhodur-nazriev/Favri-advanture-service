@@ -1,0 +1,78 @@
+.modal-background {
+  z-index: 10;
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #fff;
+
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 27px;
+
+    .arrow-left__button {
+      all: unset;
+    }
+
+    .ticket-main__block {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      padding: 18px 20px;
+      box-shadow: 0 4px 13px 0 #2B454E1A;
+      border-radius: 16px;
+
+      .ticket-item__top {
+        display: flex;
+        justify-content: space-between;
+
+        .ticket-block__item {
+          font-weight: 500;
+          font-size: 14px;
+        }
+
+        .amount-money__block {
+          display: flex;
+          flex-direction: column;
+          align-items: end;
+
+          .amount-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #00B06C;
+          }
+          small {
+            font-size: 10px;
+            color: #95A5A6;
+          }
+        }
+      }
+
+      .times-block {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+      }
+
+      .ticket-item__bottom {
+        display: flex;
+        justify-content: space-between;
+
+        span {
+          color: #95A5A6;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+.divider {
+  height: 2px;
+  background: linear-gradient(to right, #00B06C 20%, transparent 20%, transparent 40%, #00B06C 40%, #00B06C 40%, transparent 40%, transparent 60%, #00B06C 60%);
+  background-size: 25px 1px;
+  position: relative;
+}

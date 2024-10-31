@@ -8,10 +8,10 @@
   background: white;
 
   .tickets-modal__content {
-    display: flex;
-    flex-direction: column;
     gap: 40px;
     padding: 27px;
+    display: flex;
+    flex-direction: column;
 
     .arrow-left__button {
       all: unset;

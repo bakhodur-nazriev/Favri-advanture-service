@@ -1,6 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
+import {Included} from "../models/flights-included.interface";
 
 @Component({
   selector: 'app-preorder-modal',
@@ -24,14 +25,31 @@ import {animate, AnimationEvent, style, transition, trigger} from "@angular/anim
   ]
 })
 export class PreorderModalComponent {
+  @Input() flight!: any;
+  @Input() included!: Included | undefined;
+  @Input() fromCity!: string;
+  @Input() toCity!: string;
+  @Output() flightSelected = new EventEmitter<any>();
+
   public isVisible = false;
   public isAnimating = false;
-  @Input() flight!: any;
   public selectedFlight: any;
+  orderTicketModalVisible: boolean = false;
+
+  selectFlight(flight: any) {
+    console.log('Выбор рейса в TicketsModalComponent:', flight);
+    this.flightSelected.emit(flight);
+  }
 
   openModal(flight: any) {
     this.selectedFlight = flight;
     this.isVisible = true;
+  }
+
+  openOrderTicketModal(flight: any) {
+    this.selectedFlight = flight;
+    this.isVisible = false;
+    this.orderTicketModalVisible = true;
   }
 
   closeModal() {
@@ -82,6 +100,27 @@ export class PreorderModalComponent {
     }
   }
 
-  // getBaggageInKG(baggageWeight: string): string {
-  // }
+  formatDate(dateString: string): string {
+    const [day, month, year] = dateString.split(" ")[0].split(".");
+    const date = new Date(+year, +month - 1, +day);
+    return date.toLocaleDateString("ru-RU", {day: 'numeric', month: 'long'});
+  }
+
+  getCityName(iataCode: any): any | null {
+    if (!this.included || !this.included?.city) {
+      console.warn("Данные города не загружены.");
+      return iataCode;
+    }
+    const city = this.included?.city[iataCode];
+    return city ? city.name.ru : iataCode;
+  }
+
+  getAirportName(iataCode: string): string | null {
+    if (!this.included || !this.included?.airport) {
+      console.warn("Данные аэропорта не загружены.");
+      return iataCode;
+    }
+    const airport = this.included?.airport[iataCode];
+    return airport ? airport.name.ru : iataCode;
+  }
 }
