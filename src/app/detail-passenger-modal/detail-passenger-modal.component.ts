@@ -25,7 +25,7 @@ import {CountryService} from "../services/country.service";
   ]
 })
 export class DetailPassengerModalComponent implements OnInit {
-  public isVisible = true;
+  public isVisible = false;
   public isAnimating = false;
   countries: any[] = [];
 
