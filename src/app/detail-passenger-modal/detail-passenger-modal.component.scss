@@ -1,0 +1,116 @@
+.modal-background {
+  z-index: 10;
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #fff;
+
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 27px;
+
+    .top-section {
+      .arrow-left__button {
+        all: unset;
+      }
+
+      .save-button {
+        all: unset;
+        color: #00B06C;
+        font-weight: 550;
+        font-size: 14px;
+      }
+
+      span {
+        margin-left: 50px;
+        font-size: 18px;
+      }
+    }
+
+    .birthday-block {
+      display: flex;
+      flex-direction: column;
+
+      span {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 18px;
+        padding-left: 10px;
+      }
+
+      .datepicker-block {
+        display: flex;
+        box-shadow: 0 4px 13px 0 #2B454E1A;
+        padding: 14px;
+        border-radius: 10px;
+        gap: 8px;
+        width: max-content;
+      }
+    }
+  }
+}
+
+.inputs-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .card {
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 13px 0 #2B454E1A;
+    padding: 6px;
+
+    span, select {
+      border: none;
+      font-size: 14px;
+      padding: 16px;
+    }
+
+    input {
+      border: none;
+      font-size: 14px;
+      padding: 16px;
+
+      &:focus-visible {
+        outline: none;
+      }
+
+      &::placeholder {
+        color: #95A5A6;
+      }
+    }
+  }
+}
+
+.genders-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .gender-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    border-radius: 10px;
+    box-shadow: 0 4px 13px 0 #2B454E1A;
+    font-size: 14px;
+    font-weight: 400;
+
+    &.active {
+      background-color: #00B06C;
+      color: #fff;
+    }
+  }
+}
+
+.gender-main__title {
+  font-size: 14px;
+  font-weight: 500;
+  padding-left: 10px;
+  margin-bottom: 18px;
+}

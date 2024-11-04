@@ -44,6 +44,7 @@
             font-weight: 500;
             color: #00B06C;
           }
+
           small {
             font-size: 10px;
             color: #95A5A6;
@@ -51,10 +52,27 @@
         }
       }
 
+      .airplane-icon__block {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 8px;
+      }
+
       .times-block {
         display: flex;
         justify-content: space-between;
         align-items: end;
+
+        &__item {
+          font-weight: 500;
+          font-size: 14px;
+        }
+
+        &__title {
+          font-weight: 400;
+          font-size: 14px;
+        }
       }
 
       .ticket-item__bottom {
@@ -74,5 +92,57 @@
   height: 2px;
   background: linear-gradient(to right, #00B06C 20%, transparent 20%, transparent 40%, #00B06C 40%, #00B06C 40%, transparent 40%, transparent 60%, #00B06C 60%);
   background-size: 25px 1px;
-  position: relative;
+  margin: 12px 0;
+}
+
+input {
+  border: none;
+  font-size: 14px;
+  padding: 16px;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #95A5A6;
+  }
+}
+
+.block-title {
+  font-size: 14px;
+  color: #1D2935;
+}
+
+.desc-bottom__text {
+  font-size: 12px;
+  color: #1D2935;
+}
+
+.passenger-block {
+  padding: 20px;
+
+  &__left {
+    gap: 14px;
+
+    p {
+      font-size: 14px;
+      color: #1D2935;
+    }
+
+    small {
+      color: #95A5A6;
+      font-size: 12px;
+    }
+  }
+
+  &__right {
+    gap: 14px;
+  }
+}
+
+.inputs-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }

@@ -34,7 +34,6 @@ export class PreorderModalComponent {
   public isVisible = false;
   public isAnimating = false;
   public selectedFlight: any;
-  orderTicketModalVisible: boolean = false;
 
   selectFlight(flight: any) {
     console.log('Выбор рейса в TicketsModalComponent:', flight);
@@ -44,12 +43,6 @@ export class PreorderModalComponent {
   openModal(flight: any) {
     this.selectedFlight = flight;
     this.isVisible = true;
-  }
-
-  openOrderTicketModal(flight: any) {
-    this.selectedFlight = flight;
-    this.isVisible = false;
-    this.orderTicketModalVisible = true;
   }
 
   closeModal() {

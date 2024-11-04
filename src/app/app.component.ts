@@ -16,6 +16,7 @@ import {TicketsModalComponent} from "./tickets-modal/tickets-modal.component";
 import {PreorderModalComponent} from "./preorder-modal/preorder-modal.component";
 import {Included} from "./models/flights-included.interface";
 import {OrderTicketModalComponent} from "./order-ticket-modal/order-ticket-modal.component";
+import {DetailPassengerModalComponent} from "./detail-passenger-modal/detail-passenger-modal.component";
 
 @Component({
   selector: 'app-root',
@@ -36,6 +37,7 @@ import {OrderTicketModalComponent} from "./order-ticket-modal/order-ticket-modal
     PreorderModalComponent,
     NgIf,
     OrderTicketModalComponent,
+    DetailPassengerModalComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -82,15 +84,14 @@ export class AppComponent {
   }
 
   onFlightSelected(flight: any) {
-    console.log('Выбранный рейс:', flight);
     this.selectedFlight = flight;
     this.preorderModal.openModal(flight);
   }
 
-  orderFlightSelected(flight: any){
+  orderFlightSelected(flight: any) {
     this.selectedFlight = flight;
-    this.preorderModal.closeModal();
     this.orderTicketModal.openModal();
+    this.preorderModal.closeModal();
   }
 
   handlePassengersAndClass(event: Passengers) {
@@ -180,7 +181,6 @@ export class AppComponent {
       .set('language', 'ru');
 
     this.http.get(url, {params}).subscribe((response: any) => {
-      console.log('Результаты поиска:', response.data);
       this.flights = response.data.flights;
       this.included = response.data.included;
       this.isLoading = false;
