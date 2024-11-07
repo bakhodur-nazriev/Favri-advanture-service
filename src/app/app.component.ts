@@ -51,6 +51,7 @@ export class AppComponent {
   @ViewChild('ticketsModal') ticketsModal!: TicketsModalComponent;
   @ViewChild('preorderModal') preorderModal!: PreorderModalComponent;
   @ViewChild('orderTicketModal') orderTicketModal!: OrderTicketModalComponent;
+  @ViewChild('detailPassengerModal') detailPassengerModal!: DetailPassengerModalComponent
 
   public fromPlaceholder: string = 'Откуда';
   public toPlaceholder: string = 'Куда';

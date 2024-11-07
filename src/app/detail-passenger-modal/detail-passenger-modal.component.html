@@ -30,77 +30,114 @@
       <div class="card">
         <input type="text" placeholder="Отчество">
       </div>
-      <div class="card citizenship-block">
-        <select>
-          <option value="" disabled selected>Выберите гражданство</option>
-          <option *ngFor="let country of countries" [value]="country.code">{{ country.name }}</option>
-        </select>
+      <div class="card citizenship-block" (click)="toggleDropdown()">
+        <span *ngIf="!selectedCountry" class="selector-country__title">Гражданство</span>
+        <span class="selected-country" *ngIf="selectedCountry">{{ selectedCountry }}</span>
+        <div class="dropdown" *ngIf="dropdownOpen" (click)="$event.stopPropagation()">
+          <ul>
+            <li
+              *ngFor="let country of countries"
+              (click)="selectCountry(country.name)"
+            >
+              {{ country.name }}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
     <div class="d-flex flex-column">
       <span class="gender-main__title">Пол</span>
       <div class="genders-block">
-        <div class="gender-item active">Мужской</div>
-        <div class="gender-item ">Женский</div>
-      </div>
-    </div>
-
-    <div class="birthday-block">
-      <span>Дата рождения</span>
-      <div class="datepicker-block">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M7.99994 2V5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                stroke-linejoin="round"/>
-          <path d="M16.0001 2V5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                stroke-linejoin="round"/>
-          <path d="M3.49994 9.09003H20.4999" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10"
-                stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
-                stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                stroke-linejoin="round"/>
-          <path d="M15.6946 13.7H15.7036" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round"/>
-          <path d="M15.6946 16.7H15.7036" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round"/>
-          <path d="M11.9954 13.7H12.0043" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round"/>
-          <path d="M11.9954 16.7H12.0043" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round"/>
-          <path d="M8.29443 13.7H8.30342" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round"/>
-          <path d="M8.29443 16.7H8.30342" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round"/>
-        </svg>
-        <input type="date">
+        <div
+          class="gender-item active"
+          [class.active]="selectedGender === 'male'"
+          (click)="selectGender('male')"
+        >
+          Мужской
+        </div>
+        <div
+          class="gender-item"
+          [class.active]="selectedGender === 'female'"
+          (click)="selectGender('female')"
+        >
+          Женский
+        </div>
       </div>
     </div>
 
     <div class="inputs-blocks">
-      <select>
-        <option></option>
-        <option></option>
-        <option></option>
-        <option></option>
-      </select>
+      <div class="birthday-block">
+        <span>Дата рождения</span>
+        <div class="datepicker-block">
+          <svg (click)="picker.open()" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M7.99994 2V5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                  stroke-linejoin="round"/>
+            <path d="M16.0001 2V5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                  stroke-linejoin="round"/>
+            <path d="M3.49994 9.09003H20.4999" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+            <path
+              d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
+              stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+              stroke-linejoin="round"/>
+            <path d="M15.6946 13.7H15.7036" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round"/>
+            <path d="M15.6946 16.7H15.7036" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round"/>
+            <path d="M11.9954 13.7H12.0043" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round"/>
+            <path d="M11.9954 16.7H12.0043" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round"/>
+            <path d="M8.29443 13.7H8.30342" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round"/>
+            <path d="M8.29443 16.7H8.30342" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round"/>
+          </svg>
+
+          <input
+            matInput
+            [matDatepicker]="picker"
+            (dateChange)="onDateChange($event)"
+          >
+          <mat-datepicker #picker></mat-datepicker>
+        </div>
+      </div>
+
+      <div class="card citizenship-block" (click)="togglePassportDropdown()">
+        <span *ngIf="!selectedPassportType" class="selector-passport__title">Тип документа</span>
+        <span class="selected-passport" *ngIf="selectedPassportType">{{ selectedPassportType }}</span>
+        <div class="dropdown" *ngIf="openDropdownPassport" (click)="$event.stopPropagation()">
+          <ul>
+            <li
+              *ngFor="let passport of passports"
+              (click)="selectPassport(passport.name)"
+            >
+              {{ passport.name }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
       <div class="card">
         <input type="text" placeholder="Серия и номер документа">
       </div>
     </div>
 
-    <div>
+    <div class="birthday-block">
       <span>Документ годен до</span>
-      <div>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <div class="datepicker-block">
+        <svg (click)="pickerDocumentExpire.open()" width="24" height="24" viewBox="0 0 24 24" fill="none">
           <path d="M7.99994 2V5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                 stroke-linejoin="round"/>
           <path d="M16.0001 2V5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                 stroke-linejoin="round"/>
           <path d="M3.49994 9.09003H20.4999" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10"
                 stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
-                stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                stroke-linejoin="round"/>
+          <path
+            d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
+            stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+            stroke-linejoin="round"/>
           <path d="M15.6946 13.7H15.7036" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round"/>
           <path d="M15.6946 16.7H15.7036" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
@@ -114,8 +151,15 @@
           <path d="M8.29443 16.7H8.30342" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round"/>
         </svg>
-        <input type="date">
+
+        <input
+          matInput
+          [matDatepicker]="pickerDocumentExpire"
+          (dateChange)="onDocumentExpireDate($event)"
+        >
+        <mat-datepicker #pickerDocumentExpire></mat-datepicker>
       </div>
     </div>
+
   </div>
 </div>

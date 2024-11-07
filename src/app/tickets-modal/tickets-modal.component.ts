@@ -33,11 +33,13 @@ export class TicketsModalComponent {
   selectFlight(flight: any) {
     console.log('Выбор рейса в TicketsModalComponent:', flight);
     this.flightSelected.emit(flight);
+    this.closeModal();
   }
 
   openModal() {
     this.isVisible = true;
   }
+
   closeModal() {
     this.isVisible = false
   }
