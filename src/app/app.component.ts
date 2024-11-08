@@ -95,6 +95,10 @@ export class AppComponent {
     this.preorderModal.closeModal();
   }
 
+  openDetailPassengerModal() {
+    this.detailPassengerModal.openModal();
+  }
+
   handlePassengersAndClass(event: Passengers) {
     this.passengers.adults = event.adults;
     this.passengers.children = event.children;

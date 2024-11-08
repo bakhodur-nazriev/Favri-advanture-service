@@ -1,6 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
+import {DetailPassengerModalComponent} from "../detail-passenger-modal/detail-passenger-modal.component";
 
 @Component({
   selector: 'app-order-ticket-modal',
@@ -25,6 +26,7 @@ import {animate, AnimationEvent, style, transition, trigger} from "@angular/anim
 })
 export class OrderTicketModalComponent {
   @Input() flight!: any;
+  @Output() detailPassengerSelected = new EventEmitter<any>;
 
   public isVisible = false;
   public isAnimating = false;
@@ -63,5 +65,9 @@ export class OrderTicketModalComponent {
 
   extractHours(time: string): string {
     return time.split(' ')[1]
+  }
+
+  openDetailPassengerModal() {
+    this.detailPassengerSelected.emit();
   }
 }

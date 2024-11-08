@@ -1,6 +1,7 @@
 <main class="main-page-content">
-  <h1 class="main-title">Авиабилеты в Fly.tj</h1>
-  <p class="main-subtitle">Направление</p>
+  <div>
+    <h1 class="main-title">Авиабилеты в Fly.tj</h1>
+    <p class="main-subtitle">Направление</p>
 
   <div class="card">
     <div class="input-from__block">
@@ -104,9 +105,10 @@
                 stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
 
-        <span>{{ passengers.adults + passengers.children + passengers.infantsWithoutSeat + passengers.infantsWithSeat }}
-          пасс, {{ travelClass }}</span>
-      </button>
+          <span>{{ passengers.adults + passengers.children + passengers.infantsWithoutSeat + passengers.infantsWithSeat }}
+            пасс, {{ travelClass }}</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -155,12 +157,14 @@
   <app-order-ticket-modal
     #orderTicketModal
     [flight]="selectedFlight"
+    (detailPassengerSelected)="openDetailPassengerModal()"
   >
   </app-order-ticket-modal>
 
   <app-detail-passenger-modal
     #detailPassengerModal
-  ></app-detail-passenger-modal>
+  >
+  </app-detail-passenger-modal>
 </main>
 
 <router-outlet/>
