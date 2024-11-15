@@ -13,22 +13,22 @@
         </svg>
       </button>
 
-      <span>Пассажир 1</span>
+      <span>{{ passenger.count }}</span>
 
-      <button class="save-button">Сохранить</button>
+      <button class="save-button" (click)="savePassengerData()">Сохранить</button>
     </div>
 
-    <h1>Пассажир 1</h1>
+    <h1>{{ passenger.count }}</h1>
 
     <div class="inputs-blocks">
       <div class="card">
-        <input type="text" placeholder="Имя">
+        <input [(ngModel)]="passengerData.name" type="text" placeholder="Имя">
       </div>
       <div class="card">
-        <input type="text" placeholder="Фамилия">
+        <input [(ngModel)]="passengerData.surname" type="text" placeholder="Фамилия">
       </div>
       <div class="card">
-        <input type="text" placeholder="Отчество">
+        <input [(ngModel)]="passengerData.middleName" type="text" placeholder="Отчество">
       </div>
       <div class="card citizenship-block" (click)="toggleDropdown()">
         <span *ngIf="!selectedCountry" class="selector-country__title">Гражданство</span>
@@ -120,7 +120,7 @@
       </div>
 
       <div class="card">
-        <input type="text" placeholder="Серия и номер документа">
+        <input type="text" [(ngModel)]="passengerData.documentNumber" placeholder="Серия и номер документа">
       </div>
     </div>
 

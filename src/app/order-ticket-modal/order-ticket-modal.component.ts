@@ -1,14 +1,21 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
-import {NgIf, NgOptimizedImage} from "@angular/common";
+import {Component, EventEmitter, Input, Output, OnInit} from '@angular/core';
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
-import {DetailPassengerModalComponent} from "../detail-passenger-modal/detail-passenger-modal.component";
+import {PassengerDataService} from "../services/passenger-data.service";
+import {Observable} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+import {stringify as flattedStringify} from 'flatted';
+import {FormsModule} from "@angular/forms";
+import {Passengers} from "../models/passengers.interface";
 
 @Component({
   selector: 'app-order-ticket-modal',
   standalone: true,
   imports: [
     NgIf,
-    NgOptimizedImage
+    NgOptimizedImage,
+    FormsModule,
+    NgForOf
   ],
   templateUrl: './order-ticket-modal.component.html',
   styleUrl: './order-ticket-modal.component.scss',
@@ -26,10 +33,40 @@ import {DetailPassengerModalComponent} from "../detail-passenger-modal/detail-pa
 })
 export class OrderTicketModalComponent {
   @Input() flight!: any;
+  @Input() passengers: { children: number; infantsWithoutSeat: number; adults: number; infantsWithSeat: number } = {adults: 0, children: 0, infantsWithSeat: 0, infantsWithoutSeat: 0}
   @Output() detailPassengerSelected = new EventEmitter<any>;
+  passengerData: any;
+  private apiUrl = 'http://192.168.40.238:9800/api/flytj/book';
 
-  public isVisible = false;
-  public isAnimating = false;
+  constructor(private passengerDataService: PassengerDataService, private http: HttpClient) {
+  }
+
+  public isVisible: boolean = false;
+  public isAnimating: boolean = false;
+  public email: string = '';
+  public phone: string = '';
+
+  getPassengerList() {
+    let passengerList = [];
+
+    for (let i = 1; i <= this.passengers.adults; i++) {
+      passengerList.push({count: `Пассажир ${i}`, type: 'Взрослый, старше 12 лет',});
+    }
+
+    for (let i = 1; i <= this.passengers.children; i++) {
+      passengerList.push({ count: `Пассажир ${i + this.passengers.adults}`, type: 'Детей от 2 до 12 лет' });
+    }
+
+    for (let i = 1; i <= this.passengers.infantsWithSeat; i++) {
+      passengerList.push({ count: `Пассажир ${i + this.passengers.adults + this.passengers.children}`, type: 'Младенец с местом' });
+    }
+
+    for (let i = 1; i <= this.passengers.infantsWithoutSeat; i++) {
+      passengerList.push({ count: `Пассажир ${i + this.passengers.adults + this.passengers.children + this.passengers.infantsWithSeat}`, type: 'Младенец без места' });
+    }
+
+    return passengerList;
+  }
 
   onAnimationEvent(event: AnimationEvent) {
     if (event.phaseName === 'done' && event.toState === 'void') {
@@ -67,7 +104,77 @@ export class OrderTicketModalComponent {
     return time.split(' ')[1]
   }
 
-  openDetailPassengerModal() {
-    this.detailPassengerSelected.emit();
+  selectPassenger(passenger: any) {
+    this.detailPassengerSelected.emit(passenger);
+  }
+
+  // ngOnInit() {
+  //   this.passengerDataService.passengerData$.subscribe((data) => {
+  //     if (data && data.length > 0) {
+  //       this.passengerData = data;
+  //       console.log(data)
+  //     }
+  //   });
+  // }
+
+  createOrderRequest() {
+    const expirationDateFormatted = this.passengerData.expirationDate ? this.passengerData.expirationDate.toISOString() : null;
+    const dateOfBirthFormatted = this.passengerData.dateOfBirth ? this.passengerData.dateOfBirth.toISOString() : null;
+
+
+    const requestBody = {
+      walletPhone: "123456789",
+      token: sessionStorage.getItem('token'),
+      url: window.location.href,
+      sessionId: sessionStorage.getItem('sessionId'),
+      recId: this.flight.value.rec_id,
+      partnerFees: this.flight.value.partner_fees.TJS,
+      payerPhone: this.phone,
+      payerEmail: this.email,
+      passengers: [
+        {
+          index: 0,
+          name: this.passengerData.name,
+          surname: this.passengerData.surname,
+          middleName: this.passengerData.middleName,
+          citizenship: this.passengerData.citizenship,
+          gender: this.passengerData.gender,
+          type: this.passengerData.type,
+          documentType: this.passengerData.documentType,
+          documentNumber: this.passengerData.documentNumber,
+          expirationDate: expirationDateFormatted,
+          dateOfBirth: dateOfBirthFormatted
+        }
+      ],
+      meta: {
+        currency: "TJS",
+        language: "ru",
+      },
+      companyReqId: 4
+    };
+
+    console.log("Request Body: ", requestBody);
+
+    try {
+      const clonedRequestBody = structuredClone(requestBody);
+      console.log("Cloned Request Body: ", clonedRequestBody);
+    } catch (e) {
+      console.error("Error during cloning:", e);
+    }
+
+    this.sendOrderRequest(requestBody).subscribe({
+      next: (response) => {
+        if (response && response.success) {
+          console.log('Заказ успешно создан', response);
+        }
+      },
+      error: (error) => {
+        console.error('Ошибка при отправке запроса:', error);
+      }
+    });
+  }
+
+  sendOrderRequest(data: any): Observable<any> {
+    return this.http.post(this.apiUrl, data);
   }
 }

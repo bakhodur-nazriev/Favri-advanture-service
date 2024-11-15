@@ -70,8 +70,10 @@
     background-color: #fff;
     box-shadow: 0 4px 13px 0 #2B454E1A;
     padding: 6px;
+    display: flex;
 
     input {
+      width: 100%;
       border: none;
       font-size: 14px;
       padding: 16px;
@@ -102,6 +104,7 @@
       outline: none;
       border: none;
       font-size: 14px;
+      width: 100%;
 
       &::after {
         content: url("/assets/svg/arrow-left.svg");
@@ -144,6 +147,7 @@
     .selected-passport {
       color: #1D2935;
       padding: 6px;
+      width: 100%;
     }
   }
 }

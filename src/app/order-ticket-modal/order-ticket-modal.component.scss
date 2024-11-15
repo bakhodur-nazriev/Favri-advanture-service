@@ -95,10 +95,15 @@
   margin: 12px 0;
 }
 
+.card {
+  display: flex;
+}
+
 input {
   border: none;
   font-size: 14px;
   padding: 16px;
+  width: 100%;
 
   &:focus-visible {
     outline: none;
@@ -108,16 +113,24 @@ input {
     color: #95A5A6;
   }
 }
+.desc-bottom__text {
+  font-size: 12px;
+  color: #1D2935;
+  margin-bottom: 0;
+}
+
+.passengers-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
 .block-title {
   font-size: 14px;
   color: #1D2935;
+  margin-bottom: 5px;
 }
 
-.desc-bottom__text {
-  font-size: 12px;
-  color: #1D2935;
-}
 
 .passenger-block {
   padding: 20px;

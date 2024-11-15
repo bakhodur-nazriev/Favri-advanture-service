@@ -1,9 +1,11 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
 import {CountryService} from "../services/country.service";
 import {MatInput, MatSuffix} from "@angular/material/input";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import {FormsModule} from "@angular/forms";
+import {PassengerDataService} from "../services/passenger-data.service";
 
 @Component({
   selector: 'app-detail-passenger-modal',
@@ -15,7 +17,8 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/m
     MatSuffix,
     MatDatepickerToggle,
     MatDatepicker,
-    MatDatepickerInput
+    MatDatepickerInput,
+    FormsModule
   ],
   templateUrl: './detail-passenger-modal.component.html',
   styleUrl: './detail-passenger-modal.component.scss',
@@ -33,6 +36,7 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/m
 })
 export class DetailPassengerModalComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
+  @Input() passenger: any;
 
   public isVisible: boolean = false;
   public isAnimating: boolean = false;
@@ -49,20 +53,59 @@ export class DetailPassengerModalComponent implements OnInit {
     {name: 'Паспорт РТ', code: 'NP'}
   ];
 
-  constructor(private countryService: CountryService) {
+  passengerData = {
+    name: '',
+    surname: '',
+    middleName: '',
+    citizenship: this.selectedCountry,
+    gender: this.selectedGender,
+    documentType: this.selectedPassportType,
+    documentNumber: '',
+    birthData: this.selectedDate,
+    documentExpireDate: this.selectedDocumentExpireDate
+  }
+
+  constructor(private countryService: CountryService, private passengerDataService: PassengerDataService) {
+  }
+
+  isValidForm(): string | "" | null | Date {
+    return this.passengerData.name &&
+      this.passengerData.surname &&
+      this.passengerData.middleName &&
+      // this.passengerData.citizenship &&
+      this.passengerData.gender &&
+      this.passengerData.documentNumber &&
+      this.passengerData.documentNumber &&
+      this.passengerData.birthData &&
+      this.passengerData.documentExpireDate;
   }
 
   onDateChange(event: any) {
     this.selectedDate = event.value;
+    this.passengerData.birthData = this.selectedDate;
     console.log('Выбранная дата:', this.selectedDate);
   }
 
   onDocumentExpireDate(event: any) {
     this.selectedDocumentExpireDate = event.value;
+    this.passengerData.documentExpireDate = event;
   }
 
   selectGender(gender: string) {
     this.selectedGender = gender;
+    this.passengerData.gender = gender;
+  }
+
+  selectCountry(countryName: string): void {
+    this.selectedCountry = countryName;
+    this.dropdownOpen = false;
+    this.passengerData.citizenship = countryName;
+  }
+
+  selectPassport(passportName: string): void {
+    this.selectedPassportType = passportName;
+    this.openDropdownPassport = false;
+    this.passengerData.documentType = passportName;
   }
 
   loadCountries(): void {
@@ -70,7 +113,7 @@ export class DetailPassengerModalComponent implements OnInit {
       (data) => {
         this.countries = data.map((country: any) => ({
           name: country.name.common,
-          code: country.cca2
+          flag: country.flags.svg
         }));
       },
       (error) => {
@@ -85,16 +128,6 @@ export class DetailPassengerModalComponent implements OnInit {
 
   togglePassportDropdown(): void {
     this.openDropdownPassport = !this.openDropdownPassport;
-  }
-
-  selectCountry(countryName: string): void {
-    this.selectedCountry = countryName;
-    this.dropdownOpen = false;
-  }
-
-  selectPassport(passportName: string): void {
-    this.selectedPassportType = passportName;
-    this.openDropdownPassport = false;
   }
 
   closeModal() {
@@ -113,6 +146,14 @@ export class DetailPassengerModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadCountries()
+    this.loadCountries();
+  }
+
+  savePassengerData() {
+    // if (this.isValidForm()) {
+      const cleanedData = this.passengerDataService.cleanPassengerData([this.passengerData]);
+      this.passengerDataService.updatePassengerData(cleanedData);
+      this.closeModal();
+    // }
   }
 }

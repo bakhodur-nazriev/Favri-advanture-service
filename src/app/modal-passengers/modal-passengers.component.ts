@@ -32,8 +32,8 @@ export class ModalPassengersComponent {
   public selectedClass: string = 'economy';
   public adults: number = 1;
   public children: number = 0;
-  public infantsWithSeat: number = 0
-  public infantsWithoutSeat: number = 0
+  public infantsWithSeat: number = 0;
+  public infantsWithoutSeat: number = 0;
 
   confirmSelection() {
     this.selectPassengersAndClass.emit({
@@ -92,25 +92,25 @@ export class ModalPassengersComponent {
     }
   }
 
-  increaseinfantsWithSeat() {
+  increaseInfantsWithSeat() {
     if (this.infantsWithSeat < 8) {
       this.infantsWithSeat++;
     }
   }
 
-  decreaseinfantsWithSeat() {
+  decreaseInfantsWithSeat() {
     if (this.infantsWithSeat >= 1) {
       this.infantsWithSeat--;
     }
   }
 
-  increaseinfantsWithoutSeat() {
+  increaseInfantsWithoutSeat() {
     if (this.infantsWithoutSeat < 8) {
       this.infantsWithoutSeat++;
     }
   }
 
-  decreaseinfantsWithoutSeat() {
+  decreaseInfantsWithoutSeat() {
     if (this.infantsWithoutSeat >= 1) {
       this.infantsWithoutSeat--;
     }

@@ -62,50 +62,60 @@
           </ng-template>
         </span>
 
-
         <span>{{ flight.value.routes[0].segments[flight.value.routes[0].segments.length - 1].arrival.airport }}</span>
       </div>
     </div>
 
-    <div>
+    <div class="passengers-layout">
       <p class="block-title">Данные пассажиров</p>
-      <div class="passenger-block card d-flex align-center justify-between">
-        <div class="d-flex align-center passenger-block__left">
-          <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M13.3583 15.8521C13.2125 15.8375 13.0375 15.8375 12.8771 15.8521C9.40624 15.7354 6.64999 12.8917 6.64999 9.39167C6.64999 5.81876 9.53749 2.91667 13.125 2.91667C16.6979 2.91667 19.6 5.81876 19.6 9.39167C19.5854 12.8917 16.8292 15.7354 13.3583 15.8521Z"
-              stroke="#00B06C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path
-              d="M23.9313 5.83333C26.7604 5.83333 29.0354 8.12291 29.0354 10.9375C29.0354 13.6937 26.8479 15.9396 24.1208 16.0417C24.0042 16.0271 23.8729 16.0271 23.7417 16.0417"
-              stroke="#00B06C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path
-              d="M6.06667 21.2333C2.53751 23.5958 2.53751 27.4458 6.06667 29.7937C10.0771 32.4771 16.6542 32.4771 20.6646 29.7937C24.1938 27.4312 24.1938 23.5812 20.6646 21.2333C16.6688 18.5646 10.0917 18.5646 6.06667 21.2333Z"
-              stroke="#00B06C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path
-              d="M26.7458 29.1667C27.7958 28.9479 28.7875 28.525 29.6042 27.8979C31.8792 26.1917 31.8792 23.3771 29.6042 21.6708C28.8021 21.0583 27.825 20.65 26.7896 20.4167"
-              stroke="#00B06C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+      <div *ngFor="let passenger of getPassengerList(); let i = index">
+        <div
+          class="passenger-block card d-flex align-center justify-between"
+          (click)="selectPassenger(passenger)"
+        >
+          <div class="d-flex align-center passenger-block__left">
+            <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M13.3583 15.8521C13.2125 15.8375 13.0375 15.8375 12.8771 15.8521C9.40624 15.7354 6.64999 12.8917 6.64999 9.39167C6.64999 5.81876 9.53749 2.91667 13.125 2.91667C16.6979 2.91667 19.6 5.81876 19.6 9.39167C19.5854 12.8917 16.8292 15.7354 13.3583 15.8521Z"
+                stroke="#00B06C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M23.9313 5.83333C26.7604 5.83333 29.0354 8.12291 29.0354 10.9375C29.0354 13.6937 26.8479 15.9396 24.1208 16.0417C24.0042 16.0271 23.8729 16.0271 23.7417 16.0417"
+                stroke="#00B06C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M6.06667 21.2333C2.53751 23.5958 2.53751 27.4458 6.06667 29.7937C10.0771 32.4771 16.6542 32.4771 20.6646 29.7937C24.1938 27.4312 24.1938 23.5812 20.6646 21.2333C16.6688 18.5646 10.0917 18.5646 6.06667 21.2333Z"
+                stroke="#00B06C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M26.7458 29.1667C27.7958 28.9479 28.7875 28.525 29.6042 27.8979C31.8792 26.1917 31.8792 23.3771 29.6042 21.6708C28.8021 21.0583 27.825 20.65 26.7896 20.4167"
+                stroke="#00B06C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
 
-          <div (click)="openDetailPassengerModal()">
-            <p class="ma-0">Пассажир 1</p>
-            <small>Взрослые, старше 12 лет</small>
+            <div>
+              <p class="ma-0">{{ passenger.count }}</p>
+              <small>{{ passenger.type }}</small>
+            </div>
           </div>
-        </div>
 
+          <div class="d-flex align-center passenger-block__right">
+            <!--          <svg *ngif="!isValidForm" width="24" height="24" viewBox="0 0 24 24" fill="none">-->
+            <!--            <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"-->
+            <!--                  stroke="#FF4B55" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
+            <!--            <path d="M12 8V13" stroke="#FF4B55" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
+            <!--            <path d="M11.9945 16H12.0035" stroke="#FF4B55" stroke-width="2" stroke-linecap="round"-->
+            <!--                  stroke-linejoin="round"/>-->
+            <!--          </svg>-->
 
-        <div class="d-flex align-center passenger-block__right">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                  stroke="#FF4B55" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 8V13" stroke="#FF4B55" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M11.9945 16H12.0035" stroke="#FF4B55" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round"/>
-          </svg>
+            <!--          <svg *ngIf="isValidForm" width="24" height="24" viewBox="0 0 24 24" fill="none">-->
+            <!--            <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"-->
+            <!--                  stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
+            <!--            <path d="M7.75 12L10.58 14.83L16.25 9.17" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round"-->
+            <!--                  stroke-linejoin="round"/>-->
+            <!--          </svg>-->
 
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d="M6.75 3.06L11.64 7.95C12.2175 8.5275 12.2175 9.4725 11.64 10.05L6.74999 14.94" stroke="#1D2935"
-                  stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M6.75 3.06L11.64 7.95C12.2175 8.5275 12.2175 9.4725 11.64 10.05L6.74999 14.94" stroke="#1D2935"
+                    stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -115,22 +125,22 @@
 
       <div class="inputs-blocks">
         <div class="card">
-          <input type="text" placeholder="Email">
+          <input type="text" placeholder="Email" [(ngModel)]="email">
         </div>
         <div class="card">
-          <input type="text" placeholder="Номеро телефона">
+          <input type="text" placeholder="Номер телефона" [(ngModel)]="phone">
         </div>
       </div>
 
       <p class="desc-bottom__text">
-        На почту придет информация о бронировании билета в случае изменения расписания, на
-        номер телефона будет
+        На почту придет информация о бронировании билета в случае изменения расписания,
+        на номер телефона будет
         отправлено уведомление об изменениях.
       </p>
     </div>
 
     <div>
-      <button class="btn-primary">Оформить</button>
+      <button class="btn-primary" (click)="createOrderRequest()">Оформить</button>
     </div>
   </div>
 </div>

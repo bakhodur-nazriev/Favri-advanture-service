@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {CustomInputComponent} from "./custom-input/custom-input.component";
 import {NgIf, NgOptimizedImage} from "@angular/common";
@@ -17,6 +17,9 @@ import {PreorderModalComponent} from "./preorder-modal/preorder-modal.component"
 import {Included} from "./models/flights-included.interface";
 import {OrderTicketModalComponent} from "./order-ticket-modal/order-ticket-modal.component";
 import {DetailPassengerModalComponent} from "./detail-passenger-modal/detail-passenger-modal.component";
+import sha512 from 'crypto-js/sha512';
+import {format} from 'date-fns';
+import {ModalOrderSucceedComponent} from "./modal-order-succeed/modal-order-succeed.component";
 
 @Component({
   selector: 'app-root',
@@ -38,12 +41,13 @@ import {DetailPassengerModalComponent} from "./detail-passenger-modal/detail-pas
     NgIf,
     OrderTicketModalComponent,
     DetailPassengerModalComponent,
+    ModalOrderSucceedComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
   @ViewChild('directionFromModalComponent') directionFromModalComponent!: DirectionFromModalComponent;
   @ViewChild('directionToModalComponent') directionToModalComponent!: DirectionToModalComponent;
   @ViewChild('modalPassengers') modalPassengers!: ModalPassengersComponent;
@@ -52,6 +56,11 @@ export class AppComponent {
   @ViewChild('preorderModal') preorderModal!: PreorderModalComponent;
   @ViewChild('orderTicketModal') orderTicketModal!: OrderTicketModalComponent;
   @ViewChild('detailPassengerModal') detailPassengerModal!: DetailPassengerModalComponent
+  @ViewChild('modalOrderSucceed') modalOrderSucceed!: ModalOrderSucceedComponent
+
+  private readonly companyReqId = 26;
+  private readonly secretKey = '98357c92347b70b6bc0ea97f0acf84040sa2dof5ba7411218c3f1087316fd3663fc6f99';
+  private readonly apiUrl = 'https://bft-alpha.55fly.ru/api';
 
   public fromPlaceholder: string = 'Откуда';
   public toPlaceholder: string = 'Куда';
@@ -75,6 +84,7 @@ export class AppComponent {
   public selectedStartDate: Date | null = null;
   public selectedEndDate: Date | null = null;
   selectedFlight: any;
+  public selectedPassenger: any;
 
   constructor(private http: HttpClient) {
     const tomorrow = new Date();
@@ -95,7 +105,8 @@ export class AppComponent {
     this.preorderModal.closeModal();
   }
 
-  openDetailPassengerModal() {
+  openDetailPassengerModal(passenger: any) {
+    this.selectedPassenger = passenger;
     this.detailPassengerModal.openModal();
   }
 
@@ -160,7 +171,7 @@ export class AppComponent {
   }
 
   searchTickets() {
-    const url = 'https://bft-alpha.55fly.ru/api/search';
+    const url = `${this.apiUrl}/search`;
     this.ticketsModal.openModal();
     this.isLoading = true;
 
@@ -182,13 +193,67 @@ export class AppComponent {
       // .set('routes[1][date]', '2024-10-12')
       .set('flight_type', 'OW')
       .set('cabin', this.passengers.travelClass.toLowerCase())
-      .set('company_req_id', '26')
+      .set('company_req_id', '4')
       .set('language', 'ru');
 
-    this.http.get(url, {params}).subscribe((response: any) => {
-      this.flights = response.data.flights;
-      this.included = response.data.included;
+    const token = sessionStorage.getItem('token');
+
+    if (token) {
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
+
+      this.http.get(url, {params, headers}).subscribe(
+        (response: any) => {
+          console.log(response.data);
+
+          sessionStorage.setItem('sessionId', response.data.session);
+          this.flights = response.data.flights;
+          this.included = response.data.included;
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error('Search ticket error:', error);
+          this.isLoading = false;
+        }
+      );
+    } else {
+      console.error('Token is not available.');
       this.isLoading = false;
-    });
+    }
+  }
+
+  private generateSignature(login: string, date: string): string {
+    const signatureString = `${login}${this.companyReqId}${this.secretKey}${date}`;
+    return sha512(signatureString).toString();
+  }
+
+  private getCurrentDate(): string {
+    return format(new Date(), 'yyyyMMdd');
+  }
+
+  login(phoneNumber: string) {
+    const date = this.getCurrentDate();
+    const signature = this.generateSignature(phoneNumber, date);
+
+    const loginData = {
+      date: date,
+      company_req_id: this.companyReqId,
+      login: phoneNumber,
+      signature: signature
+    }
+
+    return this.http.post(`${this.apiUrl}/wallet/auth`, loginData).subscribe(
+      (response: any) => {
+        sessionStorage.setItem('token', response.token);
+      },
+      (error) => {
+        console.error('Login error:', error);
+      }
+    );
+  }
+
+  ngOnInit() {
+    this.login("+992985305255");
   }
 }

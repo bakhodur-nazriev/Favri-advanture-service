@@ -16,4 +16,8 @@ export class PassengerDataService {
   updatePassengerData(data: any) {
     this.passengerDataSource.next(data);
   }
+
+  cleanPassengerData(data: any[]): any[] {
+    return data.filter(item => item.name && item.surname && item.documentNumber);
+  }
 }
