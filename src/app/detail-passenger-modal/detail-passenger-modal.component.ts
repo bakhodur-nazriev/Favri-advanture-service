@@ -61,12 +61,12 @@ export class DetailPassengerModalComponent implements OnInit {
 
   onDateChange(event: any) {
     this.selectedDate = event.value;
-    this.passengerDataList[this.selectedIndex].birthDate = this.selectedDate ? new Date(this.selectedDate).toISOString() : null;
+    this.passengerDataList[this.selectedIndex].dateOfBirth = this.selectedDate ? new Date(this.selectedDate).toISOString() : null;
   }
 
   onDocumentExpireDate(event: any) {
     this.selectedDocumentExpireDate = event.value;
-    this.passengerDataList[this.selectedIndex].documentExpireDate = this.selectedDocumentExpireDate ? new Date(this.selectedDocumentExpireDate).toISOString() : null;
+    this.passengerDataList[this.selectedIndex].expirationDate = this.selectedDocumentExpireDate ? new Date(this.selectedDocumentExpireDate).toISOString() : null;
   }
 
   selectGender(gender: string) {
@@ -93,6 +93,11 @@ export class DetailPassengerModalComponent implements OnInit {
           name: country.name.common,
           flag: country.flags.svg
         }));
+
+        const tajikistan = this.countries.find(country => country.name === 'Tajikistan');
+        if (tajikistan) {
+          this.selectedCountry = tajikistan.name;
+        }
       },
       (error) => {
         console.error('Ошибка при загрузке списка стран:', error);
@@ -133,15 +138,19 @@ export class DetailPassengerModalComponent implements OnInit {
           name: '',
           surname: '',
           middleName: '',
-          citizenship: this.selectedCountry ? this.passengerDataList[this.selectedIndex]?.citizenship : this.selectedCountry,
+          citizenship: this.selectedCountry || this.passengerDataList[this.selectedIndex]?.citizenship,
           gender: this.selectedGender ? this.passengerDataList[this.selectedIndex]?.gender : this.selectedGender,
-          documentType: this.selectedPassportType ? this.passengerDataList[this.selectedIndex]?.documentType : this.selectedPassportType,
+          documentType: this.selectedPassportType || this.passports[0]?.name,
           documentNumber: '',
-          birthDate: this.selectedDate ? new Date(this.selectedDate).toISOString() : null,
-          documentExpireDate: this.selectedDocumentExpireDate ? new Date(this.selectedDocumentExpireDate).toISOString() : null,
+          dateOfBirth: this.selectedDate ? new Date(this.selectedDate).toISOString() : null,
+          expirationDate: this.selectedDocumentExpireDate ? new Date(this.selectedDocumentExpireDate).toISOString() : null,
         };
       }
     });
+
+    if (this.passports.length > 0) {
+      this.selectedPassportType = this.passports[0].name;
+    }
 
     this.loadCountries();
   }

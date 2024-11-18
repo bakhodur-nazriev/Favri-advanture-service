@@ -51,15 +51,15 @@
       <div class="genders-block">
         <div
           class="gender-item active"
-          [class.active]="passengerDataList[selectedIndex].gender === 'male'"
-          (click)="selectGender('male')"
+          [class.active]="passengerDataList[selectedIndex].gender === 'M'"
+          (click)="selectGender('M')"
         >
           Мужской
         </div>
         <div
           class="gender-item"
-          [class.active]="passengerDataList[selectedIndex].gender === 'female'"
-          (click)="selectGender('female')"
+          [class.active]="passengerDataList[selectedIndex].gender === 'F'"
+          (click)="selectGender('F')"
         >
           Женский
         </div>
