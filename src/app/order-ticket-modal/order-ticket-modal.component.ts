@@ -127,6 +127,11 @@ export class OrderTicketModalComponent implements OnInit {
   }
 
   createOrderRequest() {
+    const passengers = this.passengersList.map((passenger, index) => ({
+      ...passenger,
+      index: index
+    }));
+
     const requestBody = {
       walletPhone: "123456789",
       token: sessionStorage.getItem('token'),
@@ -136,7 +141,7 @@ export class OrderTicketModalComponent implements OnInit {
       partnerFees: this.flight.value.partner_fees.TJS,
       payerPhone: this.phone,
       payerEmail: this.email,
-      passengers: this.passengersList,
+      passengers: passengers,
       meta: {
         currency: "TJS",
         language: "ru",

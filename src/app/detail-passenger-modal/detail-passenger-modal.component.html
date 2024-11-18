@@ -97,6 +97,7 @@
 
           <input
             matInput
+            [(ngModel)]="passengerDataList[selectedIndex].birthDate"
             [matDatepicker]="picker"
             (dateChange)="onDateChange($event)"
           >
@@ -154,6 +155,7 @@
 
         <input
           matInput
+          [(ngModel)]="passengerDataList[selectedIndex].documentExpireDate"
           [matDatepicker]="pickerDocumentExpire"
           (dateChange)="onDocumentExpireDate($event)"
         >

@@ -61,14 +61,12 @@ export class DetailPassengerModalComponent implements OnInit {
 
   onDateChange(event: any) {
     this.selectedDate = event.value;
-    this.passengerDataList[this.selectedIndex].birthDate = this.selectedDate;
-    console.log(this.passengerDataList[this.selectedIndex].birthDate);
+    this.passengerDataList[this.selectedIndex].birthDate = this.selectedDate ? new Date(this.selectedDate).toISOString() : null;
   }
 
   onDocumentExpireDate(event: any) {
     this.selectedDocumentExpireDate = event.value;
-    this.passengerDataList[this.selectedIndex].documentExpireDate = this.selectedDocumentExpireDate;
-    console.log(this.passengerDataList[this.selectedIndex].documentExpireDate);
+    this.passengerDataList[this.selectedIndex].documentExpireDate = this.selectedDocumentExpireDate ? new Date(this.selectedDocumentExpireDate).toISOString() : null;
   }
 
   selectGender(gender: string) {
@@ -139,8 +137,8 @@ export class DetailPassengerModalComponent implements OnInit {
           gender: this.selectedGender ? this.passengerDataList[this.selectedIndex]?.gender : this.selectedGender,
           documentType: this.selectedPassportType ? this.passengerDataList[this.selectedIndex]?.documentType : this.selectedPassportType,
           documentNumber: '',
-          birthDate: this.selectedDate ? this.passengerDataList[this.selectedIndex]?.birthDate : this.selectedDate,
-          documentExpireDate: this.selectedDocumentExpireDate ? this.passengerDataList[this.selectedIndex]?.selectedDocumentExpireDate : this.selectedDocumentExpireDate,
+          birthDate: this.selectedDate ? new Date(this.selectedDate).toISOString() : null,
+          documentExpireDate: this.selectedDocumentExpireDate ? new Date(this.selectedDocumentExpireDate).toISOString() : null,
         };
       }
     });
