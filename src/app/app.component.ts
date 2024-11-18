@@ -107,7 +107,7 @@ export class AppComponent implements OnInit {
 
   openDetailPassengerModal(passenger: any) {
     this.selectedPassenger = passenger;
-    this.detailPassengerModal.openModal();
+    this.detailPassengerModal?.openModal();
   }
 
   handlePassengersAndClass(event: Passengers) {

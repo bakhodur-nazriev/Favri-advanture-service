@@ -52,6 +52,19 @@ export class DetailPassengerModalComponent implements OnInit {
     {name: 'Загран паспорт', code: 'NP'},
     {name: 'Паспорт РТ', code: 'NP'}
   ];
+  passengerDataList: any[] = [
+    {
+      name: '',
+      surname: '',
+      middleName: '',
+      citizenship: this.selectedCountry,
+      gender: this.selectedGender,
+      documentType: this.selectedPassportType,
+      documentNumber: '',
+      birthData: this.selectedDate,
+      documentExpireDate: this.selectedDocumentExpireDate,
+    }
+  ];
 
   passengerData = {
     name: '',
@@ -65,24 +78,26 @@ export class DetailPassengerModalComponent implements OnInit {
     documentExpireDate: this.selectedDocumentExpireDate
   }
 
-  constructor(private countryService: CountryService, private passengerDataService: PassengerDataService) {
+  selectedIndex: number = 0
+  constructor(private countryService: CountryService, public passengerDataService: PassengerDataService) {
   }
 
-  isValidForm(): string | "" | null | Date {
-    return this.passengerData.name &&
-      this.passengerData.surname &&
-      this.passengerData.middleName &&
-      // this.passengerData.citizenship &&
-      this.passengerData.gender &&
-      this.passengerData.documentNumber &&
-      this.passengerData.documentNumber &&
-      this.passengerData.birthData &&
-      this.passengerData.documentExpireDate;
-  }
+  // isValidForm(): string | "" | null | Date {
+  //   return this.passengerData.name &&
+  //     this.passengerData.surname &&
+  //     this.passengerData.middleName &&
+  //     // this.passengerData.citizenship &&
+  //     this.passengerData.gender &&
+  //     this.passengerData.documentNumber &&
+  //     this.passengerData.documentNumber &&
+  //     this.passengerData.birthData &&
+  //     this.passengerData.documentExpireDate;
+  // }
 
   onDateChange(event: any) {
     this.selectedDate = event.value;
-    this.passengerData.birthData = this.selectedDate;
+    // this.passengerData.birthData = this.selectedDate;
+    this.passengerDataList[this.passengerDataService.selectedPassengerIndex ?? 0].birthData = this.selectedDate;
     console.log('Выбранная дата:', this.selectedDate);
   }
 
@@ -146,10 +161,38 @@ export class DetailPassengerModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.passengerDataService.event$.subscribe((message) => {
+      const index = this.passengerDataService.selectedPassengerIndex ?? 0;
+      this.selectedIndex = index;
+
+      if (!this.passengerDataList[index]) {
+        this.passengerDataList[index] = {
+          name: '',
+          surname: '',
+          middleName: '',
+          citizenship: this.selectedCountry,
+          gender: this.selectedGender,
+          documentType: this.selectedPassportType,
+          documentNumber: '',
+          birthData: this.selectedDate,
+          documentExpireDate: this.selectedDocumentExpireDate,
+        };
+      }
+    });
+    console.log(this.passengerDataList)
+
     this.loadCountries();
   }
 
   savePassengerData() {
+    if(this.passengerDataService.selectedPassengerIndex != null){
+      this.passengerDataList[this.passengerDataService.selectedPassengerIndex] = {
+       ...this.passengerDataList[this.passengerDataService.selectedPassengerIndex],
+      }
+    }
+
+    console.log(this.passengerDataList)
+
     // if (this.isValidForm()) {
       const cleanedData = this.passengerDataService.cleanPassengerData([this.passengerData]);
       this.passengerDataService.updatePassengerData(cleanedData);

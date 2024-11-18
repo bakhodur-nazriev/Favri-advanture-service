@@ -21,14 +21,14 @@
     <h1>{{ passenger.count }}</h1>
 
     <div class="inputs-blocks">
-      <div class="card">
-        <input [(ngModel)]="passengerData.name" type="text" placeholder="Имя">
+      <div class="card" >
+        <input [(ngModel)]="passengerDataList[selectedIndex].name" type="text" placeholder="Имя">
       </div>
       <div class="card">
-        <input [(ngModel)]="passengerData.surname" type="text" placeholder="Фамилия">
+        <input [(ngModel)]="passengerDataList[selectedIndex].surname" type="text" placeholder="Фамилия">
       </div>
       <div class="card">
-        <input [(ngModel)]="passengerData.middleName" type="text" placeholder="Отчество">
+        <input [(ngModel)]="passengerDataList[selectedIndex].middleName" type="text" placeholder="Отчество">
       </div>
       <div class="card citizenship-block" (click)="toggleDropdown()">
         <span *ngIf="!selectedCountry" class="selector-country__title">Гражданство</span>

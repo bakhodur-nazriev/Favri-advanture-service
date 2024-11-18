@@ -71,7 +71,7 @@
       <div *ngFor="let passenger of getPassengerList(); let i = index">
         <div
           class="passenger-block card d-flex align-center justify-between"
-          (click)="selectPassenger(passenger)"
+          (click)="selectPassenger(passenger, i)"
         >
           <div class="d-flex align-center passenger-block__left">
             <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">

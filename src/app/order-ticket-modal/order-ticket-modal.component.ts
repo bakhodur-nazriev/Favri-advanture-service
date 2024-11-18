@@ -31,7 +31,7 @@ import {Passengers} from "../models/passengers.interface";
     ])
   ]
 })
-export class OrderTicketModalComponent {
+export class OrderTicketModalComponent implements OnInit{
   @Input() flight!: any;
   @Input() passengers: { children: number; infantsWithoutSeat: number; adults: number; infantsWithSeat: number } = {adults: 0, children: 0, infantsWithSeat: 0, infantsWithoutSeat: 0}
   @Output() detailPassengerSelected = new EventEmitter<any>;
@@ -48,7 +48,6 @@ export class OrderTicketModalComponent {
 
   getPassengerList() {
     let passengerList = [];
-
     for (let i = 1; i <= this.passengers.adults; i++) {
       passengerList.push({count: `Пассажир ${i}`, type: 'Взрослый, старше 12 лет',});
     }
@@ -64,7 +63,6 @@ export class OrderTicketModalComponent {
     for (let i = 1; i <= this.passengers.infantsWithoutSeat; i++) {
       passengerList.push({ count: `Пассажир ${i + this.passengers.adults + this.passengers.children + this.passengers.infantsWithSeat}`, type: 'Младенец без места' });
     }
-
     return passengerList;
   }
 
@@ -104,18 +102,20 @@ export class OrderTicketModalComponent {
     return time.split(' ')[1]
   }
 
-  selectPassenger(passenger: any) {
+  selectPassenger(passenger: any, index: number) {
     this.detailPassengerSelected.emit(passenger);
+    this.passengerDataService.selectedPassengerIndex = index;
+    this.passengerDataService.sendEvent('From order component');
   }
 
-  // ngOnInit() {
-  //   this.passengerDataService.passengerData$.subscribe((data) => {
-  //     if (data && data.length > 0) {
-  //       this.passengerData = data;
-  //       console.log(data)
-  //     }
-  //   });
-  // }
+  ngOnInit() {
+    // this.passengerDataService.passengerData$.subscribe((data) => {
+    //   if (data && data.length > 0) {
+    //     this.passengerData = data;
+    //     console.log(data)
+    //   }
+    // });
+  }
 
   createOrderRequest() {
     const expirationDateFormatted = this.passengerData.expirationDate ? this.passengerData.expirationDate.toISOString() : null;
