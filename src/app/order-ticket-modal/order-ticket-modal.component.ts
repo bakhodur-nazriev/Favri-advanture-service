@@ -31,12 +31,17 @@ import {Passengers} from "../models/passengers.interface";
     ])
   ]
 })
-export class OrderTicketModalComponent implements OnInit{
+export class OrderTicketModalComponent implements OnInit {
   @Input() flight!: any;
-  @Input() passengers: { children: number; infantsWithoutSeat: number; adults: number; infantsWithSeat: number } = {adults: 0, children: 0, infantsWithSeat: 0, infantsWithoutSeat: 0}
+  @Input() passengers: {
+    children: number;
+    infantsWithoutSeat: number;
+    adults: number;
+    infantsWithSeat: number
+  } = {adults: 0, children: 0, infantsWithSeat: 0, infantsWithoutSeat: 0}
   @Output() detailPassengerSelected = new EventEmitter<any>;
-  passengerData: any;
   private apiUrl = 'http://192.168.40.238:9800/api/flytj/book';
+  passengersList: any[] = [];
 
   constructor(private passengerDataService: PassengerDataService, private http: HttpClient) {
   }
@@ -53,15 +58,21 @@ export class OrderTicketModalComponent implements OnInit{
     }
 
     for (let i = 1; i <= this.passengers.children; i++) {
-      passengerList.push({ count: `Пассажир ${i + this.passengers.adults}`, type: 'Детей от 2 до 12 лет' });
+      passengerList.push({count: `Пассажир ${i + this.passengers.adults}`, type: 'Детей от 2 до 12 лет'});
     }
 
     for (let i = 1; i <= this.passengers.infantsWithSeat; i++) {
-      passengerList.push({ count: `Пассажир ${i + this.passengers.adults + this.passengers.children}`, type: 'Младенец с местом' });
+      passengerList.push({
+        count: `Пассажир ${i + this.passengers.adults + this.passengers.children}`,
+        type: 'Младенец с местом'
+      });
     }
 
     for (let i = 1; i <= this.passengers.infantsWithoutSeat; i++) {
-      passengerList.push({ count: `Пассажир ${i + this.passengers.adults + this.passengers.children + this.passengers.infantsWithSeat}`, type: 'Младенец без места' });
+      passengerList.push({
+        count: `Пассажир ${i + this.passengers.adults + this.passengers.children + this.passengers.infantsWithSeat}`,
+        type: 'Младенец без места'
+      });
     }
     return passengerList;
   }
@@ -109,19 +120,13 @@ export class OrderTicketModalComponent implements OnInit{
   }
 
   ngOnInit() {
-    // this.passengerDataService.passengerData$.subscribe((data) => {
-    //   if (data && data.length > 0) {
-    //     this.passengerData = data;
-    //     console.log(data)
-    //   }
-    // });
+    this.passengerDataService.getPassengersDataList().subscribe((data) => {
+      this.passengersList = data;
+      console.log('Получен список пассажиров:', this.passengersList);
+    });
   }
 
   createOrderRequest() {
-    const expirationDateFormatted = this.passengerData.expirationDate ? this.passengerData.expirationDate.toISOString() : null;
-    const dateOfBirthFormatted = this.passengerData.dateOfBirth ? this.passengerData.dateOfBirth.toISOString() : null;
-
-
     const requestBody = {
       walletPhone: "123456789",
       token: sessionStorage.getItem('token'),
@@ -131,21 +136,7 @@ export class OrderTicketModalComponent implements OnInit{
       partnerFees: this.flight.value.partner_fees.TJS,
       payerPhone: this.phone,
       payerEmail: this.email,
-      passengers: [
-        {
-          index: 0,
-          name: this.passengerData.name,
-          surname: this.passengerData.surname,
-          middleName: this.passengerData.middleName,
-          citizenship: this.passengerData.citizenship,
-          gender: this.passengerData.gender,
-          type: this.passengerData.type,
-          documentType: this.passengerData.documentType,
-          documentNumber: this.passengerData.documentNumber,
-          expirationDate: expirationDateFormatted,
-          dateOfBirth: dateOfBirthFormatted
-        }
-      ],
+      passengers: this.passengersList,
       meta: {
         currency: "TJS",
         language: "ru",

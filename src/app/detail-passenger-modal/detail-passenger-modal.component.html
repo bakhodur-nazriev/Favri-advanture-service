@@ -31,8 +31,8 @@
         <input [(ngModel)]="passengerDataList[selectedIndex].middleName" type="text" placeholder="Отчество">
       </div>
       <div class="card citizenship-block" (click)="toggleDropdown()">
-        <span *ngIf="!selectedCountry" class="selector-country__title">Гражданство</span>
-        <span class="selected-country" *ngIf="selectedCountry">{{ selectedCountry }}</span>
+        <span *ngIf="!passengerDataList[selectedIndex]?.citizenship" class="selector-country__title">Гражданство</span>
+        <span class="selected-country" *ngIf="passengerDataList[selectedIndex]?.citizenship">{{ passengerDataList[selectedIndex].citizenship }}</span>
         <div class="dropdown" *ngIf="dropdownOpen" (click)="$event.stopPropagation()">
           <ul>
             <li
@@ -51,14 +51,14 @@
       <div class="genders-block">
         <div
           class="gender-item active"
-          [class.active]="selectedGender === 'male'"
+          [class.active]="passengerDataList[selectedIndex].gender === 'male'"
           (click)="selectGender('male')"
         >
           Мужской
         </div>
         <div
           class="gender-item"
-          [class.active]="selectedGender === 'female'"
+          [class.active]="passengerDataList[selectedIndex].gender === 'female'"
           (click)="selectGender('female')"
         >
           Женский
@@ -105,8 +105,8 @@
       </div>
 
       <div class="card citizenship-block" (click)="togglePassportDropdown()">
-        <span *ngIf="!selectedPassportType" class="selector-passport__title">Тип документа</span>
-        <span class="selected-passport" *ngIf="selectedPassportType">{{ selectedPassportType }}</span>
+        <span *ngIf="!passengerDataList[selectedIndex]?.documentType" class="selector-passport__title">Тип документа</span>
+        <span class="selected-passport" *ngIf="passengerDataList[selectedIndex]?.documentType">{{ passengerDataList[selectedIndex].documentType }}</span>
         <div class="dropdown" *ngIf="openDropdownPassport" (click)="$event.stopPropagation()">
           <ul>
             <li
@@ -120,7 +120,7 @@
       </div>
 
       <div class="card">
-        <input type="text" [(ngModel)]="passengerData.documentNumber" placeholder="Серия и номер документа">
+        <input type="text" [(ngModel)]="passengerDataList[selectedIndex].documentNumber" placeholder="Серия и номер документа">
       </div>
     </div>
 

@@ -41,86 +41,51 @@ export class DetailPassengerModalComponent implements OnInit {
   public isVisible: boolean = false;
   public isAnimating: boolean = false;
   countries: any[] = [];
-  public selectedGender: string = 'male';
+  public selectedGender: string = '';
   public dropdownOpen: boolean = false;
   public openDropdownPassport: boolean = false;
   public selectedCountry: string = '';
   selectedDate: Date | null = null;
   selectedDocumentExpireDate: Date | null = null;
-  public selectedPassportType: string = 'Загран паспорт';
+  public selectedPassportType: string = '';
   passports: any[] = [
     {name: 'Загран паспорт', code: 'NP'},
     {name: 'Паспорт РТ', code: 'NP'}
   ];
-  passengerDataList: any[] = [
-    {
-      name: '',
-      surname: '',
-      middleName: '',
-      citizenship: this.selectedCountry,
-      gender: this.selectedGender,
-      documentType: this.selectedPassportType,
-      documentNumber: '',
-      birthData: this.selectedDate,
-      documentExpireDate: this.selectedDocumentExpireDate,
-    }
-  ];
-
-  passengerData = {
-    name: '',
-    surname: '',
-    middleName: '',
-    citizenship: this.selectedCountry,
-    gender: this.selectedGender,
-    documentType: this.selectedPassportType,
-    documentNumber: '',
-    birthData: this.selectedDate,
-    documentExpireDate: this.selectedDocumentExpireDate
-  }
+  passengerDataList: any[] = [];
 
   selectedIndex: number = 0
+
   constructor(private countryService: CountryService, public passengerDataService: PassengerDataService) {
   }
 
-  // isValidForm(): string | "" | null | Date {
-  //   return this.passengerData.name &&
-  //     this.passengerData.surname &&
-  //     this.passengerData.middleName &&
-  //     // this.passengerData.citizenship &&
-  //     this.passengerData.gender &&
-  //     this.passengerData.documentNumber &&
-  //     this.passengerData.documentNumber &&
-  //     this.passengerData.birthData &&
-  //     this.passengerData.documentExpireDate;
-  // }
-
   onDateChange(event: any) {
     this.selectedDate = event.value;
-    // this.passengerData.birthData = this.selectedDate;
-    this.passengerDataList[this.passengerDataService.selectedPassengerIndex ?? 0].birthData = this.selectedDate;
-    console.log('Выбранная дата:', this.selectedDate);
+    this.passengerDataList[this.selectedIndex].birthDate = this.selectedDate;
+    console.log(this.passengerDataList[this.selectedIndex].birthDate);
   }
 
   onDocumentExpireDate(event: any) {
     this.selectedDocumentExpireDate = event.value;
-    this.passengerData.documentExpireDate = event;
+    this.passengerDataList[this.selectedIndex].documentExpireDate = this.selectedDocumentExpireDate;
+    console.log(this.passengerDataList[this.selectedIndex].documentExpireDate);
   }
 
   selectGender(gender: string) {
     this.selectedGender = gender;
-    this.passengerData.gender = gender;
+    this.passengerDataList[this.selectedIndex].gender = gender;
   }
 
   selectCountry(countryName: string): void {
     this.selectedCountry = countryName;
     this.dropdownOpen = false;
-    this.passengerData.citizenship = countryName;
+    this.passengerDataList[this.selectedIndex].citizenship = countryName;
   }
 
   selectPassport(passportName: string): void {
     this.selectedPassportType = passportName;
     this.openDropdownPassport = false;
-    this.passengerData.documentType = passportName;
+    this.passengerDataList[this.selectedIndex].documentType = passportName;
   }
 
   loadCountries(): void {
@@ -145,19 +110,19 @@ export class DetailPassengerModalComponent implements OnInit {
     this.openDropdownPassport = !this.openDropdownPassport;
   }
 
+  onAnimationEvent(event: AnimationEvent) {
+    if (event.phaseName === 'done' && event.toState === 'void') {
+      this.isVisible = false;
+      this.isAnimating = false;
+    }
+  }
+
   closeModal() {
     this.isVisible = false;
   }
 
   openModal() {
     this.isVisible = true;
-  }
-
-  onAnimationEvent(event: AnimationEvent) {
-    if (event.phaseName === 'done' && event.toState === 'void') {
-      this.isVisible = false;
-      this.isAnimating = false;
-    }
   }
 
   ngOnInit(): void {
@@ -170,33 +135,28 @@ export class DetailPassengerModalComponent implements OnInit {
           name: '',
           surname: '',
           middleName: '',
-          citizenship: this.selectedCountry,
-          gender: this.selectedGender,
-          documentType: this.selectedPassportType,
+          citizenship: this.selectedCountry ? this.passengerDataList[this.selectedIndex]?.citizenship : this.selectedCountry,
+          gender: this.selectedGender ? this.passengerDataList[this.selectedIndex]?.gender : this.selectedGender,
+          documentType: this.selectedPassportType ? this.passengerDataList[this.selectedIndex]?.documentType : this.selectedPassportType,
           documentNumber: '',
-          birthData: this.selectedDate,
-          documentExpireDate: this.selectedDocumentExpireDate,
+          birthDate: this.selectedDate ? this.passengerDataList[this.selectedIndex]?.birthDate : this.selectedDate,
+          documentExpireDate: this.selectedDocumentExpireDate ? this.passengerDataList[this.selectedIndex]?.selectedDocumentExpireDate : this.selectedDocumentExpireDate,
         };
       }
     });
-    console.log(this.passengerDataList)
 
     this.loadCountries();
   }
 
   savePassengerData() {
-    if(this.passengerDataService.selectedPassengerIndex != null){
+    if (this.passengerDataService.selectedPassengerIndex != null) {
       this.passengerDataList[this.passengerDataService.selectedPassengerIndex] = {
-       ...this.passengerDataList[this.passengerDataService.selectedPassengerIndex],
+        ...this.passengerDataList[this.passengerDataService.selectedPassengerIndex],
       }
     }
 
-    console.log(this.passengerDataList)
+    this.passengerDataService.setPassengersDataList(this.passengerDataList);
 
-    // if (this.isValidForm()) {
-      const cleanedData = this.passengerDataService.cleanPassengerData([this.passengerData]);
-      this.passengerDataService.updatePassengerData(cleanedData);
-      this.closeModal();
-    // }
+    this.closeModal();
   }
 }

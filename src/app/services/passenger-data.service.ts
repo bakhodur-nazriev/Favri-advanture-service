@@ -7,6 +7,8 @@ import {BehaviorSubject, Subject} from "rxjs";
 export class PassengerDataService {
 
   public selectedPassengerIndex: number | null = null;
+  private passengerDataSource = new BehaviorSubject<any>(null);
+
   constructor() {
   }
 
@@ -17,12 +19,12 @@ export class PassengerDataService {
     this.eventSource.next(message);
   }
 
-  private passengerDataSource = new BehaviorSubject<any>(null);
+  setPassengersDataList(passengers: any[]) {
+    this.passengerDataSource.next(passengers);
+  }
 
-  passengerData$ = this.passengerDataSource.asObservable();
-
-  updatePassengerData(data: any) {
-    this.passengerDataSource.next(data);
+  getPassengersDataList() {
+    return this.passengerDataSource.asObservable();
   }
 
   cleanPassengerData(data: any[]): any[] {
