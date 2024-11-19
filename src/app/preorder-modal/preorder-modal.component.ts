@@ -37,6 +37,7 @@ export class PreorderModalComponent {
 
   selectFlight(flight: any) {
     this.flightSelected.emit(flight);
+    sessionStorage.setItem('amountSelectedFlight', flight.value.total_price.TJS);
   }
 
   openModal(flight: any) {

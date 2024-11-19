@@ -4,9 +4,7 @@ import {animate, AnimationEvent, style, transition, trigger} from "@angular/anim
 import {PassengerDataService} from "../services/passenger-data.service";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import {stringify as flattedStringify} from 'flatted';
 import {FormsModule} from "@angular/forms";
-import {Passengers} from "../models/passengers.interface";
 
 @Component({
   selector: 'app-order-ticket-modal',
@@ -55,11 +53,19 @@ export class OrderTicketModalComponent implements OnInit {
   getPassengerList() {
     let passengerList = [];
     for (let i = 1; i <= this.passengers.adults; i++) {
-      passengerList.push({count: `Пассажир ${i}`, type: 'Взрослый, старше 12 лет', passengerType: 'adt'});
+      passengerList.push({
+        count: `Пассажир ${i}`,
+        type: 'Взрослый, старше 12 лет',
+        passengerType: 'adt'
+      });
     }
 
     for (let i = 1; i <= this.passengers.children; i++) {
-      passengerList.push({count: `Пассажир ${i + this.passengers.adults}`, type: 'Детей от 2 до 12 лет', passengerType: 'chd'});
+      passengerList.push({
+        count: `Пассажир ${i + this.passengers.adults}`,
+        type: 'Детей от 2 до 12 лет',
+        passengerType: 'chd'
+      });
     }
 
     for (let i = 1; i <= this.passengers.infantsWithSeat; i++) {
@@ -125,12 +131,10 @@ export class OrderTicketModalComponent implements OnInit {
   ngOnInit() {
     this.passengerDataService.getPassengersDataList().subscribe((data) => {
       this.passengersList = data;
-      console.log('Получен список пассажиров:', this.passengersList);
     });
   }
 
   createOrderRequest() {
-    debugger
     const passengers = this.passengersList.map((passenger, index) => ({
       ...passenger,
       index: index
@@ -150,7 +154,8 @@ export class OrderTicketModalComponent implements OnInit {
         currency: "TJS",
         language: "ru",
       },
-      company_req_id: 26
+      company_req_id: sessionStorage.getItem('company_req_id'),
+      amount: sessionStorage.getItem('amountSelectedFlight')
     };
 
     try {

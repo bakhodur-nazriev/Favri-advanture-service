@@ -178,6 +178,8 @@ export class AppComponent implements OnInit {
       ? this.selectedStartDate.toISOString().split('T')[0]
       : `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
 
+    const companyReqId = sessionStorage.getItem('company_req_id') || '26';
+
     let params = new HttpParams()
       .set('passengers[adt]', this.passengers.adults.toString())
       .set('passengers[chd]', this.passengers.children.toString())
@@ -191,7 +193,7 @@ export class AppComponent implements OnInit {
       // .set('routes[1][date]', '2024-10-12')
       .set('flight_type', 'OW')
       .set('cabin', this.passengers.travelClass.toLowerCase())
-      .set('company_req_id', '26')
+      .set('company_req_id', companyReqId)
       .set('language', 'ru');
 
     const token = sessionStorage.getItem('token');
@@ -250,6 +252,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    sessionStorage.setItem('company_req_id', '26');
+
     this.login("+992985305255");
   }
 }
