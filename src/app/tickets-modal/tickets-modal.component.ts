@@ -31,7 +31,6 @@ export class TicketsModalComponent {
   @Output() flightSelected = new EventEmitter<any>();
 
   selectFlight(flight: any) {
-    console.log('Выбор рейса в TicketsModalComponent:', flight);
     this.flightSelected.emit(flight);
     this.closeModal();
   }

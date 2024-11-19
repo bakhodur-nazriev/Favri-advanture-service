@@ -52,6 +52,7 @@ export class DetailPassengerModalComponent implements OnInit {
     {name: 'Загран паспорт', code: 'NP'},
     {name: 'Паспорт РТ', code: 'NP'}
   ];
+  selectedPassportCode: string | null = null;
   passengerDataList: any[] = [];
 
   selectedIndex: number = 0
@@ -80,10 +81,11 @@ export class DetailPassengerModalComponent implements OnInit {
     this.passengerDataList[this.selectedIndex].citizenship = countryName;
   }
 
-  selectPassport(passportName: string): void {
+  selectPassport(passportName: string, code: string): void {
     this.selectedPassportType = passportName;
+    this.selectedPassportCode = code;
     this.openDropdownPassport = false;
-    this.passengerDataList[this.selectedIndex].documentType = passportName;
+    this.passengerDataList[this.selectedIndex].documentType = code;
   }
 
   loadCountries(): void {
@@ -150,15 +152,41 @@ export class DetailPassengerModalComponent implements OnInit {
 
     if (this.passports.length > 0) {
       this.selectedPassportType = this.passports[0].name;
+      this.selectedPassportCode = this.passports[0].code;
     }
 
     this.loadCountries();
+  }
+
+  get name(): string {
+    return this.passengerDataList[this.selectedIndex]?.name || '';
+  }
+
+  set name(value: string) {
+    this.passengerDataList[this.selectedIndex].name = value.toUpperCase();
+  }
+
+  get surname(): string {
+    return this.passengerDataList[this.selectedIndex]?.surname || '';
+  }
+
+  set surname(value: string) {
+    this.passengerDataList[this.selectedIndex].surname = value.toUpperCase();
+  }
+
+  get middleName(): string {
+    return this.passengerDataList[this.selectedIndex]?.middleName || '';
+  }
+
+  set middleName(value: string) {
+    this.passengerDataList[this.selectedIndex].middleName = value.toUpperCase();
   }
 
   savePassengerData() {
     if (this.passengerDataService.selectedPassengerIndex != null) {
       this.passengerDataList[this.passengerDataService.selectedPassengerIndex] = {
         ...this.passengerDataList[this.passengerDataService.selectedPassengerIndex],
+        documentType: this.selectedPassportCode
       }
     }
 

@@ -21,18 +21,31 @@
     <h1>{{ passenger.count }}</h1>
 
     <div class="inputs-blocks">
-      <div class="card" >
-        <input [(ngModel)]="passengerDataList[selectedIndex].name" type="text" placeholder="Имя">
+      <div class="card">
+        <input
+          [(ngModel)]="name"
+          placeholder="Имя"
+          type="text"
+        >
       </div>
       <div class="card">
-        <input [(ngModel)]="passengerDataList[selectedIndex].surname" type="text" placeholder="Фамилия">
+        <input
+          [(ngModel)]="surname"
+          placeholder="Фамилия"
+          type="text"
+        >
       </div>
       <div class="card">
-        <input [(ngModel)]="passengerDataList[selectedIndex].middleName" type="text" placeholder="Отчество">
+        <input
+          [(ngModel)]="middleName"
+          placeholder="Отчество"
+          type="text"
+        >
       </div>
       <div class="card citizenship-block" (click)="toggleDropdown()">
         <span *ngIf="!passengerDataList[selectedIndex]?.citizenship" class="selector-country__title">Гражданство</span>
-        <span class="selected-country" *ngIf="passengerDataList[selectedIndex]?.citizenship">{{ passengerDataList[selectedIndex].citizenship }}</span>
+        <span class="selected-country"
+              *ngIf="passengerDataList[selectedIndex]?.citizenship">{{ passengerDataList[selectedIndex].citizenship }}</span>
         <div class="dropdown" *ngIf="dropdownOpen" (click)="$event.stopPropagation()">
           <ul>
             <li
@@ -69,8 +82,8 @@
     <div class="inputs-blocks">
       <div class="birthday-block">
         <span>Дата рождения</span>
-        <div class="datepicker-block">
-          <svg (click)="picker.open()" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <div class="datepicker-block" (click)="picker.open()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M7.99994 2V5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                   stroke-linejoin="round"/>
             <path d="M16.0001 2V5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
@@ -97,7 +110,7 @@
 
           <input
             matInput
-            [(ngModel)]="passengerDataList[selectedIndex].birthDate"
+            [(ngModel)]="passengerDataList[selectedIndex].dateofBirth"
             [matDatepicker]="picker"
             (dateChange)="onDateChange($event)"
           >
@@ -106,13 +119,23 @@
       </div>
 
       <div class="card citizenship-block" (click)="togglePassportDropdown()">
-        <span *ngIf="!passengerDataList[selectedIndex]?.documentType" class="selector-passport__title">Тип документа</span>
-        <span class="selected-passport" *ngIf="passengerDataList[selectedIndex]?.documentType">{{ passengerDataList[selectedIndex].documentType }}</span>
+        <span
+          *ngIf="!passengerDataList[selectedIndex]?.documentType"
+          class="selector-passport__title"
+        >
+          Тип документа
+        </span>
+        <span
+          class="selected-passport"
+          *ngIf="passengerDataList[selectedIndex]?.documentType"
+        >
+          {{ selectedPassportType }}
+        </span>
         <div class="dropdown" *ngIf="openDropdownPassport" (click)="$event.stopPropagation()">
           <ul>
             <li
               *ngFor="let passport of passports"
-              (click)="selectPassport(passport.name)"
+              (click)="selectPassport(passport.name, passport.code)"
             >
               {{ passport.name }}
             </li>
@@ -121,14 +144,15 @@
       </div>
 
       <div class="card">
-        <input type="text" [(ngModel)]="passengerDataList[selectedIndex].documentNumber" placeholder="Серия и номер документа">
+        <input type="text" [(ngModel)]="passengerDataList[selectedIndex].documentNumber"
+               placeholder="Серия и номер документа">
       </div>
     </div>
 
     <div class="birthday-block">
       <span>Документ годен до</span>
-      <div class="datepicker-block">
-        <svg (click)="pickerDocumentExpire.open()" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <div class="datepicker-block" (click)="pickerDocumentExpire.open()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
           <path d="M7.99994 2V5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                 stroke-linejoin="round"/>
           <path d="M16.0001 2V5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
@@ -155,9 +179,9 @@
 
         <input
           matInput
-          [(ngModel)]="passengerDataList[selectedIndex].documentExpireDate"
+          [(ngModel)]="passengerDataList[selectedIndex].expirationDate"
           [matDatepicker]="pickerDocumentExpire"
-          (dateChange)="onDocumentExpireDate($event)"
+          (expirationDateChange)="onDocumentExpireDate($event)"
         >
         <mat-datepicker #pickerDocumentExpire></mat-datepicker>
       </div>

@@ -139,13 +139,11 @@ export class AppComponent implements OnInit {
   onDirectionFromSelected(direction: any) {
     this.fromCity = direction.city;
     this.fromAirportCode = direction.airportCode;
-    console.log('Выбранный город:', this.fromCity, 'Код аэропорта:', this.fromAirportCode);
   }
 
   onDirectionToSelected(direction: any) {
     this.toCity = direction.city;
     this.toAirportCode = direction.airportCode;
-    console.log('Выбранный город:', this.toCity, 'Код аэропорта:', this.toAirportCode);
   }
 
   openModalPassengers() {
@@ -205,8 +203,6 @@ export class AppComponent implements OnInit {
 
       this.http.get(url, {params, headers}).subscribe(
         (response: any) => {
-          console.log(response.data);
-
           sessionStorage.setItem('sessionId', response.data.session);
           this.flights = response.data.flights;
           this.included = response.data.included;

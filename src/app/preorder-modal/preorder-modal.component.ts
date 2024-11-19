@@ -36,7 +36,6 @@ export class PreorderModalComponent {
   public selectedFlight: any;
 
   selectFlight(flight: any) {
-    console.log('Выбор рейса в TicketsModalComponent:', flight);
     this.flightSelected.emit(flight);
   }
 

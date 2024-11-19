@@ -149,8 +149,6 @@ export class OrderTicketModalComponent implements OnInit {
       companyReqId: 4
     };
 
-    console.log("Request Body: ", requestBody);
-
     try {
       const clonedRequestBody = structuredClone(requestBody);
       console.log("Cloned Request Body: ", clonedRequestBody);
