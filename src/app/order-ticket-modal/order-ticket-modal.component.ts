@@ -41,6 +41,7 @@ export class OrderTicketModalComponent implements OnInit {
   } = {adults: 0, children: 0, infantsWithSeat: 0, infantsWithoutSeat: 0}
   @Output() detailPassengerSelected = new EventEmitter<any>;
   private apiUrl = 'http://192.168.40.238:9800/api/flytj/book';
+  //private apiUrl = 'http://localhost:5273/api/flytj/book';
   passengersList: any[] = [];
 
   constructor(private passengerDataService: PassengerDataService, private http: HttpClient) {
@@ -127,6 +128,7 @@ export class OrderTicketModalComponent implements OnInit {
   }
 
   createOrderRequest() {
+    debugger
     const passengers = this.passengersList.map((passenger, index) => ({
       ...passenger,
       index: index
@@ -136,17 +138,17 @@ export class OrderTicketModalComponent implements OnInit {
       walletPhone: "123456789",
       token: sessionStorage.getItem('token'),
       url: window.location.href,
-      sessionId: sessionStorage.getItem('sessionId'),
-      recId: this.flight.value.rec_id,
-      partnerFees: this.flight.value.partner_fees.TJS,
-      payerPhone: this.phone,
-      payerEmail: this.email,
+      session_id: sessionStorage.getItem('sessionId'),
+      rec_id: this.flight.value.rec_id,
+      partner_fees: this.flight.value.partner_fees.TJS,
+      payer_phone: this.phone,
+      payer_email: this.email,
       passengers: passengers,
       meta: {
         currency: "TJS",
         language: "ru",
       },
-      companyReqId: 4
+      company_req_id: 4
     };
 
     try {
