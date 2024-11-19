@@ -155,7 +155,7 @@ export class OrderTicketModalComponent implements OnInit {
         language: "ru",
       },
       company_req_id: sessionStorage.getItem('company_req_id'),
-      amount: sessionStorage.getItem('amountSelectedFlight')
+      // amount: sessionStorage.getItem('amountSelectedFlight')
     };
 
     try {
