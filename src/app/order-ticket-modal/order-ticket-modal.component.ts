@@ -79,8 +79,8 @@ export class OrderTicketModalComponent implements OnInit {
 
   onAnimationEvent(event: AnimationEvent) {
     if (event.phaseName === 'done' && event.toState === 'void') {
-      this.isVisible = false;
       this.isAnimating = false;
+      this.isVisible = false;
     }
   }
 
@@ -114,9 +114,9 @@ export class OrderTicketModalComponent implements OnInit {
   }
 
   selectPassenger(passenger: any, index: number) {
-    this.detailPassengerSelected.emit(passenger);
     this.passengerDataService.selectedPassengerIndex = index;
     this.passengerDataService.sendEvent('From order component');
+    this.detailPassengerSelected.emit(passenger);
   }
 
   ngOnInit() {

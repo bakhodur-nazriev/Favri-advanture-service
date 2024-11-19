@@ -132,6 +132,9 @@ export class DetailPassengerModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.passengerDataService.event$.subscribe((message) => {
+
+      console.log('Получено событие:', message);
+
       const index = this.passengerDataService.selectedPassengerIndex ?? 0;
       this.selectedIndex = index;
 
@@ -146,6 +149,8 @@ export class DetailPassengerModalComponent implements OnInit {
           documentNumber: '',
           dateOfBirth: this.selectedDate ? new Date(this.selectedDate).toISOString() : null,
           expirationDate: this.selectedDocumentExpireDate ? new Date(this.selectedDocumentExpireDate).toISOString() : null,
+          phone: '',
+          email: ''
         };
       }
     });

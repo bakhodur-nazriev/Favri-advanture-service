@@ -181,11 +181,27 @@
           matInput
           [(ngModel)]="passengerDataList[selectedIndex].expirationDate"
           [matDatepicker]="pickerDocumentExpire"
-          (expirationDateChange)="onDocumentExpireDate($event)"
+          (dateChange)="onDocumentExpireDate($event)"
         >
         <mat-datepicker #pickerDocumentExpire></mat-datepicker>
       </div>
     </div>
 
+    <div class="inputs-blocks">
+      <div class="card">
+        <input
+          [(ngModel)]="passengerDataList[selectedIndex].phone"
+          placeholder="Номер телефона"
+          type="text"
+        >
+      </div>
+      <div class="card">
+        <input
+          [(ngModel)]="passengerDataList[selectedIndex].email"
+          placeholder="E-mail"
+          type="text"
+        >
+      </div>
+    </div>
   </div>
 </div>
