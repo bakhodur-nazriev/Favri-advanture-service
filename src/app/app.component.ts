@@ -191,7 +191,7 @@ export class AppComponent implements OnInit {
       // .set('routes[1][date]', '2024-10-12')
       .set('flight_type', 'OW')
       .set('cabin', this.passengers.travelClass.toLowerCase())
-      .set('company_req_id', '4')
+      .set('company_req_id', '26')
       .set('language', 'ru');
 
     const token = sessionStorage.getItem('token');

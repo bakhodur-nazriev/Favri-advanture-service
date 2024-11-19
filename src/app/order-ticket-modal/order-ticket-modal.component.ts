@@ -40,8 +40,8 @@ export class OrderTicketModalComponent implements OnInit {
     infantsWithSeat: number
   } = {adults: 0, children: 0, infantsWithSeat: 0, infantsWithoutSeat: 0}
   @Output() detailPassengerSelected = new EventEmitter<any>;
-  private apiUrl = 'http://192.168.40.238:9800/api/flytj/book';
-  //private apiUrl = 'http://localhost:5273/api/flytj/book';
+  // private apiUrl = 'http://192.168.40.238:9800/api/flytj/book';
+  private apiUrl = 'http://localhost:5273/api/flytj/book';
   passengersList: any[] = [];
 
   constructor(private passengerDataService: PassengerDataService, private http: HttpClient) {
@@ -55,24 +55,26 @@ export class OrderTicketModalComponent implements OnInit {
   getPassengerList() {
     let passengerList = [];
     for (let i = 1; i <= this.passengers.adults; i++) {
-      passengerList.push({count: `Пассажир ${i}`, type: 'Взрослый, старше 12 лет',});
+      passengerList.push({count: `Пассажир ${i}`, type: 'Взрослый, старше 12 лет', passengerType: 'adt'});
     }
 
     for (let i = 1; i <= this.passengers.children; i++) {
-      passengerList.push({count: `Пассажир ${i + this.passengers.adults}`, type: 'Детей от 2 до 12 лет'});
+      passengerList.push({count: `Пассажир ${i + this.passengers.adults}`, type: 'Детей от 2 до 12 лет', passengerType: 'chd'});
     }
 
     for (let i = 1; i <= this.passengers.infantsWithSeat; i++) {
       passengerList.push({
         count: `Пассажир ${i + this.passengers.adults + this.passengers.children}`,
-        type: 'Младенец с местом'
+        type: 'Младенец с местом',
+        passengerType: 'inf'
       });
     }
 
     for (let i = 1; i <= this.passengers.infantsWithoutSeat; i++) {
       passengerList.push({
         count: `Пассажир ${i + this.passengers.adults + this.passengers.children + this.passengers.infantsWithSeat}`,
-        type: 'Младенец без места'
+        type: 'Младенец без места',
+        passengerType: 'inf'
       });
     }
     return passengerList;
@@ -116,7 +118,7 @@ export class OrderTicketModalComponent implements OnInit {
 
   selectPassenger(passenger: any, index: number) {
     this.passengerDataService.selectedPassengerIndex = index;
-    this.passengerDataService.sendEvent('From order component');
+    this.passengerDataService.sendEvent(passenger);
     this.detailPassengerSelected.emit(passenger);
   }
 
@@ -128,6 +130,7 @@ export class OrderTicketModalComponent implements OnInit {
   }
 
   createOrderRequest() {
+    debugger
     const passengers = this.passengersList.map((passenger, index) => ({
       ...passenger,
       index: index
@@ -147,7 +150,7 @@ export class OrderTicketModalComponent implements OnInit {
         currency: "TJS",
         language: "ru",
       },
-      company_req_id: 4
+      company_req_id: 26
     };
 
     try {

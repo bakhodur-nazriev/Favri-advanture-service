@@ -92,7 +92,7 @@ export class DetailPassengerModalComponent implements OnInit {
     this.countryService.getCountries().subscribe(
       (data) => {
         this.countries = data.map((country: any) => ({
-          name: country.name.common,
+          name: country.cca2,
           flag: country.flags.svg
         }));
 
@@ -131,15 +131,15 @@ export class DetailPassengerModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.passengerDataService.event$.subscribe((message) => {
+    this.passengerDataService.event$.subscribe((passenger: any) => {
       const index = this.passengerDataService.selectedPassengerIndex ?? 0;
       this.selectedIndex = index;
-
       if (!this.passengerDataList[index]) {
         this.passengerDataList[index] = {
           name: '',
           surname: '',
           middle_name: '',
+          type: passenger.passengerType,
           citizenship: this.selectedCountry || this.passengerDataList[this.selectedIndex]?.citizenship,
           gender: this.selectedGender ? this.passengerDataList[this.selectedIndex]?.gender : this.selectedGender,
           document_type: this.selectedPassportType || this.passports[0]?.name,
