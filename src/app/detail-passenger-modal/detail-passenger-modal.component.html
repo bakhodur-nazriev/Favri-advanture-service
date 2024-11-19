@@ -120,14 +120,14 @@
 
       <div class="card citizenship-block" (click)="togglePassportDropdown()">
         <span
-          *ngIf="!passengerDataList[selectedIndex]?.documentType"
+          *ngIf="!passengerDataList[selectedIndex]?.document_type"
           class="selector-passport__title"
         >
           Тип документа
         </span>
         <span
           class="selected-passport"
-          *ngIf="passengerDataList[selectedIndex]?.documentType"
+          *ngIf="passengerDataList[selectedIndex]?.document_type"
         >
           {{ selectedPassportType }}
         </span>
@@ -144,7 +144,7 @@
       </div>
 
       <div class="card">
-        <input type="text" [(ngModel)]="passengerDataList[selectedIndex].documentNumber"
+        <input type="text" [(ngModel)]="passengerDataList[selectedIndex].document_number"
                placeholder="Серия и номер документа">
       </div>
     </div>
@@ -179,7 +179,7 @@
 
         <input
           matInput
-          [(ngModel)]="passengerDataList[selectedIndex].expirationDate"
+          [(ngModel)]="passengerDataList[selectedIndex].expiration_date"
           [matDatepicker]="pickerDocumentExpire"
           (dateChange)="onDocumentExpireDate($event)"
         >

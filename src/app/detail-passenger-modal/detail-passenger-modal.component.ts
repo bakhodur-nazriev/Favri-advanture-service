@@ -62,12 +62,12 @@ export class DetailPassengerModalComponent implements OnInit {
 
   onDateChange(event: any) {
     this.selectedDate = event.value;
-    this.passengerDataList[this.selectedIndex].dateOfBirth = this.selectedDate ? new Date(this.selectedDate).toISOString() : null;
+    this.passengerDataList[this.selectedIndex].date_of_birth = this.selectedDate ? new Date(this.selectedDate).toISOString() : null;
   }
 
   onDocumentExpireDate(event: any) {
     this.selectedDocumentExpireDate = event.value;
-    this.passengerDataList[this.selectedIndex].expirationDate = this.selectedDocumentExpireDate ? new Date(this.selectedDocumentExpireDate).toISOString() : null;
+    this.passengerDataList[this.selectedIndex].expiration_date = this.selectedDocumentExpireDate ? new Date(this.selectedDocumentExpireDate).toISOString() : null;
   }
 
   selectGender(gender: string) {
@@ -85,7 +85,7 @@ export class DetailPassengerModalComponent implements OnInit {
     this.selectedPassportType = passportName;
     this.selectedPassportCode = code;
     this.openDropdownPassport = false;
-    this.passengerDataList[this.selectedIndex].documentType = code;
+    this.passengerDataList[this.selectedIndex].document_type = code;
   }
 
   loadCountries(): void {
@@ -132,9 +132,6 @@ export class DetailPassengerModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.passengerDataService.event$.subscribe((message) => {
-
-      console.log('Получено событие:', message);
-
       const index = this.passengerDataService.selectedPassengerIndex ?? 0;
       this.selectedIndex = index;
 
@@ -142,13 +139,13 @@ export class DetailPassengerModalComponent implements OnInit {
         this.passengerDataList[index] = {
           name: '',
           surname: '',
-          middleName: '',
+          middle_name: '',
           citizenship: this.selectedCountry || this.passengerDataList[this.selectedIndex]?.citizenship,
           gender: this.selectedGender ? this.passengerDataList[this.selectedIndex]?.gender : this.selectedGender,
-          documentType: this.selectedPassportType || this.passports[0]?.name,
-          documentNumber: '',
-          dateOfBirth: this.selectedDate ? new Date(this.selectedDate).toISOString() : null,
-          expirationDate: this.selectedDocumentExpireDate ? new Date(this.selectedDocumentExpireDate).toISOString() : null,
+          document_type: this.selectedPassportType || this.passports[0]?.name,
+          document_number: '',
+          expiration_date: this.selectedDate ? new Date(this.selectedDate).toISOString() : null,
+          date_of_birth: this.selectedDocumentExpireDate ? new Date(this.selectedDocumentExpireDate).toISOString() : null,
           phone: '',
           email: ''
         };
@@ -180,18 +177,18 @@ export class DetailPassengerModalComponent implements OnInit {
   }
 
   get middleName(): string {
-    return this.passengerDataList[this.selectedIndex]?.middleName || '';
+    return this.passengerDataList[this.selectedIndex]?.middle_name || '';
   }
 
   set middleName(value: string) {
-    this.passengerDataList[this.selectedIndex].middleName = value.toUpperCase();
+    this.passengerDataList[this.selectedIndex].middle_name = value.toUpperCase();
   }
 
   savePassengerData() {
     if (this.passengerDataService.selectedPassengerIndex != null) {
       this.passengerDataList[this.passengerDataService.selectedPassengerIndex] = {
         ...this.passengerDataList[this.passengerDataService.selectedPassengerIndex],
-        documentType: this.selectedPassportCode
+        document_type: this.selectedPassportCode
       }
     }
 
