@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
-import {CountryService} from "../services/country.service";
 import {MatInput, MatSuffix} from "@angular/material/input";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {FormsModule} from "@angular/forms";
 import {PassengerDataService} from "../services/passenger-data.service";
+import {COUNTRIES} from '../../coutries';
 
 @Component({
   selector: 'app-detail-passenger-modal',
@@ -40,11 +40,11 @@ export class DetailPassengerModalComponent implements OnInit {
 
   public isVisible: boolean = false;
   public isAnimating: boolean = false;
-  countries: any[] = [];
   public selectedGender: string = '';
   public dropdownOpen: boolean = false;
   public openDropdownPassport: boolean = false;
   public selectedCountry: string = '';
+  public selectedCountryCode: string = '';
   selectedDate: Date | null = null;
   selectedDocumentExpireDate: Date | null = null;
   public selectedPassportType: string = '';
@@ -54,10 +54,11 @@ export class DetailPassengerModalComponent implements OnInit {
   ];
   selectedPassportCode: string | null = null;
   passengerDataList: any[] = [];
+  public countries = COUNTRIES;
 
   selectedIndex: number = 0
 
-  constructor(private countryService: CountryService, public passengerDataService: PassengerDataService) {
+  constructor(public passengerDataService: PassengerDataService) {
   }
 
   onDateChange(event: any) {
@@ -75,10 +76,10 @@ export class DetailPassengerModalComponent implements OnInit {
     this.passengerDataList[this.selectedIndex].gender = gender;
   }
 
-  selectCountry(countryName: string): void {
-    this.selectedCountry = countryName;
+  selectCountry(country: { name: string, code: string }): void {
+    this.selectedCountry = country.name;
+    this.passengerDataList[this.selectedIndex].citizenship = country.code;
     this.dropdownOpen = false;
-    this.passengerDataList[this.selectedIndex].citizenship = countryName;
   }
 
   selectPassport(passportName: string, code: string): void {
@@ -86,25 +87,6 @@ export class DetailPassengerModalComponent implements OnInit {
     this.selectedPassportCode = code;
     this.openDropdownPassport = false;
     this.passengerDataList[this.selectedIndex].document_type = code;
-  }
-
-  loadCountries(): void {
-    this.countryService.getCountries().subscribe(
-      (data) => {
-        this.countries = data.map((country: any) => ({
-          name: country.cca2,
-          flag: country.flags.svg
-        }));
-
-        const tajikistan = this.countries.find(country => country.name === 'Tajikistan');
-        if (tajikistan) {
-          this.selectedCountry = tajikistan.name;
-        }
-      },
-      (error) => {
-        console.error('Ошибка при загрузке списка стран:', error);
-      }
-    );
   }
 
   toggleDropdown(): void {
@@ -140,7 +122,7 @@ export class DetailPassengerModalComponent implements OnInit {
           surname: '',
           middle_name: '',
           type: passenger.passengerType,
-          citizenship: this.selectedCountry || this.passengerDataList[this.selectedIndex]?.citizenship,
+          citizenship: this.selectedCountryCode || this.passengerDataList[this.selectedIndex]?.citizenship,
           gender: this.selectedGender ? this.passengerDataList[this.selectedIndex]?.gender : this.selectedGender,
           document_type: this.selectedPassportType || this.passports[0]?.name,
           document_number: '',
@@ -157,7 +139,11 @@ export class DetailPassengerModalComponent implements OnInit {
       this.selectedPassportCode = this.passports[0].code;
     }
 
-    this.loadCountries();
+    const tajikistan = this.countries.find(country => country.name === 'Таджикистан');
+    if (tajikistan) {
+      this.selectedCountry = tajikistan.name;
+      this.selectedCountryCode = tajikistan.code;
+    }
   }
 
   get name(): string {
@@ -188,7 +174,8 @@ export class DetailPassengerModalComponent implements OnInit {
     if (this.passengerDataService.selectedPassengerIndex != null) {
       this.passengerDataList[this.passengerDataService.selectedPassengerIndex] = {
         ...this.passengerDataList[this.passengerDataService.selectedPassengerIndex],
-        document_type: this.selectedPassportCode
+        document_type: this.selectedPassportCode,
+        citizenship: this.selectedCountryCode,
       }
     }
 
