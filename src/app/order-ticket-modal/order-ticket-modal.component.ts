@@ -1,8 +1,9 @@
 import {Component, EventEmitter, Input, Output, OnInit} from '@angular/core';
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {ActivatedRoute} from '@angular/router';
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
 import {PassengerDataService} from "../services/passenger-data.service";
-import {Observable} from "rxjs";
+import {finalize, Observable, tap} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {ModalOrderSucceedComponent} from "../modal-order-succeed/modal-order-succeed.component";
@@ -44,7 +45,11 @@ export class OrderTicketModalComponent implements OnInit {
   private apiUrl = 'http://localhost:5273/api/flytj/book';
   passengersList: any[] = [];
 
-  constructor(private passengerDataService: PassengerDataService, private http: HttpClient) {
+  constructor(
+    private passengerDataService: PassengerDataService,
+    private http: HttpClient,
+    private route: ActivatedRoute
+  ) {
   }
 
   public isLoading: boolean = false;
@@ -53,6 +58,7 @@ export class OrderTicketModalComponent implements OnInit {
   public isAnimating: boolean = false;
   public email: string = '';
   public phone: string = '';
+  public walletPhone: string = "123456789";
 
   getPassengerList() {
     let passengerList = [];
@@ -133,6 +139,13 @@ export class OrderTicketModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['walletPhone']) {
+        this.walletPhone = params['walletPhone'];
+        console.log(this.walletPhone);
+      }
+    });
+
     this.passengerDataService.getPassengersDataList().subscribe((data) => {
       this.passengersList = data;
     });
@@ -151,7 +164,7 @@ export class OrderTicketModalComponent implements OnInit {
     }));
 
     const requestBody = {
-      walletPhone: "123456789",
+      walletPhone: this.walletPhone,
       token: sessionStorage.getItem('token'),
       url: window.location.href,
       session_id: sessionStorage.getItem('sessionId'),
@@ -176,7 +189,7 @@ export class OrderTicketModalComponent implements OnInit {
 
     this.sendOrderRequest(requestBody).subscribe({
       next: (response) => {
-        if (response && response.success) {
+        if (response.success) {
           console.log('Заказ успешно создан', response);
         }
       },
@@ -188,7 +201,21 @@ export class OrderTicketModalComponent implements OnInit {
 
   sendOrderRequest(data: any): Observable<any> {
     this.isLoading = true;
-    return this.http.post(this.apiUrl, data);
+    return this.http.post(this.apiUrl, data).pipe(
+      tap({
+        next: (response: any) => {
+          if (response && response.success) {
+            console.log('Заказ успешно создан', response);
+          }
+        },
+        error: (error) => {
+          console.error('Ошибка при отправке запроса:', error);
+        }
+      }),
+      finalize(() => {
+        this.isLoading = false;
+      })
+    );
   }
 
   isValidForm(): boolean {

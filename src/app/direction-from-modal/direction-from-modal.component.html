@@ -53,7 +53,7 @@
       >
         <div class="cities-airportCode__block">
           <span>{{ direction.city }}</span>
-          <span class="countries">{{ direction.country || '' }}</span>
+          <span class="countries" *ngIf="direction.country">{{ direction.country || '' }}</span>
         </div>
 
         <span>{{ direction.airportCode }}</span>
