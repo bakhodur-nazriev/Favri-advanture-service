@@ -1,5 +1,5 @@
 import {Component, ViewChild, OnInit} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
+import {RouterOutlet, ActivatedRoute, Router} from '@angular/router';
 import {CustomInputComponent} from "./custom-input/custom-input.component";
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import {ModalPassengersComponent} from "./modal-passengers/modal-passengers.component";
@@ -86,8 +86,9 @@ export class AppComponent implements OnInit {
   public selectedEndDate: Date | null = null;
   selectedFlight: any;
   public selectedPassenger: any;
+  public walletPhone: string = "123456789";
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private route: ActivatedRoute) {
   }
 
   onFlightSelected(flight: any) {
@@ -226,14 +227,14 @@ export class AppComponent implements OnInit {
     return format(new Date(), 'yyyyMMdd');
   }
 
-  login(phoneNumber: string) {
+  login(walletPhone: string) {
     const date = this.getCurrentDate();
-    const signature = this.generateSignature(phoneNumber, date);
+    const signature = this.generateSignature(walletPhone, date);
 
     const loginData = {
       date: date,
       company_req_id: this.companyReqId,
-      login: phoneNumber,
+      login: walletPhone,
       signature: signature
     }
 
@@ -252,8 +253,18 @@ export class AppComponent implements OnInit {
     this.selectedStartDate = today;
     this.selectedDateText = this.formatDate(today);
 
-    sessionStorage.setItem('company_req_id', '4');
-    this.login("+992985305255");
+    sessionStorage.setItem('company_req_id', '26');
+
+    const defaultWalletPhone = '+992985000000';
+
+    this.route.queryParams.subscribe(params => {
+      const walletPhone = params['walletPhone'] || defaultWalletPhone;
+      if (walletPhone) {
+        this.login(walletPhone);
+      } else {
+        console.error('walletPhone не найден в параметрах URL');
+      }
+    });
 
     const formattedDate = format(new Date(), 'yyyy-MM-dd');
     console.log(formattedDate);

@@ -40,7 +40,7 @@ export class TicketsModalComponent {
   }
 
   closeModal() {
-    this.isVisible = false
+    this.isVisible = false;
   }
 
   routes: any[] = [
