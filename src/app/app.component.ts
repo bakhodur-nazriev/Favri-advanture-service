@@ -19,6 +19,7 @@ import {OrderTicketModalComponent} from "./order-ticket-modal/order-ticket-modal
 import {DetailPassengerModalComponent} from "./detail-passenger-modal/detail-passenger-modal.component";
 import sha512 from 'crypto-js/sha512';
 import {format} from 'date-fns';
+import dayjs from 'dayjs';
 import {ModalOrderSucceedComponent} from "./modal-order-succeed/modal-order-succeed.component";
 
 @Component({
@@ -72,7 +73,7 @@ export class AppComponent implements OnInit {
     travelClass: 'economy'
   }
   public travelClass: string = 'Эконом';
-  public selectedDateText: string;
+  public selectedDateText: string = '';
   public isLoading: boolean = false;
 
   public fromCity = 'Душанбе';
@@ -87,11 +88,6 @@ export class AppComponent implements OnInit {
   public selectedPassenger: any;
 
   constructor(private http: HttpClient) {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    this.selectedStartDate = tomorrow;
-
-    this.selectedDateText = tomorrow.toLocaleDateString('ru-RU', {month: 'short', day: 'numeric'});
   }
 
   onFlightSelected(flight: any) {
@@ -150,21 +146,21 @@ export class AppComponent implements OnInit {
     this.modalPassengers.openModal();
   }
 
+  private formatDate(date: Date): string {
+    return date.toLocaleDateString('ru-RU', {month: 'short', day: 'numeric'});
+  }
+
   handleSelectedDates(dates: { startDate: Date, endDate: Date | null }) {
     this.selectedStartDate = dates.startDate;
     this.selectedEndDate = dates.endDate;
 
-    const formatMonth = (date: Date) => {
-      const options: Intl.DateTimeFormatOptions = {month: 'short', day: 'numeric'};
-      return date.toLocaleDateString('ru-RU', options);
-    };
-
     if (dates.startDate && dates.endDate) {
-      this.selectedDateText = `${formatMonth(dates.startDate)} - ${formatMonth(dates.endDate)}`;
+      this.selectedDateText = `${this.formatDate(dates.startDate)} - ${this.formatDate(dates.endDate)}`;
     } else if (dates.startDate) {
-      this.selectedDateText = formatMonth(dates.startDate);
+      this.selectedDateText = this.formatDate(dates.startDate);
     } else {
-      this.selectedDateText = new Date().toLocaleDateString('ru-RU', {month: 'short', day: 'numeric'});
+      const today = new Date();
+      this.selectedDateText = this.formatDate(today);
     }
   }
 
@@ -175,8 +171,8 @@ export class AppComponent implements OnInit {
 
     const today = new Date();
     const formattedDate = this.selectedStartDate
-      ? this.selectedStartDate.toISOString().split('T')[0]
-      : `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+      ? dayjs(this.selectedStartDate).format('YYYY-MM-DD')
+      : dayjs().format('YYYY-MM-DD');
 
     const companyReqId = sessionStorage.getItem('company_req_id') || '26';
 
@@ -252,8 +248,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    sessionStorage.setItem('company_req_id', '26');
+    const today = new Date();
+    this.selectedStartDate = today;
+    this.selectedDateText = this.formatDate(today);
 
+    sessionStorage.setItem('company_req_id', '4');
     this.login("+992985305255");
+
+    const formattedDate = format(new Date(), 'yyyy-MM-dd');
+    console.log(formattedDate);
   }
 }

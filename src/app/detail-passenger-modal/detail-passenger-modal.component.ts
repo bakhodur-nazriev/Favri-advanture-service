@@ -38,9 +38,9 @@ export class DetailPassengerModalComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Input() passenger: any;
 
+  public isValidationTriggered: boolean = false;
   public isVisible: boolean = false;
   public isAnimating: boolean = false;
-  public selectedGender: string = '';
   public dropdownOpen: boolean = false;
   public openDropdownPassport: boolean = false;
   public selectedCountry: string = '';
@@ -72,7 +72,6 @@ export class DetailPassengerModalComponent implements OnInit {
   }
 
   selectGender(gender: string) {
-    this.selectedGender = gender;
     this.passengerDataList[this.selectedIndex].gender = gender;
   }
 
@@ -123,7 +122,7 @@ export class DetailPassengerModalComponent implements OnInit {
           middle_name: '',
           type: passenger.passengerType,
           citizenship: this.selectedCountryCode || this.passengerDataList[this.selectedIndex]?.citizenship,
-          gender: this.selectedGender ? this.passengerDataList[this.selectedIndex]?.gender : this.selectedGender,
+          gender: this.passengerDataList[this.selectedIndex]?.gender || 'M',
           document_type: this.selectedPassportType || this.passports[0]?.name,
           document_number: '',
           expiration_date: this.selectedDate ? new Date(this.selectedDate).toISOString() : null,
@@ -151,7 +150,11 @@ export class DetailPassengerModalComponent implements OnInit {
   }
 
   set name(value: string) {
-    this.passengerDataList[this.selectedIndex].name = value.toUpperCase();
+    if (this.isLatin(value)) {
+      this.passengerDataList[this.selectedIndex].name = value.toUpperCase();
+    } else {
+      this.passengerDataList[this.selectedIndex].name = '';
+    }
   }
 
   get surname(): string {
@@ -159,7 +162,11 @@ export class DetailPassengerModalComponent implements OnInit {
   }
 
   set surname(value: string) {
-    this.passengerDataList[this.selectedIndex].surname = value.toUpperCase();
+    if (this.isLatin(value)) {
+      this.passengerDataList[this.selectedIndex].surname = value.toUpperCase();
+    } else {
+      this.passengerDataList[this.selectedIndex].surname = '';
+    }
   }
 
   get middleName(): string {
@@ -167,11 +174,22 @@ export class DetailPassengerModalComponent implements OnInit {
   }
 
   set middleName(value: string) {
-    this.passengerDataList[this.selectedIndex].middle_name = value.toUpperCase();
+    if (this.isLatin(value)) {
+      this.passengerDataList[this.selectedIndex].middle_name = value.toUpperCase();
+    } else {
+      this.passengerDataList[this.selectedIndex].middle_name = '';
+    }
   }
 
   savePassengerData() {
+    if (!this.isValidForm()) {
+      this.isValidationTriggered = true;
+
+      return;
+    }
+
     if (this.passengerDataService.selectedPassengerIndex != null) {
+      this.passengerDataList[this.passengerDataService.selectedPassengerIndex].phone = '+992'+ this.passengerDataList[this.passengerDataService.selectedPassengerIndex].phone;
       this.passengerDataList[this.passengerDataService.selectedPassengerIndex] = {
         ...this.passengerDataList[this.passengerDataService.selectedPassengerIndex],
         document_type: this.selectedPassportCode,
@@ -182,5 +200,32 @@ export class DetailPassengerModalComponent implements OnInit {
     this.passengerDataService.setPassengersDataList(this.passengerDataList);
 
     this.closeModal();
+  }
+
+  isLatin(value: string): boolean {
+    const latinRegex = /^[a-zA-Z]+$/
+    return latinRegex.test(value);
+  }
+
+  isValidForm(): boolean {
+    const currentPassenger = this.passengerDataList[this.selectedIndex]
+
+    if (!currentPassenger) return false;
+
+    const isNameValid = currentPassenger.name && this.isLatin(currentPassenger.name);
+    const isSurnameValid = currentPassenger.surname && this.isLatin(currentPassenger.surname);
+
+    return (
+      isNameValid &&
+      isSurnameValid &&
+      currentPassenger.citizenship &&
+      currentPassenger.gender &&
+      currentPassenger.document_type &&
+      currentPassenger.document_number &&
+      currentPassenger.expiration_date &&
+      currentPassenger.date_of_birth &&
+      currentPassenger.phone &&
+      currentPassenger.email
+    )
   }
 }

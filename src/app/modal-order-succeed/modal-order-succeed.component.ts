@@ -11,7 +11,7 @@ import {NgIf} from "@angular/common";
   styleUrl: './modal-order-succeed.component.scss'
 })
 export class ModalOrderSucceedComponent {
-  public isVisible: boolean = false;
+  public isVisible: boolean = true;
 
   backToHome() {
     this.isVisible = false;

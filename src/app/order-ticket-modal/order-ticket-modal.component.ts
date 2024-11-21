@@ -5,6 +5,7 @@ import {PassengerDataService} from "../services/passenger-data.service";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
+import {ModalOrderSucceedComponent} from "../modal-order-succeed/modal-order-succeed.component";
 
 @Component({
   selector: 'app-order-ticket-modal',
@@ -13,7 +14,8 @@ import {FormsModule} from "@angular/forms";
     NgIf,
     NgOptimizedImage,
     FormsModule,
-    NgForOf
+    NgForOf,
+    ModalOrderSucceedComponent
   ],
   templateUrl: './order-ticket-modal.component.html',
   styleUrl: './order-ticket-modal.component.scss',
@@ -45,6 +47,8 @@ export class OrderTicketModalComponent implements OnInit {
   constructor(private passengerDataService: PassengerDataService, private http: HttpClient) {
   }
 
+  public isLoading: boolean = false;
+  public isValidationTriggered = false;
   public isVisible: boolean = false;
   public isAnimating: boolean = false;
   public email: string = '';
@@ -135,6 +139,12 @@ export class OrderTicketModalComponent implements OnInit {
   }
 
   createOrderRequest() {
+    if (!this.isValidForm()) {
+      this.isValidationTriggered = true;
+
+      return;
+    }
+
     const passengers = this.passengersList.map((passenger, index) => ({
       ...passenger,
       index: index
@@ -147,15 +157,14 @@ export class OrderTicketModalComponent implements OnInit {
       session_id: sessionStorage.getItem('sessionId'),
       rec_id: this.flight.value.rec_id,
       partner_fees: this.flight.value.partner_fees.TJS,
-      payer_phone: this.phone,
+      payer_phone: '+992' + this.phone,
       payer_email: this.email,
       passengers: passengers,
       meta: {
         currency: "TJS",
-        language: "ru",
+        language: "tj",
       },
       company_req_id: sessionStorage.getItem('company_req_id'),
-      // amount: sessionStorage.getItem('amountSelectedFlight')
     };
 
     try {
@@ -178,6 +187,11 @@ export class OrderTicketModalComponent implements OnInit {
   }
 
   sendOrderRequest(data: any): Observable<any> {
+    this.isLoading = true;
     return this.http.post(this.apiUrl, data);
+  }
+
+  isValidForm(): boolean {
+    return this.phone.length > 0 && this.phone.length > 0;
   }
 }

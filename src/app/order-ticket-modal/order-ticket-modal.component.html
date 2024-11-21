@@ -124,23 +124,49 @@
       <p class="block-title">Данные покупателя</p>
 
       <div class="inputs-blocks">
-        <div class="card">
-          <input type="text" placeholder="Email" [(ngModel)]="email">
+        <div class="card-block">
+          <div class="card">
+            <input
+              [(ngModel)]="email"
+              placeholder="Email"
+              class="text-field"
+              [class.error]="isValidationTriggered && !email"
+              type="text"
+            >
+          </div>
+          <div class="invalid-field" *ngIf="isValidationTriggered && !email">Объязательное поле*</div>
         </div>
-        <div class="card">
-          <input type="text" placeholder="Номер телефона" [(ngModel)]="phone">
+
+        <div class="card-block">
+          <div class="card">
+            <input
+              [(ngModel)]="phone"
+              placeholder="Номер телефона"
+              class="text-field"
+              [class.error]="isValidationTriggered && !phone"
+              type="text"
+              minlength="9"
+              maxlength="9"
+            >
+          </div>
+          <div class="invalid-field" *ngIf="isValidationTriggered && !phone">Объязательное поле*</div>
         </div>
       </div>
 
       <p class="desc-bottom__text">
         На почту придет информация о бронировании билета в случае изменения расписания,
-        на номер телефона будет
-        отправлено уведомление об изменениях.
+        на номер телефона будет отправлено уведомление об изменениях.
       </p>
     </div>
 
     <div>
       <button class="btn-primary" (click)="createOrderRequest()">Оформить</button>
+    </div>
+
+    <div class="loader-layout" *ngIf="isLoading">
+      <div class="loader-block">
+        <div class="loader"></div>
+      </div>
     </div>
   </div>
 </div>
