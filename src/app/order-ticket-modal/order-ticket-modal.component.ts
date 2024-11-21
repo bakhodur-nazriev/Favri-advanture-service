@@ -41,8 +41,9 @@ export class OrderTicketModalComponent implements OnInit {
     infantsWithSeat: number
   } = {adults: 0, children: 0, infantsWithSeat: 0, infantsWithoutSeat: 0}
   @Output() detailPassengerSelected = new EventEmitter<any>;
-  // private apiUrl = 'http://192.168.40.238:9800/api/flytj/book';
-  private apiUrl = 'http://localhost:5273/api/flytj/book';
+  private apiUrl = 'https://integration.cbt.tj/api/flytj/book';
+  //private apiUrl = 'http://192.168.40.238:9800/api/flytj/book';
+  // private apiUrl = 'http://localhost:5273/api/flytj/book';
   passengersList: any[] = [];
 
   constructor(
