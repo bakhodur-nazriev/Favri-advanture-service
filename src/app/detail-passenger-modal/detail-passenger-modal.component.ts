@@ -189,7 +189,10 @@ export class DetailPassengerModalComponent implements OnInit {
     }
 
     if (this.passengerDataService.selectedPassengerIndex != null) {
-      this.passengerDataList[this.passengerDataService.selectedPassengerIndex].phone = '+992'+ this.passengerDataList[this.passengerDataService.selectedPassengerIndex].phone;
+      if (!this.passengerDataList[this.passengerDataService.selectedPassengerIndex].phone.startsWith('+992')) {
+        this.passengerDataList[this.passengerDataService.selectedPassengerIndex].phone = `+992${this.passengerDataList[this.passengerDataService.selectedPassengerIndex].phone}`;
+      }
+
       this.passengerDataList[this.passengerDataService.selectedPassengerIndex] = {
         ...this.passengerDataList[this.passengerDataService.selectedPassengerIndex],
         document_type: this.selectedPassportCode,
