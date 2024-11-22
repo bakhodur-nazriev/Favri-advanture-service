@@ -265,8 +265,5 @@ export class AppComponent implements OnInit {
         console.error('walletPhone не найден в параметрах URL');
       }
     });
-
-    const formattedDate = format(new Date(), 'yyyy-MM-dd');
-    console.log(formattedDate);
   }
 }

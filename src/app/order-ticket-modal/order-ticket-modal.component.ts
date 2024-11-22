@@ -143,7 +143,6 @@ export class OrderTicketModalComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['walletPhone']) {
         this.walletPhone = params['walletPhone'];
-        console.log(this.walletPhone);
       }
     });
 
@@ -190,7 +189,8 @@ export class OrderTicketModalComponent implements OnInit {
 
     this.sendOrderRequest(requestBody).subscribe({
       next: (response) => {
-        if (response.success) {
+        if (response.statusCode === 200) {
+          window.location.href = response.data.paymentUrl;
           console.log('Заказ успешно создан', response);
         }
       },
