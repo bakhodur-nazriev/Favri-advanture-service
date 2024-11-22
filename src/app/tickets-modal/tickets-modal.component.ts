@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnInit} from '@angular/core';
 import {JsonPipe, KeyValuePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 
 @Component({
@@ -14,25 +14,34 @@ import {JsonPipe, KeyValuePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/
   templateUrl: './tickets-modal.component.html',
   styleUrl: './tickets-modal.component.scss'
 })
-export class TicketsModalComponent {
-  public isVisible = false;
-  departureAirport: any;
-  arrivalAirport: any;
-  flightDuration: string = '';
-
-  constructor() {
-    this.initializeFlightData();
-  }
-
+export class TicketsModalComponent implements OnInit {
   @Input() flights: any[] = ['flights'];
   @Input() fromCity!: string;
   @Input() toCity!: string;
   @Input() isLoading!: boolean;
   @Output() flightSelected = new EventEmitter<any>();
+  @Input() passengerCount: number = 0;
+  @Input() travelClassText: string = '';
+  @Input() selectedDateText: string = '';
+
+  public isVisible: boolean = true;
+  departureAirport: any;
+  arrivalAirport: any;
+  flightDuration: string = '';
+  public isBookingInfoModal: boolean = false;
+  public isPriceFilter: boolean = false;
+  public isTransferFilter: boolean = false;
+
+  constructor() {
+    this.initializeFlightData();
+  }
+
+  ngOnInit() {
+    // console.log(this.flightSelected)
+  }
 
   selectFlight(flight: any) {
     this.flightSelected.emit(flight);
-    this.closeModal();
   }
 
   openModal() {
@@ -89,5 +98,21 @@ export class TicketsModalComponent {
 
   extractHours(time: string): string {
     return time.split(' ')[1]
+  }
+
+  openBookingInfoModal() {
+    this.isBookingInfoModal = true;
+  }
+
+  closeBookingInfoModal() {
+    this.isBookingInfoModal = false;
+  }
+
+  openPriceFilter() {
+    this.isPriceFilter = true;
+  }
+
+  openTransferFilter() {
+    this.isTransferFilter = true;
   }
 }

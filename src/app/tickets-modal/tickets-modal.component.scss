@@ -5,7 +5,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  background: white;
+  background: var(--bg-color);
 
   .tickets-modal__content {
     gap: 40px;
@@ -19,12 +19,39 @@
 
     .directions-title__block {
       display: flex;
-      align-items: center;
-      gap: 10px;
+      flex-direction: column;
+      gap: 12px;
 
-      .directions-title {
-        font-size: 24px;
-        font-weight: 500;
+      .directions-info__title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .directions-title {
+          font-size: 24px;
+          font-weight: 500;
+        }
+      }
+
+      .booking-info__title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: max-content;
+        padding: 6px 16px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 13px 0 rgba(43, 69, 78, 0.1019607843);
+
+        span {
+          font-size: 15px;
+          font-weight: 500;
+        }
+      }
+
+      .booking-info__title-passengers {
+        display: flex;
+        gap: 6px;
       }
     }
 
@@ -39,6 +66,7 @@
         flex-direction: column;
         padding: 18px 20px;
         box-shadow: 0 4px 13px 0 #2B454E1A;
+        background-color: #fff;
         border-radius: 16px;
 
         &-top {
@@ -129,4 +157,91 @@
       transform: rotate(1turn)
     }
   }
+}
+
+.booking-info__modal-layout {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+  background: rgba(44, 44, 44, 0.7);
+
+  .booking-info__modal {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 34px;
+    background-color: #fff;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+
+    h1 {
+      font-weight: 500;
+      font-size: 18px;
+      margin-top: 0;
+    }
+  }
+}
+
+.filters-block {
+  display: flex;
+  gap: 12px;
+
+  button {
+    all: unset;
+    background-color: #fff;
+    padding: 10px 15px;
+    border-radius: 20px;
+    box-shadow: 0 4px 13px 0 rgba(43, 69, 78, 0.1019607843);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+}
+
+.price-filter__modal-layout,
+.transfer-filter__modal-layout {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+  background: rgba(44, 44, 44, 0.7);
+  display: flex;
+  align-items: end;
+
+  .price-filter__modal,
+  .transfer-filter__modal {
+    left: 0;
+    bottom: 0;
+    padding: 12px 34px 45px;
+    background-color: #fff;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    width: 100%;
+
+    h1 {
+      font-weight: normal;
+      font-size: 18px;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+}
+
+.holder-button {
+  display: flex;
+  justify-content: center;
 }

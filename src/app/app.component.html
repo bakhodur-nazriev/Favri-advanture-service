@@ -141,6 +141,9 @@
 
   <app-tickets-modal
     #ticketsModal
+    [passengerCount]="passengerCount"
+    [travelClassText]="travelClassText"
+    [selectedDateText]="selectedDateText"
     [flights]="flights"
     [fromCity]="fromCity"
     [toCity]="toCity"

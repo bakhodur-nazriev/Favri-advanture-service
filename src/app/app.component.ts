@@ -86,7 +86,9 @@ export class AppComponent implements OnInit {
   public selectedEndDate: Date | null = null;
   selectedFlight: any;
   public selectedPassenger: any;
-  public walletPhone: string = "123456789";
+
+  public passengerCount: number = 0;
+  public travelClassText: string = '';
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
   }
@@ -105,14 +107,6 @@ export class AppComponent implements OnInit {
   openDetailPassengerModal(passenger: any) {
     this.selectedPassenger = passenger;
     this.detailPassengerModal?.openModal();
-  }
-
-  handlePassengersAndClass(event: Passengers) {
-    this.passengers.adults = event.adults;
-    this.passengers.children = event.children;
-    this.passengers.infantsWithSeat = event.infantsWithSeat;
-    this.passengers.infantsWithoutSeat = event.infantsWithoutSeat;
-    this.passengers.travelClass = event.travelClass;
   }
 
   openDirectionFromModal() {
@@ -147,8 +141,18 @@ export class AppComponent implements OnInit {
     this.modalPassengers.openModal();
   }
 
+  private getCurrentDate(): string {
+    return format(new Date(), 'yyyyMMdd');
+  }
+
   private formatDate(date: Date): string {
     return date.toLocaleDateString('ru-RU', {month: 'short', day: 'numeric'});
+  }
+
+  handlePassengersAndClass(event: Passengers) {
+    this.passengers = {...event};
+    this.calculatePassengerCount();
+    this.travelClassText = this.getTravelClassText(event.travelClass);
   }
 
   handleSelectedDates(dates: { startDate: Date, endDate: Date | null }) {
@@ -163,14 +167,34 @@ export class AppComponent implements OnInit {
       const today = new Date();
       this.selectedDateText = this.formatDate(today);
     }
+
+    this.selectedDateText = this.generateSelectedDateText(dates);
   }
+
+  private getTravelClassText(travelClass: string): string {
+    switch (travelClass.toLowerCase()) {
+      case 'economy': return 'Эконом';
+      case 'business': return 'Бизнес';
+      case 'first': return 'Первый класс';
+      default: return 'Эконом';
+    }
+  }
+  private generateSelectedDateText(dates: { startDate: Date, endDate: Date | null }): string {
+    if (dates.startDate && dates.endDate) {
+      return `${this.formatDate(dates.startDate)} - ${this.formatDate(dates.endDate)}`;
+    } else if (dates.startDate) {
+      return this.formatDate(dates.startDate);
+    } else {
+      return this.formatDate(new Date());
+    }
+  }
+
 
   searchTickets() {
     const url = `${this.apiUrl}/search`;
     this.ticketsModal.openModal();
     this.isLoading = true;
 
-    const today = new Date();
     const formattedDate = this.selectedStartDate
       ? dayjs(this.selectedStartDate).format('YYYY-MM-DD')
       : dayjs().format('YYYY-MM-DD');
@@ -223,10 +247,6 @@ export class AppComponent implements OnInit {
     return sha512(signatureString).toString();
   }
 
-  private getCurrentDate(): string {
-    return format(new Date(), 'yyyyMMdd');
-  }
-
   login(walletPhone: string) {
     const date = this.getCurrentDate();
     const signature = this.generateSignature(walletPhone, date);
@@ -265,5 +285,13 @@ export class AppComponent implements OnInit {
         console.error('walletPhone не найден в параметрах URL');
       }
     });
+
+    this.calculatePassengerCount();
+    this.travelClassText = this.getTravelClassText(this.passengers.travelClass);
+  };
+
+  private calculatePassengerCount() {
+    const { adults, children, infantsWithSeat, infantsWithoutSeat } = this.passengers;
+    this.passengerCount = adults + children + infantsWithSeat + infantsWithoutSeat;
   }
 }
