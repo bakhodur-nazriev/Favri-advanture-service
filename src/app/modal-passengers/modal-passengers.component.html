@@ -11,154 +11,156 @@
       </svg>
     </div>
 
-    <h2>Пассажиры</h2>
-    <ul class="passengers-list__item">
-      <li class="passengers-list__item-details">
-        <div class="left-block">
-          <h4>Взрослые</h4>
-          <small>Старше 12 лет</small>
-        </div>
+    <div class="passenger-content__block">
+      <h2>Пассажиры</h2>
+      <ul class="passengers-list__item">
+        <li class="passengers-list__item-details">
+          <div class="left-block">
+            <h4>Взрослые</h4>
+            <small>Старше 12 лет</small>
+          </div>
 
-        <div class="right-block">
-          <button (click)="decreaseAdults()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
-                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <span>{{ adults }}</span>
-          <button (click)="increaseAdults()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
-                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
-      </li>
-      <li class="passengers-list__item-details">
-        <div class="left-block">
-          <h4>Дети</h4>
-          <small>От 2 до 12 лет</small>
-        </div>
+          <div class="right-block">
+            <button (click)="decreaseAdults()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
+                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <span>{{ adults }}</span>
+            <button (click)="increaseAdults()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
+                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </li>
+        <li class="passengers-list__item-details">
+          <div class="left-block">
+            <h4>Дети</h4>
+            <small>От 2 до 12 лет</small>
+          </div>
 
-        <div class="right-block">
-          <button (click)="decreaseChildren()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
-                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <span>{{ children }}</span>
-          <button (click)="increaseChildren()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
-                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
-      </li>
+          <div class="right-block">
+            <button (click)="decreaseChildren()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
+                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <span>{{ children }}</span>
+            <button (click)="increaseChildren()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
+                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </li>
 
-      <li class="passengers-list__item-details">
-        <div class="left-block">
-          <h4>Младенцы</h4>
-          <small>До 2 лет, без места</small>
-        </div>
+        <li class="passengers-list__item-details">
+          <div class="left-block">
+            <h4>Младенцы</h4>
+            <small>До 2 лет, без места</small>
+          </div>
 
-        <div class="right-block">
-          <button (click)="decreaseInfantsWithSeat()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
-                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+          <div class="right-block">
+            <button (click)="decreaseInfantsWithSeat()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
+                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <span>{{ infantsWithSeat }}</span>
+            <button (click)="increaseInfantsWithSeat()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
+                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </li>
+
+        <li class="passengers-list__item-details">
+          <div class="left-block">
+            <h4>Младенцы</h4>
+            <small>До 2 лет, с местом</small>
+          </div>
+
+          <div class="right-block">
+            <button (click)="decreaseInfantsWithoutSeat()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
+                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <span>{{ infantsWithoutSeat }}</span>
+            <button (click)="increaseInfantsWithoutSeat()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
+                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </li>
+      </ul>
+
+      <h4>Класс перелета</h4>
+      <ul class="passengers-class__item">
+        <li>
+          <button
+            class="passengers-class__button active"
+            [class.active]="selectedClass === 'economy'"
+            (click)="selectClass('economy')"
+          >
+            Эконом
           </button>
-          <span>{{ infantsWithSeat }}</span>
-          <button (click)="increaseInfantsWithSeat()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
-                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+        </li>
+        <li>
+          <button
+            class="passengers-class__button"
+            [class.active]="selectedClass === 'business'"
+            (click)="selectClass('business')"
+          >
+            Бизнес
           </button>
-        </div>
-      </li>
-
-      <li class="passengers-list__item-details">
-        <div class="left-block">
-          <h4>Младенцы</h4>
-          <small>До 2 лет, с местом</small>
-        </div>
-
-        <div class="right-block">
-          <button (click)="decreaseInfantsWithoutSeat()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
-                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+        </li>
+        <li>
+          <button
+            class="passengers-class__button"
+            [class.active]="selectedClass === 'first'"
+            (click)="selectClass('first')"
+          >
+            Первый
           </button>
-          <span>{{ infantsWithoutSeat }}</span>
-          <button (click)="increaseInfantsWithoutSeat()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
-                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+        </li>
+        <li>
+          <button
+            class="passengers-class__button"
+            [class.active]="selectedClass === 'all'"
+            (click)="selectClass('all')"
+          >
+            Без привязки к классу
           </button>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
 
-    <h4>Класс перелета</h4>
-    <ul class="passengers-class__item">
-      <li>
-        <button
-          class="passengers-class__button active"
-          [class.active]="selectedClass === 'economy'"
-          (click)="selectClass('economy')"
-        >
-          Эконом
-        </button>
-      </li>
-      <li>
-        <button
-          class="passengers-class__button"
-          [class.active]="selectedClass === 'business'"
-          (click)="selectClass('business')"
-        >
-          Бизнес
-        </button>
-      </li>
-      <li>
-        <button
-          class="passengers-class__button"
-          [class.active]="selectedClass === 'first'"
-          (click)="selectClass('first')"
-        >
-          Первый
-        </button>
-      </li>
-      <li>
-        <button
-          class="passengers-class__button"
-          [class.active]="selectedClass === 'all'"
-          (click)="selectClass('all')"
-        >
-          Без привязки к классу
-        </button>
-      </li>
-    </ul>
-
-    <div class="choose-class__block" (click)="confirmSelection()">
-      <button class="btn-primary">Готово</button>
+      <div class="choose-class__block" (click)="confirmSelection()">
+        <button class="btn-primary">Готово</button>
+      </div>
     </div>
   </div>
 </div>

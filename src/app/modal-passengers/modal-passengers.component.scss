@@ -1,34 +1,39 @@
 .modal-background {
-  position: fixed;
-  top: 0;
+  position: absolute;
   left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
-  background: #1D293530;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  overflow-y: hidden;
+  background: rgba(29, 41, 53, 0.1882352941);
 }
 
 .modal-content {
+  display: flex;
+  flex-direction: column;
   background-color: white;
-  width: 100%;
-  max-width: 500px;
   padding: 28px;
+  margin-top: 100px;
   border-radius: 20px 20px 0 0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: -webkit-fill-available;
 
-  h2 {
-    margin-top: 0;
-    margin-bottom: 40px;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--seconday-text-color);
-  }
+  .passenger-content__block {
+    overflow-y: auto;
+    padding-right: 10px;
 
-  h4 {
-    font-size: 18px;
-    font-weight: 400;
+    h2 {
+      margin-top: 0;
+      margin-bottom: 40px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--seconday-text-color);
+    }
+
+    h4 {
+      font-size: 18px;
+      font-weight: 400;
+    }
   }
 }
 
@@ -111,15 +116,15 @@
     &.active {
       background-color: var(--primary-color);
       color: #fff;
-
-      &:hover {
-        background-color: var(--primary-color);
-      }
     }
 
     &:hover {
-      background-color: #e0e0e0;
+      background-color: var(--primary-color);
     }
+  }
+
+  .passengers-class__button {
+    -webkit-tap-highlight-color: transparent;
   }
 }
 

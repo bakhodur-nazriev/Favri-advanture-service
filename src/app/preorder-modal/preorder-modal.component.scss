@@ -160,11 +160,33 @@
   }
 }
 
+.preorder-main__block {
+  overflow: scroll;
+  height: calc(100vh - 290px);
+}
+
 .choose-class__block {
   display: flex;
   justify-content: center;
   width: 100%;
   margin-bottom: 40px;
+
+  .choose-preorder__button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: 8px;
+    text-align: center;
+    height: 45px;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    position: fixed;
+    padding: 0 60px;
+    width: calc(100% - 60px);
+    bottom: 30px;
+    box-shadow: 0 4px 12px 0 rgba(0, 176, 108, 0.2509803922);
+  }
 }
 
 .arrow-left__button {

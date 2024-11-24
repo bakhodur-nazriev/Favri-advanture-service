@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {NgIf, NgOptimizedImage} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
 import {Included} from "../models/flights-included.interface";
 
@@ -8,7 +8,8 @@ import {Included} from "../models/flights-included.interface";
   standalone: true,
   imports: [
     NgOptimizedImage,
-    NgIf
+    NgIf,
+    NgForOf
   ],
   templateUrl: './preorder-modal.component.html',
   styleUrl: './preorder-modal.component.scss',

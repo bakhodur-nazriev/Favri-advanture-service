@@ -59,6 +59,9 @@
       list-style: none;
       padding: 0;
       margin: 0;
+      gap: 14px;
+      display: flex;
+      flex-direction: column;
 
       &__item {
         display: flex;
@@ -131,6 +134,14 @@
           }
         }
       }
+    }
+
+    .main-tickets__block {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      height: 100%;
+      overflow: scroll;
     }
   }
 }
@@ -244,4 +255,8 @@
 .holder-button {
   display: flex;
   justify-content: center;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }

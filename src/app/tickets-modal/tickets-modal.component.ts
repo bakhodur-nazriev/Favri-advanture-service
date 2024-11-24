@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnInit, HostListener} from '@angular/core';
 import {JsonPipe, KeyValuePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 
 @Component({
@@ -24,7 +24,7 @@ export class TicketsModalComponent implements OnInit {
   @Input() travelClassText: string = '';
   @Input() selectedDateText: string = '';
 
-  public isVisible: boolean = true;
+  public isVisible: boolean = false;
   departureAirport: any;
   arrivalAirport: any;
   flightDuration: string = '';
@@ -110,9 +110,41 @@ export class TicketsModalComponent implements OnInit {
 
   openPriceFilter() {
     this.isPriceFilter = true;
+
+    const ticketModalBlock = document.querySelector('.tickets-modal__block');
+    if (ticketModalBlock) {
+      ticketModalBlock.classList.add('overflow-hidden');
+    }
   }
 
   openTransferFilter() {
     this.isTransferFilter = true;
+
+    const ticketModalBlock = document.querySelector('.tickets-modal__block');
+    if (ticketModalBlock) {
+      ticketModalBlock.classList.add('overflow-hidden');
+    }
+  }
+
+  closePriceFilter() {
+    this.isPriceFilter = false;
+
+    const ticketModalBlock = document.querySelector('.tickets-modal__block');
+    if (ticketModalBlock) {
+      ticketModalBlock.classList.remove('overflow-hidden');
+    }
+  }
+
+  closeTransferFilter() {
+    this.isTransferFilter = false;
+
+    const ticketModalBlock = document.querySelector('.tickets-modal__block');
+    if (ticketModalBlock) {
+      ticketModalBlock.classList.remove('overflow-hidden');
+    }
+  }
+
+  preventClose(event: MouseEvent): void {
+    event.stopPropagation();
   }
 }

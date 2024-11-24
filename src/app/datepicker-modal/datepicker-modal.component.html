@@ -11,62 +11,64 @@
       </svg>
     </div>
 
-    <h2>Даты поездки</h2>
+    <div class="datepicker-content__block">
+      <h2>Даты поездки</h2>
 
-    <div class="booking-form">
-      <div class="date-input-fields">
-        <div class="form-fields">
-          <div class="input-block">
-            <input
-              readonly
-              placeholder="Туда"
-              [value]="startDate | date: 'dd.MM.yy'"
-            >
+      <div class="booking-form">
+        <div class="date-input-fields">
+          <div class="form-fields">
+            <div class="input-block">
+              <input
+                readonly
+                placeholder="Туда"
+                [value]="startDate | date: 'dd.MM.yy'"
+              >
+            </div>
+            <div *ngIf="startDate" (click)="clearStartDate()" class="clear-button">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                      stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9.16998 14.83L14.83 9.17" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M14.83 14.83L9.16998 9.17" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+              </svg>
+            </div>
           </div>
-          <div *ngIf="startDate" (click)="clearStartDate()" class="clear-button">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                    stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9.16998 14.83L14.83 9.17" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M14.83 14.83L9.16998 9.17" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-            </svg>
+
+          <div class="form-fields">
+            <div class="input-block">
+              <input
+                readonly
+                placeholder="Обратно"
+                [value]="endDate | date: 'dd.MM.yy'"
+              >
+            </div>
+            <div *ngIf="endDate" (click)="clearEndDate()" class="clear-button">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                      stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9.16998 14.83L14.83 9.17" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M14.83 14.83L9.16998 9.17" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+              </svg>
+            </div>
           </div>
         </div>
 
-        <div class="form-fields">
-          <div class="input-block">
-            <input
-              readonly
-              placeholder="Обратно"
-              [value]="endDate | date: 'dd.MM.yy'"
-            >
-          </div>
-          <div *ngIf="endDate" (click)="clearEndDate()" class="clear-button">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                    stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9.16998 14.83L14.83 9.17" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M14.83 14.83L9.16998 9.17" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-            </svg>
-          </div>
-        </div>
+        <mat-card class="calendar-card">
+          <mat-calendar
+            [(selected)]="selectedDate"
+            [minDate]="minDate"
+            (selectedChange)="onDateSelected($event)"
+          ></mat-calendar>
+        </mat-card>
       </div>
 
-      <mat-card class="calendar-card">
-        <mat-calendar
-          [(selected)]="selectedDate"
-          [minDate]="minDate"
-          (selectedChange)="onDateSelected($event)"
-        ></mat-calendar>
-      </mat-card>
-    </div>
-
-    <div class="search-ticket__block">
-      <button class="btn-primary" (click)="confirmDates()">Выбрать даты</button>
+      <div class="search-ticket__block">
+        <button class="btn-primary" (click)="confirmDates()">Выбрать даты</button>
+      </div>
     </div>
   </div>
 </div>
