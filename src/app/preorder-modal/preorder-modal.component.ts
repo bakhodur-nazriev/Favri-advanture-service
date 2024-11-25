@@ -37,6 +37,10 @@ export class PreorderModalComponent {
   public selectedFlight: any;
 
   selectFlight(flight: any) {
+    const modalBlock = document.querySelector('.tickets-modal__block') as HTMLElement;
+    if (modalBlock) {
+      modalBlock.style.display = 'none';
+    }
     this.flightSelected.emit(flight);
     sessionStorage.setItem('amountSelectedFlight', flight.value.total_price.TJS);
   }

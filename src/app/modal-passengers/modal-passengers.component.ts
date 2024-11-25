@@ -15,10 +15,10 @@ import {Passengers} from "../models/passengers.interface";
     trigger('slideInOut', [
       transition(':enter', [
         style({transform: 'translateY(100%)', opacity: 0}),
-        animate('0.15s ease-in', style({transform: 'translateY(0)', opacity: 1}))
+        animate('0.10s ease-in', style({transform: 'translateY(0)', opacity: 1}))
       ]),
       transition(':leave', [
-        animate('0.15s ease-out', style({transform: 'translateY(100%)', opacity: 0}))
+        animate('0.10s ease-out', style({transform: 'translateY(100%)', opacity: 0}))
       ])
     ])
   ]

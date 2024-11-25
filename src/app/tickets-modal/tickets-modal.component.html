@@ -34,17 +34,43 @@
           <span>{{ travelClassText }}</span>
         </div>
 
-        <div class="filters-block">
-          <button (click)="openPriceFilter()">
-            Цена
+        <div class="filters-block" *ngIf="!isLoading && flights.length > 1">
+          <button
+            (click)="openPriceFilter()"
+            class="filter-price__button"
+            [class.active-filter__price]="currentSort"
+          >
+            <span>Цена</span>
+<!--            <svg-->
+<!--              *ngIf="currentSort === 'asc' || currentSort === 'desc'"-->
+<!--              viewBox="0 0 72 72"-->
+<!--              width="16px"-->
+<!--              height="16px"-->
+<!--            >-->
+<!--              <path-->
+<!--                d="M 19 15 C 17.977 15 16.951875 15.390875 16.171875 16.171875 C 14.609875 17.733875 14.609875 20.266125 16.171875 21.828125 L 30.34375 36 L 16.171875 50.171875 C 14.609875 51.733875 14.609875 54.266125 16.171875 55.828125 C 16.951875 56.608125 17.977 57 19 57 C 20.023 57 21.048125 56.609125 21.828125 55.828125 L 36 41.65625 L 50.171875 55.828125 C 51.731875 57.390125 54.267125 57.390125 55.828125 55.828125 C 57.391125 54.265125 57.391125 51.734875 55.828125 50.171875 L 41.65625 36 L 55.828125 21.828125 C 57.390125 20.266125 57.390125 17.733875 55.828125 16.171875 C 54.268125 14.610875 51.731875 14.609875 50.171875 16.171875 L 36 30.34375 L 21.828125 16.171875 C 21.048125 15.391875 20.023 15 19 15 z"/>-->
+<!--            </svg>-->
             <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
               <path d="M14.9401 6.74999L10.0501 11.64C9.47256 12.2175 8.52756 12.2175 7.95006 11.64L3.06006 6.74999"
                     stroke="#1D2935" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                     stroke-linejoin="round"/>
             </svg>
           </button>
-          <button (click)="openTransferFilter()">
-            Пересадки
+          <button
+            (click)="openTransferFilter()"
+            class="filter-price__button"
+            [class.active-filter__transfer]="currentFilter !== 'all'"
+          >
+            <span>Пересадки</span>
+<!--            <svg-->
+<!--              *ngIf="currentFilter !== 'all'"-->
+<!--              viewBox="0 0 72 72"-->
+<!--              width="16px"-->
+<!--              height="16px"-->
+<!--            >-->
+<!--              <path-->
+<!--                d="M 19 15 C 17.977 15 16.951875 15.390875 16.171875 16.171875 C 14.609875 17.733875 14.609875 20.266125 16.171875 21.828125 L 30.34375 36 L 16.171875 50.171875 C 14.609875 51.733875 14.609875 54.266125 16.171875 55.828125 C 16.951875 56.608125 17.977 57 19 57 C 20.023 57 21.048125 56.609125 21.828125 55.828125 L 36 41.65625 L 50.171875 55.828125 C 51.731875 57.390125 54.267125 57.390125 55.828125 55.828125 C 57.391125 54.265125 57.391125 51.734875 55.828125 50.171875 L 41.65625 36 L 55.828125 21.828125 C 57.390125 20.266125 57.390125 17.733875 55.828125 16.171875 C 54.268125 14.610875 51.731875 14.609875 50.171875 16.171875 L 36 30.34375 L 21.828125 16.171875 C 21.048125 15.391875 20.023 15 19 15 z"/>-->
+<!--            </svg>-->
             <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
               <path d="M14.9401 6.74999L10.0501 11.64C9.47256 12.2175 8.52756 12.2175 7.95006 11.64L3.06006 6.74999"
                     stroke="#1D2935" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
@@ -59,10 +85,7 @@
       </div>
 
       <ul class="tickets-list" *ngIf="!isLoading">
-        <li
-          class="tickets-list__item"
-          *ngFor="let flight of flights | keyvalue"
-        >
+        <li class="tickets-list__item" *ngFor="let flight of getFilteredFlights() | keyvalue">
           <div (click)="selectFlight(flight)">
             <div class="tickets-list__item-top">
               <img
@@ -91,7 +114,8 @@
               <span
                 class="times-block__item">{{ extractHours(flight.value.routes[0].segments[0].departure.time) }}</span>
                 <span class="times-block__title">{{ convertDuration(flight.value.routes[0].duration) }}</span>
-                <span class="times-block__item">{{ extractHours(flight.value.routes[0].segments[0].arrival.time) }}</span>
+                <span
+                  class="times-block__item">{{ extractHours(flight.value.routes[0].segments[0].arrival.time) }}</span>
               </div>
             </div>
 
@@ -101,13 +125,13 @@
               <span>{{ flight.value.routes[0].segments[0].departure.airport }}</span>
 
               <span>
-            <ng-container *ngIf="flight.value.routes[0].segments.length === 1; else transfer">
-              Прямой
-            </ng-container>
-            <ng-template #transfer>
-              {{ flight.value.routes[0].segments.length - 1 }} пересадка(и)
-            </ng-template>
-          </span>
+                <ng-container *ngIf="flight.value.routes[0].segments.length === 1; else transfer">
+                  Прямой
+                </ng-container>
+                <ng-template #transfer>
+                  {{ flight.value.routes[0].segments.length - 1 }} пересадка(и)
+                </ng-template>
+              </span>
 
               <span>{{ flight.value.routes[0].segments[flight.value.routes[0].segments.length - 1].arrival.airport }}</span>
             </div>
@@ -120,8 +144,18 @@
       </div>
 
       <!-- Booking info modal -->
-      <div class="booking-info__modal-layout" *ngIf="isBookingInfoModal">
-        <div class="booking-info__modal">
+      <div class="booking-info__modal-layout" *ngIf="isBookingInfoModal" (click)="closeBookingInfoModal()">
+        <div
+          class="booking-info__modal"
+          @slideInOut
+          (@slideInOut.done)="onAnimationBookingInfoEvent($event)"
+          (click)="$event.stopPropagation()"
+        >
+          <div class="holder-button">
+            <svg width="35" height="4" viewBox="0 0 35 4" fill="none">
+              <rect width="35" height="4" rx="2" fill="#95A5A6" fill-opacity="0.5"/>
+            </svg>
+          </div>
           <h1>Цена билетов может меняться</h1>
           <span>Почему?</span>
           <p>Пока вы ищите свою карту или паспорт, цена может обновиться.</p>
@@ -133,25 +167,54 @@
 
       <!-- Price filter modal -->
       <div class="price-filter__modal-layout" *ngIf="isPriceFilter" (click)="closePriceFilter()">
-        <div class="price-filter__modal" (click)="preventClose($event)">
+        <div
+          class="price-filter__modal"
+          @slideInOut
+          (@slideInOut.done)="onAnimationBookingInfoEvent($event)"
+          (click)="$event.stopPropagation()"
+        >
           <div class="holder-button">
             <svg width="35" height="4" viewBox="0 0 35 4" fill="none">
               <rect width="35" height="4" rx="2" fill="#95A5A6" fill-opacity="0.5"/>
             </svg>
           </div>
-
           <h1>Цена</h1>
 
           <ul>
-            <li>Сначало дешёвые</li>
-            <li>Сначало дорогие</li>
+            <li (click)="sortFlightsByPrice('asc')" class="sort-by__price-item">
+              <span>Сначало дешёвые</span>
+              <svg
+                *ngIf="currentSort === 'asc'"
+                viewBox="0 0 24 24"
+                width="16px"
+                height="16px"
+              >
+                <path d="M9 19.4L3.3 13.7 4.7 12.3 9 16.6 20.3 5.3 21.7 6.7z" fill="#999999"/>
+              </svg>
+            </li>
+            <li (click)="sortFlightsByPrice('desc')" class="sort-by__price-item">
+              <span>Сначало дорогие</span>
+              <svg
+                *ngIf="currentSort === 'desc'"
+                viewBox="0 0 24 24"
+                width="16px"
+                height="16px"
+              >
+                <path d="M9 19.4L3.3 13.7 4.7 12.3 9 16.6 20.3 5.3 21.7 6.7z" fill="#999999"/>
+              </svg>
+            </li>
           </ul>
         </div>
       </div>
 
       <!-- Transfer filter modal -->
       <div class="transfer-filter__modal-layout" *ngIf="isTransferFilter" (click)="closeTransferFilter()">
-        <div class="transfer-filter__modal" (click)="preventClose($event)">
+        <div
+          class="transfer-filter__modal"
+          @slideInOut
+          (@slideInOut.done)="onAnimationBookingInfoEvent($event)"
+          (click)="$event.stopPropagation()"
+        >
           <div class="holder-button">
             <svg width="35" height="4" viewBox="0 0 35 4" fill="none">
               <rect width="35" height="4" rx="2" fill="#95A5A6" fill-opacity="0.5"/>
@@ -160,9 +223,41 @@
           <h1>Пересадки</h1>
 
           <ul>
-            <li>Прямой</li>
-            <li>1 пересадка</li>
-            <li>2 пересдки и более</li>
+            <li (click)="setFilter('direct')" class="sort-by__flight-item">
+              <span>Прямой</span>
+              <svg
+                *ngIf="currentFilter === 'direct'"
+                viewBox="0 0 24 24"
+                width="16px"
+                height="16px"
+              >
+                <path d="M9 19.4L3.3 13.7 4.7 12.3 9 16.6 20.3 5.3 21.7 6.7z" fill="#999999"/>
+              </svg>
+            </li>
+            <li (click)="setFilter('oneStop')" [class.active]="currentFilter === 'oneStop'"
+                class="sort-by__flight-item">
+              <span>1 пересадка</span>
+              <svg
+                *ngIf="currentFilter === 'oneStop'"
+                viewBox="0 0 24 24"
+                width="16px"
+                height="16px"
+              >
+                <path d="M9 19.4L3.3 13.7 4.7 12.3 9 16.6 20.3 5.3 21.7 6.7z" fill="#999999"/>
+              </svg>
+            </li>
+            <li (click)="setFilter('multipleStops')" [class.active]="currentFilter === 'multipleStops'"
+                class="sort-by__flight-item">
+              <span>2 пересадки и более</span>
+              <svg
+                *ngIf="currentFilter === 'multipleStops'"
+                viewBox="0 0 24 24"
+                width="16px"
+                height="16px"
+              >
+                <path d="M9 19.4L3.3 13.7 4.7 12.3 9 16.6 20.3 5.3 21.7 6.7z" fill="#999999"/>
+              </svg>
+            </li>
           </ul>
         </div>
       </div>

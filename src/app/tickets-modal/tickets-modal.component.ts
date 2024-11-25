@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output, OnInit, HostListener} from '@angular/core';
 import {JsonPipe, KeyValuePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-tickets-modal',
@@ -9,10 +10,21 @@ import {JsonPipe, KeyValuePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/
     NgOptimizedImage,
     NgForOf,
     KeyValuePipe,
-    JsonPipe
+    JsonPipe,
   ],
   templateUrl: './tickets-modal.component.html',
-  styleUrl: './tickets-modal.component.scss'
+  styleUrl: './tickets-modal.component.scss',
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({transform: 'translateY(100%)', opacity: 0}),
+        animate('0.15s ease-in', style({transform: 'translateY(0)', opacity: 1}))
+      ]),
+      transition(':leave', [
+        animate('0.15s ease-out', style({transform: 'translateY(100%)', opacity: 0}))
+      ])
+    ])
+  ]
 })
 export class TicketsModalComponent implements OnInit {
   @Input() flights: any[] = ['flights'];
@@ -31,10 +43,27 @@ export class TicketsModalComponent implements OnInit {
   public isBookingInfoModal: boolean = false;
   public isPriceFilter: boolean = false;
   public isTransferFilter: boolean = false;
+  public isAnimatingBookingInfo: boolean = false;
+  currentSort: 'asc' | 'desc' | null = null;
+  currentFilter: string = 'all';
 
   constructor() {
     this.initializeFlightData();
   }
+
+  routes: any[] = [
+    {
+      index: 0,
+      duration: 16800,
+      segments: [
+        {
+          departure: {time: "20.10.2024 08:00", airport: "DYU", city: "Душанбе", terminal: ""},
+          arrival: {time: "20.10.2024 10:40", airport: "NYC", city: "Нью-Йорк", terminal: ""},
+          baggage: "20KG",
+        },
+      ],
+    },
+  ];
 
   ngOnInit() {
     // console.log(this.flightSelected)
@@ -51,20 +80,6 @@ export class TicketsModalComponent implements OnInit {
   closeModal() {
     this.isVisible = false;
   }
-
-  routes: any[] = [
-    {
-      index: 0,
-      duration: 16800,
-      segments: [
-        {
-          departure: {time: "20.10.2024 08:00", airport: "DYU", city: "Душанбе", terminal: ""},
-          arrival: {time: "20.10.2024 10:40", airport: "NYC", city: "Нью-Йорк", terminal: ""},
-          baggage: "20KG",
-        },
-      ],
-    },
-  ];
 
   initializeFlightData() {
     const firstRoute = this.routes[0];
@@ -144,7 +159,43 @@ export class TicketsModalComponent implements OnInit {
     }
   }
 
-  preventClose(event: MouseEvent): void {
-    event.stopPropagation();
+  onAnimationBookingInfoEvent(event: AnimationEvent) {
+    if (event.phaseName === 'done' && event.toState === 'void') {
+      this.isBookingInfoModal = false;
+      this.isAnimatingBookingInfo = false;
+    }
+  }
+
+  getFilteredFlights(): any[] {
+    if (this.currentFilter === 'direct') {
+      return this.flights.filter(flight => flight.routes[0].segments.length === 1);
+    } else if (this.currentFilter === 'oneStop') {
+      return this.flights.filter(flight => flight.routes[0].segments.length === 2);
+    } else if (this.currentFilter === 'multipleStops') {
+      return this.flights.filter(flight => flight.routes[0].segments.length > 2);
+    }
+    return this.flights;
+  }
+
+  setFilter(filter: string) {
+    this.closeTransferFilter();
+    this.currentFilter = filter;
+  }
+
+  sortFlightsByPrice(order: 'asc' | 'desc'): void {
+    this.currentSort = order;
+    this.flights.sort((a, b) =>
+      order === 'asc' ? a.total_price.TJS - b.total_price.TJS : b.total_price.TJS - a.total_price.TJS
+    );
+
+    this.closePriceFilter();
+  }
+
+  clearPriceFilter() {
+    this.currentSort = null;
+  }
+
+  clearTransferFilter() {
+    this.currentFilter = 'all';
   }
 }

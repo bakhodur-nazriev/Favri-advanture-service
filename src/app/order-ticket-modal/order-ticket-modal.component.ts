@@ -109,6 +109,10 @@ export class OrderTicketModalComponent implements OnInit {
   }
 
   closeModal() {
+    const modalBlock = document.querySelector('.tickets-modal__block') as HTMLElement;
+    if (modalBlock) {
+      modalBlock.style.display = '';
+    }
     this.isVisible = false;
   }
 
