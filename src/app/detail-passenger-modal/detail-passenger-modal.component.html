@@ -128,7 +128,7 @@
           <div class="card">
             <input
               type="text"
-              [(ngModel)]="passengerDataList[selectedIndex].date_of_birth"
+              [(ngModel)]="selectedDate"
               placeholder="мм.дд.гггг"
               class="text-field"
               inputmode="numeric"
@@ -137,8 +137,10 @@
               (input)="formatDateInput($event)"
             >
           </div>
-          <div class="invalid-field"
-               *ngIf="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.date_of_birth)">
+          <div
+            class="invalid-field"
+            *ngIf="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.date_of_birth)"
+          >
             Поле должно быть заполнено в формате мм.дд.гггг*
           </div>
         </div>
@@ -197,18 +199,18 @@
           <div class="card">
             <input
               type="text"
-              [(ngModel)]="passengerDataList[selectedIndex].expiration_date"
+              [(ngModel)]="selectedDocumentExpireDate"
               placeholder="мм.дд.гггг"
               class="text-field"
               inputmode="numeric"
               pattern="[0-9]*"
-              [class.error]="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.expiration_date)"
+              [class.error]="isValidationExpirationTriggered && !isValidDate(passengerDataList[selectedIndex]?.expiration_date)"
               (input)="formatExpirationDateInput($event)"
             >
           </div>
           <div
             class="invalid-field"
-            *ngIf="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.expiration_date)"
+            *ngIf="isValidationExpirationTriggered && !isValidDate(passengerDataList[selectedIndex]?.expiration_date)"
           >
             Поле должно быть заполнено в формате мм.дд.гггг*
           </div>

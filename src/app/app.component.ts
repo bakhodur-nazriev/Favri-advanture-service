@@ -273,7 +273,7 @@ export class AppComponent implements OnInit {
     this.selectedStartDate = today;
     this.selectedDateText = this.formatDate(today);
 
-    sessionStorage.setItem('company_req_id', '26');
+    sessionStorage.setItem('company_req_id', '4');
 
     const defaultWalletPhone = '+992985000000';
 

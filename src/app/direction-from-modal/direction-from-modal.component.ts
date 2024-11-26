@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Output, ViewChild} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {AnimationEvent} from "@angular/animations";
@@ -100,6 +100,7 @@ export class DirectionFromModalComponent {
   public isLoading = false;
 
   @Output() selectDirection = new EventEmitter<any>();
+  @ViewChild('searchFromInput') searchFromInput!: ElementRef<HTMLInputElement>;
 
   constructor(private cityService: CityService) {
   }
@@ -143,6 +144,10 @@ export class DirectionFromModalComponent {
   openModal() {
     this.isVisible = true;
     this.isAnimating = false;
+
+    setTimeout(() => {
+      this.searchFromInput.nativeElement.focus();
+    });
   }
 
   closeModal() {
