@@ -116,10 +116,20 @@ export class TicketsModalComponent implements OnInit {
   }
 
   openBookingInfoModal() {
+    const ticketModalBlock = document.querySelector('.tickets-modal__block');
+    if (ticketModalBlock) {
+      ticketModalBlock.classList.add('overflow-hidden');
+    }
+
     this.isBookingInfoModal = true;
   }
 
   closeBookingInfoModal() {
+    const ticketModalBlock = document.querySelector('.tickets-modal__block');
+    if (ticketModalBlock) {
+      ticketModalBlock.classList.remove('overflow-hidden');
+    }
+
     this.isBookingInfoModal = false;
   }
 

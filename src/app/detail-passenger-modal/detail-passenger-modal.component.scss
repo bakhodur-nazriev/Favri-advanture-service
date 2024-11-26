@@ -12,16 +12,21 @@
     gap: 40px;
     padding: 27px;
 
+    .main-passenger__title {
+      margin-bottom: 0;
+    }
+
     .top-section {
       .arrow-left__button {
         all: unset;
+        display: flex;
       }
 
       .save-button {
         all: unset;
         color: #00B06C;
         font-weight: 550;
-        font-size: 14px;
+        font-size: 15px;
       }
 
       span {
@@ -35,7 +40,7 @@
       flex-direction: column;
 
       span {
-        font-size: 14px;
+        font-size: 15px;
         margin-bottom: 18px;
         padding-left: 10px;
       }
@@ -79,7 +84,7 @@
       .text-field {
         width: 100%;
         border: none;
-        font-size: 14px;
+        font-size: 15px;
         padding: 16px;
 
         &:focus-visible {
@@ -112,7 +117,7 @@
         color: #95A5A6;
         outline: none;
         border: none;
-        font-size: 14px;
+        font-size: 15px;
         width: 100%;
 
         &::after {
@@ -142,7 +147,7 @@
         color: #95A5A6;
         outline: none;
         border: none;
-        font-size: 14px;
+        font-size: 15px;
         width: 100%;
 
         &::after {
@@ -166,7 +171,7 @@
     .invalid-field {
       padding-left: 6px;
       color: red;
-      font-size: 14px;
+      font-size: 15px;
     }
 
     .error {
@@ -187,7 +192,7 @@
     padding: 10px 16px;
     border-radius: 10px;
     box-shadow: 0 4px 13px 0 #2B454E1A;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 400;
 
     &.active {
@@ -198,7 +203,7 @@
 }
 
 .gender-main__title {
-  font-size: 14px;
+  font-size: 15px;
   padding-left: 10px;
   margin-bottom: 18px;
 }

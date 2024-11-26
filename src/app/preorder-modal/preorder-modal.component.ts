@@ -51,6 +51,10 @@ export class PreorderModalComponent {
   }
 
   closeModal() {
+    const ticketModalBlock = document.querySelector('.tickets-modal__block');
+    if (ticketModalBlock) {
+      ticketModalBlock.classList.remove('overflow-hidden');
+    }
     if (!this.isAnimating) {
       this.isAnimating = true;
       this.isVisible = false;

@@ -61,9 +61,28 @@ export class DetailPassengerModalComponent implements OnInit {
   constructor(public passengerDataService: PassengerDataService) {
   }
 
-  onDateChange(event: any) {
-    this.selectedDate = event.value;
-    this.passengerDataList[this.selectedIndex].date_of_birth = this.selectedDate ? new Date(this.selectedDate).toISOString() : null;
+  isValidDate(date: string): boolean {
+    const dateRegex = /^(0[1-9]|1[0-2])\.(0[1-9]|[1-2][0-9]|3[0-1])\.\d{4}$/;
+    return dateRegex.test(date);
+  }
+
+  formatDateInput(event: Event): void {
+    const input = (event.target as HTMLInputElement).value;
+    const cleanedInput = input.replace(/[^0-9]/g, '');
+    let formattedDate = '';
+
+    if (cleanedInput.length > 0) {
+      formattedDate += cleanedInput.substring(0, 2);
+      if (cleanedInput.length > 2) {
+        formattedDate += '.' + cleanedInput.substring(2, 4);
+      }
+      if (cleanedInput.length > 4) {
+        formattedDate += '.' + cleanedInput.substring(4, 8);
+      }
+    }
+
+    (event.target as HTMLInputElement).value = formattedDate;
+    this.passengerDataList[this.selectedIndex].date_of_birth = formattedDate;
   }
 
   onDocumentExpireDate(event: any) {

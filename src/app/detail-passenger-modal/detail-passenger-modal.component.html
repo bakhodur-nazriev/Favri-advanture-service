@@ -23,7 +23,7 @@
       </button>
     </div>
 
-    <h1>{{ passenger.count }}</h1>
+    <h1 class="main-passenger__title">{{ passenger.count }}</h1>
 
     <div class="inputs-blocks">
       <div class="card-block">
@@ -125,46 +125,22 @@
       <div class="birthday-block">
         <span>Дата рождения</span>
         <div class="card-block">
-          <div
-            [class.error]="isValidationTriggered && !passengerDataList[selectedIndex]?.date_of_birth"
-            class="datepicker-block"
-            (click)="picker.open()"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M7.99994 2V5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M16.0001 2V5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M3.49994 9.09003H20.4999" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10"
-                    stroke-linecap="round" stroke-linejoin="round"/>
-              <path
-                d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
-                stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                stroke-linejoin="round"/>
-              <path d="M15.6946 13.7H15.7036" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M15.6946 16.7H15.7036" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M11.9954 13.7H12.0043" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M11.9954 16.7H12.0043" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M8.29443 13.7H8.30342" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M8.29443 16.7H8.30342" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-            </svg>
+          <div class="card">
             <input
-              matInput
+              type="text"
               [(ngModel)]="passengerDataList[selectedIndex].date_of_birth"
-              [matDatepicker]="picker"
-              (dateChange)="onDateChange($event)"
+              placeholder="мм.дд.гггг"
+              class="text-field"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              [class.error]="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.date_of_birth)"
+              (input)="formatDateInput($event)"
             >
-            <mat-datepicker #picker></mat-datepicker>
           </div>
-          <div class="invalid-field" *ngIf="isValidationTriggered && !passengerDataList[selectedIndex]?.date_of_birth">
-            Объязательное поле*
-          </div>
+        </div>
+        <div class="invalid-field"
+             *ngIf="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.date_of_birth)">
+          Поле должно быть заполнено в формате мм.дд.гггг*
         </div>
       </div>
 
@@ -218,51 +194,25 @@
       <div class="birthday-block">
         <span>Документ годен до</span>
         <div class="card-block">
-          <div
-            [class.error]="isValidationTriggered && !passengerDataList[selectedIndex]?.expiration_date"
-            class="datepicker-block"
-            (click)="pickerDocumentExpire.open()"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M7.99994 2V5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M16.0001 2V5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M3.49994 9.09003H20.4999" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10"
-                    stroke-linecap="round" stroke-linejoin="round"/>
-              <path
-                d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
-                stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                stroke-linejoin="round"/>
-              <path d="M15.6946 13.7H15.7036" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M15.6946 16.7H15.7036" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M11.9954 13.7H12.0043" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M11.9954 16.7H12.0043" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M8.29443 13.7H8.30342" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M8.29443 16.7H8.30342" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-            </svg>
+          <div class="card">
             <input
-              matInput
+              type="text"
               [(ngModel)]="passengerDataList[selectedIndex].expiration_date"
-              [matDatepicker]="pickerDocumentExpire"
-              (dateChange)="onDocumentExpireDate($event)"
+              placeholder="мм.дд.гггг"
+              class="text-field"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              [class.error]="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.expiration_date)"
+              (input)="formatDateInput($event)"
             >
-            <mat-datepicker #pickerDocumentExpire></mat-datepicker>
           </div>
-          <div class="invalid-field" *ngIf="isValidationTriggered && !passengerDataList[selectedIndex]?.expiration_date">
+          <div class="invalid-field"
+               *ngIf="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.expiration_date)">
             Объязательное поле*
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="inputs-blocks">
       <div class="card-block">
         <div class="card">
           <input
