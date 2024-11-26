@@ -137,10 +137,10 @@
               (input)="formatDateInput($event)"
             >
           </div>
-        </div>
-        <div class="invalid-field"
-             *ngIf="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.date_of_birth)">
-          Поле должно быть заполнено в формате мм.дд.гггг*
+          <div class="invalid-field"
+               *ngIf="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.date_of_birth)">
+            Поле должно быть заполнено в формате мм.дд.гггг*
+          </div>
         </div>
       </div>
 
@@ -203,12 +203,14 @@
               inputmode="numeric"
               pattern="[0-9]*"
               [class.error]="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.expiration_date)"
-              (input)="formatDateInput($event)"
+              (input)="formatExpirationDateInput($event)"
             >
           </div>
-          <div class="invalid-field"
-               *ngIf="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.expiration_date)">
-            Объязательное поле*
+          <div
+            class="invalid-field"
+            *ngIf="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.expiration_date)"
+          >
+            Поле должно быть заполнено в формате мм.дд.гггг*
           </div>
         </div>
       </div>

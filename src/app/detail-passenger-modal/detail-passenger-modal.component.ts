@@ -62,8 +62,17 @@ export class DetailPassengerModalComponent implements OnInit {
   }
 
   isValidDate(date: string): boolean {
-    const dateRegex = /^(0[1-9]|1[0-2])\.(0[1-9]|[1-2][0-9]|3[0-1])\.\d{4}$/;
-    return dateRegex.test(date);
+    const dateRegex = /^\d{2}\.\d{2}\.\d{4}$/;
+    if (!dateRegex.test(date)) return false;
+
+    const [day, month, year] = date.split('.').map(Number);
+
+    if (month < 1 || month > 12 || day < 1 || day > 31 || year < 1900 || year > new Date().getFullYear()) {
+      return false;
+    }
+
+    const daysInMonth = new Date(year, month, 0).getDate();
+    return day <= daysInMonth;
   }
 
   formatDateInput(event: Event): void {
@@ -82,12 +91,36 @@ export class DetailPassengerModalComponent implements OnInit {
     }
 
     (event.target as HTMLInputElement).value = formattedDate;
+
     this.passengerDataList[this.selectedIndex].date_of_birth = formattedDate;
+
+    if (this.isValidDate(formattedDate)) {
+      this.isValidationTriggered = false;
+    }
   }
 
-  onDocumentExpireDate(event: any) {
-    this.selectedDocumentExpireDate = event.value;
-    this.passengerDataList[this.selectedIndex].expiration_date = this.selectedDocumentExpireDate ? new Date(this.selectedDocumentExpireDate).toISOString() : null;
+  formatExpirationDateInput(event: Event): void {
+    const input = (event.target as HTMLInputElement).value;
+    const cleanedInput = input.replace(/[^0-9]/g, '');
+    let formattedDate = '';
+
+    if (cleanedInput.length > 0) {
+      formattedDate += cleanedInput.substring(0, 2);
+      if (cleanedInput.length > 2) {
+        formattedDate += '.' + cleanedInput.substring(2, 4);
+      }
+      if (cleanedInput.length > 4) {
+        formattedDate += '.' + cleanedInput.substring(4, 8);
+      }
+    }
+
+    (event.target as HTMLInputElement).value = formattedDate;
+
+    this.passengerDataList[this.selectedIndex].expiration_date = formattedDate;
+
+    if (this.isValidDate(formattedDate)) {
+      this.isValidationTriggered = false;
+    }
   }
 
   selectGender(gender: string) {
@@ -214,6 +247,8 @@ export class DetailPassengerModalComponent implements OnInit {
 
       this.passengerDataList[this.passengerDataService.selectedPassengerIndex] = {
         ...this.passengerDataList[this.passengerDataService.selectedPassengerIndex],
+        date_of_birth: this.formatToISO8601(this.passengerDataList[this.passengerDataService.selectedPassengerIndex].date_of_birth),
+        expiration_date: this.formatToISO8601(this.passengerDataList[this.passengerDataService.selectedPassengerIndex].expiration_date),
         document_type: this.selectedPassportCode,
         citizenship: this.selectedCountryCode,
       }
@@ -222,6 +257,11 @@ export class DetailPassengerModalComponent implements OnInit {
     this.passengerDataService.setPassengersDataList(this.passengerDataList);
 
     this.closeModal();
+  }
+
+  formatToISO8601(date: string): string {
+    const [day, month, year] = date.split('.').map(Number);
+    return new Date(year, month - 1, day).toISOString();
   }
 
   isLatin(value: string): boolean {
