@@ -150,8 +150,8 @@ export class DetailPassengerModalComponent implements OnInit {
           gender: this.passengerDataList[this.selectedIndex]?.gender || 'M',
           document_type: this.selectedPassportType || this.passports[0]?.name,
           document_number: '',
-          date_of_birth: this.formatDateToDisplay(passenger.date_of_birth),
-          expiration_date: this.formatDateToDisplay(passenger.expiration_date),
+          date_of_birth: passenger.date_of_birth,
+          expiration_date: passenger.expiration_date,
           phone: '',
           email: ''
         };
@@ -169,7 +169,6 @@ export class DetailPassengerModalComponent implements OnInit {
       this.selectedCountryCode = tajikistan.code;
     }
   }
-
   get name(): string {
     return this.passengerDataList[this.selectedIndex]?.name || '';
   }
@@ -262,14 +261,5 @@ export class DetailPassengerModalComponent implements OnInit {
     const phone = this.passengerDataList[this.selectedIndex]?.phone;
     const normalizedPhone = phone?.startsWith('+992') ? phone.slice(4) : phone;
     return normalizedPhone && normalizedPhone.length === 9 && /^\d+$/.test(normalizedPhone);
-  }
-
-  formatDateToDisplay(isoDate: string | null): string {
-    if (!isoDate) return '';
-    const date = new Date(isoDate);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}.${month}.${year}`;
   }
 }

@@ -156,15 +156,24 @@ export class OrderTicketModalComponent implements OnInit {
   }
 
   createOrderRequest() {
+    debugger
     if (!this.isValidForm()) {
       this.isValidationTriggered = true;
 
       return;
     }
 
+    const convertToISO = (dateString: string) => {
+      const [day, month, year] = dateString.split('.').map(Number);
+      const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0)); // Set to UTC midnight
+      return date.toISOString(); // Convert to ISO string
+    };
+
     const passengers = this.passengersList.map((passenger, index) => ({
       ...passenger,
-      index: index
+      index: index,
+      expiration_date: convertToISO(passenger.expiration_date),
+      date_of_birth: convertToISO(passenger.date_of_birth),
     }));
 
     const requestBody = {

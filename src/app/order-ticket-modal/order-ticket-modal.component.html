@@ -143,6 +143,7 @@
               [(ngModel)]="phone"
               placeholder="Номер телефона"
               class="text-field"
+              inputmode="numeric"
               [class.error]="isValidationTriggered && !phone"
               type="text"
               minlength="9"
