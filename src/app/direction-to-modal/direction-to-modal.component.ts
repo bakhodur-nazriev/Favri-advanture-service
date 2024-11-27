@@ -101,6 +101,8 @@ export class DirectionToModalComponent {
   @Output() selectDirection = new EventEmitter<any>();
   @ViewChild('searchToInput') searchToInput!: ElementRef<HTMLInputElement>;
 
+  searchInput: any;
+
   constructor(private cityService: CityService) {
   }
 
@@ -144,9 +146,10 @@ export class DirectionToModalComponent {
     this.isVisible = true;
     this.isAnimating = false;
 
-    setTimeout(() => {
-      this.searchToInput.nativeElement.focus();
-    });
+    setTimeout(()=>{
+      this.searchInput = document.getElementById('searchToInput');
+      (this.searchInput as HTMLInputElement).focus();
+    }, 100)
   }
 
   closeModal() {

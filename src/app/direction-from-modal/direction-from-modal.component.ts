@@ -3,6 +3,8 @@ import {FormsModule} from "@angular/forms";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {AnimationEvent} from "@angular/animations";
 import {CityService} from "../services/city-service.service";
+import { debounceTime, switchMap, catchError } from 'rxjs/operators';
+import {of} from "rxjs";
 
 @Component({
   selector: 'app-direction-from-modal',
@@ -100,8 +102,8 @@ export class DirectionFromModalComponent {
   public isLoading = false;
 
   @Output() selectDirection = new EventEmitter<any>();
-  @ViewChild('searchFromInput') searchFromInput!: ElementRef<HTMLInputElement>;
-
+  @ViewChild('searchFromInput') searchFromInput!: ElementRef;
+  searchInput: any;
   constructor(private cityService: CityService) {
   }
 
@@ -145,9 +147,10 @@ export class DirectionFromModalComponent {
     this.isVisible = true;
     this.isAnimating = false;
 
-    setTimeout(() => {
-      this.searchFromInput.nativeElement.focus();
-    });
+    setTimeout(()=>{
+      this.searchInput = document.getElementById('searchFromInput');
+      (this.searchInput as HTMLInputElement).focus();
+    }, 100)
   }
 
   closeModal() {

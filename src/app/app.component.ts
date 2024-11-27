@@ -189,7 +189,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-
   searchTickets() {
     const url = `${this.apiUrl}/search`;
     this.ticketsModal.openModal();
@@ -273,12 +272,10 @@ export class AppComponent implements OnInit {
     this.selectedStartDate = today;
     this.selectedDateText = this.formatDate(today);
 
-    sessionStorage.setItem('company_req_id', '4');
-
-    const defaultWalletPhone = '+992985000000';
+    sessionStorage.setItem('company_req_id', '26');
 
     this.route.queryParams.subscribe(params => {
-      const walletPhone = params['walletPhone'] || defaultWalletPhone;
+      const walletPhone = params['walletPhone'];
       if (walletPhone) {
         this.login(walletPhone);
       } else {
