@@ -140,17 +140,17 @@
         <div class="card-block">
           <div class="card">
             <input
-              [(ngModel)]="phone"
+              [(ngModel)]="walletPhone"
               placeholder="Номер телефона"
               class="text-field"
               inputmode="numeric"
-              [class.error]="isValidationTriggered && !phone"
+              [class.error]="isValidationTriggered && !walletPhone"
               type="text"
               minlength="9"
               maxlength="9"
             >
           </div>
-          <div class="invalid-field" *ngIf="isValidationTriggered && !phone">Объязательное поле*</div>
+          <div class="invalid-field" *ngIf="isValidationTriggered && !walletPhone">Объязательное поле*</div>
         </div>
       </div>
 

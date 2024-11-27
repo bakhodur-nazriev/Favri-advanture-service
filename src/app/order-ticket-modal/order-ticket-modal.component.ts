@@ -156,7 +156,6 @@ export class OrderTicketModalComponent implements OnInit {
   }
 
   createOrderRequest() {
-    debugger
     if (!this.isValidForm()) {
       this.isValidationTriggered = true;
 
@@ -183,7 +182,7 @@ export class OrderTicketModalComponent implements OnInit {
       session_id: sessionStorage.getItem('sessionId'),
       rec_id: this.flight.value.rec_id,
       partner_fees: this.flight.value.partner_fees.TJS,
-      payer_phone: '+992' + this.phone,
+      payer_phone: '+992' + this.walletPhone,
       payer_email: this.email,
       passengers: passengers,
       meta: {
@@ -233,6 +232,6 @@ export class OrderTicketModalComponent implements OnInit {
   }
 
   isValidForm(): boolean {
-    return this.phone.length > 0 && this.phone.length > 0;
+    return this.walletPhone.length > 0;
   }
 }
