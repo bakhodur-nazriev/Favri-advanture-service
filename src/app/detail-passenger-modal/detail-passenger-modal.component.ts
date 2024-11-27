@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
-import {MatInput, MatSuffix} from "@angular/material/input";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {FormsModule} from "@angular/forms";
 import {PassengerDataService} from "../services/passenger-data.service";
@@ -13,12 +12,10 @@ import {COUNTRIES} from '../../coutries';
   imports: [
     NgIf,
     NgForOf,
-    MatInput,
-    MatSuffix,
     MatDatepickerToggle,
     MatDatepicker,
     MatDatepickerInput,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './detail-passenger-modal.component.html',
   styleUrl: './detail-passenger-modal.component.scss',
@@ -46,8 +43,8 @@ export class DetailPassengerModalComponent implements OnInit {
   public openDropdownPassport: boolean = false;
   public selectedCountry: string = '';
   public selectedCountryCode: string = '';
-  selectedDate: Date | null = null;
-  selectedDocumentExpireDate: Date | null = null;
+  selectedDate: string = '';
+  selectedDocumentExpireDate: string = '';
   public selectedPassportType: string = '';
   passports: any[] = [
     {name: 'Загран паспорт', code: 'NP'},
@@ -62,99 +59,41 @@ export class DetailPassengerModalComponent implements OnInit {
   constructor(public passengerDataService: PassengerDataService) {
   }
 
-  isValidDate(date: string | null): boolean {
-    if (!date) return false;
-    const datePattern = /^(0[1-9]|1[0-2])\.(0[1-9]|[12][0-9]|3[01])\.\d{4}$/; // мм.дд.гггг
-    const [month, day, year] = date?.split('.') || [];
+  isValidDate(date: string): boolean {
+    const dateRegex = /^([0-2]\d|3[0-1])\.(0\d|1[0-2])\.\d{4}$/;
+    if (!dateRegex.test(date)) {
+      return false;
+    }
 
-    if (!datePattern.test(date)) return false;
-
-    const parsedDate = new Date(`${year}-${month}-${day}`);
+    const [day, month, year] = date.split('.').map(Number);
+    const dateObj = new Date(`${year}-${month}-${day}`);
     return (
-      parsedDate.getFullYear() === parseInt(year) &&
-      parsedDate.getMonth() + 1 === parseInt(month) &&
-      parsedDate.getDate() === parseInt(day)
+      dateObj.getDate() === day &&
+      dateObj.getMonth() + 1 === month &&
+      dateObj.getFullYear() === year
     );
   }
 
-  // formatDateInput(event: Event): void {
-  //   const input = (event.target as HTMLInputElement).value;
-  //   const cleanedInput = input.replace(/[^0-9]/g, '');
-  //   let formattedDate = '';
-  //
-  //   if (cleanedInput.length > 0) {
-  //     formattedDate += cleanedInput.substring(0, 2);
-  //     if (cleanedInput.length > 2) {
-  //       formattedDate += '.' + cleanedInput.substring(2, 4);
-  //     }
-  //     if (cleanedInput.length > 4) {
-  //       formattedDate += '.' + cleanedInput.substring(4, 8);
-  //     }
-  //   }
-  //
-  //   (event.target as HTMLInputElement).value = formattedDate;
-  //
-  //   this.passengerDataList[this.selectedIndex].date_of_birth = formattedDate;
-  //
-  //   if (this.isValidDate(formattedDate)) {
-  //     this.isValidationTriggered = false;
-  //   }
-  // }
-  //
-  // formatExpirationDateInput(event: Event): void {
-  //   const input = (event.target as HTMLInputElement).value;
-  //   const cleanedInput = input.replace(/[^0-9]/g, '');
-  //   let formattedDate = '';
-  //
-  //   if (cleanedInput.length > 0) {
-  //     formattedDate += cleanedInput.substring(0, 2);
-  //     if (cleanedInput.length > 2) {
-  //       formattedDate += '.' + cleanedInput.substring(2, 4);
-  //     }
-  //     if (cleanedInput.length > 4) {
-  //       formattedDate += '.' + cleanedInput.substring(4, 8);
-  //     }
-  //   }
-  //
-  //   (event.target as HTMLInputElement).value = formattedDate;
-  //   this.passengerDataList[this.selectedIndex].expiration_date = formattedDate;
-  //
-  //   if (this.isValidDate(formattedDate)) {
-  //     this.isValidationExpirationTriggered = false;
-  //   }
-  // }
-
   formatDateInput(event: Event): void {
-    this.formatDateField(event, 'date_of_birth');
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, '').slice(0, 8);
+
+    if (value.length >= 3) value = value.slice(0, 2) + '.' + value.slice(2);
+    if (value.length >= 6) value = value.slice(0, 5) + '.' + value.slice(5);
+
+    input.value = value;
+    this.selectedDate = value;
   }
 
   formatExpirationDateInput(event: Event): void {
-    this.formatDateField(event, 'expiration_date');
-  }
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, '').slice(0, 8);
 
-  private formatDateField(event: Event, field: 'date_of_birth' | 'expiration_date'): void {
-    const input = (event.target as HTMLInputElement).value;
-    const cleanedInput = input.replace(/[^0-9]/g, '');
-    let formattedDate = '';
+    if (value.length >= 3) value = value.slice(0, 2) + '.' + value.slice(2);
+    if (value.length >= 6) value = value.slice(0, 5) + '.' + value.slice(5);
 
-    if (cleanedInput.length > 0) {
-      formattedDate += cleanedInput.substring(0, 2);
-      if (cleanedInput.length > 2) {
-        formattedDate += '.' + cleanedInput.substring(2, 4);
-      }
-      if (cleanedInput.length > 4) {
-        formattedDate += '.' + cleanedInput.substring(4, 8);
-      }
-    }
-
-    (event.target as HTMLInputElement).value = formattedDate;
-    this.passengerDataList[this.selectedIndex][field] = formattedDate;
-
-    if (this.isValidDate(formattedDate)) {
-      field === 'date_of_birth'
-        ? (this.isValidationTriggered = false)
-        : (this.isValidationExpirationTriggered = false);
-    }
+    input.value = value;
+    this.selectedDocumentExpireDate = value;
   }
 
   selectGender(gender: string) {
@@ -211,8 +150,8 @@ export class DetailPassengerModalComponent implements OnInit {
           gender: this.passengerDataList[this.selectedIndex]?.gender || 'M',
           document_type: this.selectedPassportType || this.passports[0]?.name,
           document_number: '',
-          expiration_date: this.selectedDate ? this.toUTCString(this.selectedDate) : null,
-          date_of_birth: this.selectedDocumentExpireDate ? this.toUTCString(this.selectedDocumentExpireDate) : null,
+          date_of_birth: this.formatDateToDisplay(passenger.date_of_birth),
+          expiration_date: this.formatDateToDisplay(passenger.expiration_date),
           phone: '',
           email: ''
         };
@@ -268,25 +207,12 @@ export class DetailPassengerModalComponent implements OnInit {
   }
 
   savePassengerData() {
-    if (!this.isValidForm()) {
+    if (!this.isValidDate(this.passengerDataList[this.selectedIndex].date_of_birth) ||
+      !this.isValidDate(this.passengerDataList[this.selectedIndex].expiration_date) ||
+      !this.isValidForm()) {
       this.isValidationTriggered = true;
       this.isValidationExpirationTriggered = true;
-
       return;
-    }
-
-    const currentPassenger = this.passengerDataList[this.selectedIndex];
-
-    if (this.selectedDate) {
-      currentPassenger.date_of_birth = new Date(this.selectedDate).toISOString();
-    } else {
-      currentPassenger.date_of_birth = null;
-    }
-
-    if (this.selectedDocumentExpireDate) {
-      currentPassenger.expiration_date = new Date(this.selectedDocumentExpireDate).toISOString();
-    } else {
-      currentPassenger.expiration_date = null;
     }
 
     if (this.passengerDataService.selectedPassengerIndex != null) {
@@ -302,7 +228,6 @@ export class DetailPassengerModalComponent implements OnInit {
     }
 
     this.passengerDataService.setPassengersDataList(this.passengerDataList);
-
     this.closeModal();
   }
 
@@ -333,7 +258,18 @@ export class DetailPassengerModalComponent implements OnInit {
     )
   }
 
-  toUTCString(date: Date): string {
-    return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}T${String(date.getUTCHours()).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}:${String(date.getUTCSeconds()).padStart(2, '0')}Z`;
+  isPhoneValid(): boolean {
+    const phone = this.passengerDataList[this.selectedIndex]?.phone;
+    const normalizedPhone = phone?.startsWith('+992') ? phone.slice(4) : phone;
+    return normalizedPhone && normalizedPhone.length === 9 && /^\d+$/.test(normalizedPhone);
+  }
+
+  formatDateToDisplay(isoDate: string | null): string {
+    if (!isoDate) return '';
+    const date = new Date(isoDate);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
   }
 }
