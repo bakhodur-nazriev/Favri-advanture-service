@@ -178,12 +178,14 @@
   height: 100%;
   overflow-y: hidden;
   background: rgba(44, 44, 44, 0.7);
+  display: flex;
+  align-items: end;
 
   .booking-info__modal {
     position: absolute;
     left: 0;
     bottom: 0;
-    padding: 15px 34px 34px;
+    padding: 15px 30px 30px;
     background-color: #fff;
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
