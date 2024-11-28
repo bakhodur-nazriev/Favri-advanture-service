@@ -17,6 +17,8 @@
   border-radius: 20px 20px 0 0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   height: -webkit-fill-available;
+  height: 100vh;
+  max-height: 100%;
 
   .passenger-content__block {
     overflow-y: auto;
@@ -131,6 +133,7 @@
 
   .passengers-class__button {
     -webkit-tap-highlight-color: transparent;
+    color: #000;
   }
 }
 
