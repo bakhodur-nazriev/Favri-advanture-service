@@ -36,11 +36,11 @@ export class TicketsModalComponent implements OnInit {
   @Input() travelClassText: string = '';
   @Input() selectedDateText: string = '';
 
-  public isVisible: boolean = true;
+  public isVisible: boolean = false;
   departureAirport: any;
   arrivalAirport: any;
   flightDuration: string = '';
-  public isBookingInfoModal: boolean = true;
+  public isBookingInfoModal: boolean = false;
   public isPriceFilter: boolean = false;
   public isTransferFilter: boolean = false;
   public isAnimatingBookingInfo: boolean = false;
