@@ -27,7 +27,7 @@ import {Passengers} from "../models/passengers.interface";
 export class ModalPassengersComponent {
   @Output() selectPassengersAndClass = new EventEmitter<Passengers>();
 
-  public isVisible = false;
+  public isVisible = true;
   public isAnimating = false;
   public selectedClass: string = 'economy';
   public adults: number = 1;
