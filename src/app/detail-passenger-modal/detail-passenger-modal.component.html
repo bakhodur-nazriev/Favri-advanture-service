@@ -34,6 +34,7 @@
             class="text-field"
             [class.error]="isValidationTriggered && !isLatin(name)"
             type="text"
+            name="name"
           >
         </div>
         <div class="invalid-field" *ngIf="isValidationTriggered && !isLatin(name)">
@@ -49,6 +50,7 @@
             class="text-field"
             [class.error]="isValidationTriggered && !isLatin(surname)"
             type="text"
+            name="surname"
           >
         </div>
         <div class="invalid-field" *ngIf="isValidationTriggered && !isLatin(surname)">
@@ -63,6 +65,7 @@
             placeholder="Отчество"
             class="text-field"
             type="text"
+            name="middleName"
           >
         </div>
       </div>
@@ -101,22 +104,24 @@
       </div>
     </div>
 
-    <div class="d-flex flex-column">
-      <span class="gender-main__title">Пол</span>
-      <div class="genders-block">
-        <div
-          class="gender-item active"
-          [class.active]="passengerDataList[selectedIndex].gender === 'M'"
-          (click)="selectGender('M')"
-        >
-          Мужской
-        </div>
-        <div
-          class="gender-item"
-          [class.active]="passengerDataList[selectedIndex].gender === 'F'"
-          (click)="selectGender('F')"
-        >
-          Женский
+    <div *ngIf="passengerDataList[selectedIndex]">
+      <div class="d-flex flex-column">
+        <span class="gender-main__title">Пол</span>
+        <div class="genders-block">
+          <div
+            class="gender-item active"
+            [class.active]="passengerDataList[selectedIndex]?.gender === 'M'"
+            (click)="selectGender('M')"
+          >
+            Мужской
+          </div>
+          <div
+            class="gender-item"
+            [class.active]="passengerDataList[selectedIndex]?.gender === 'F'"
+            (click)="selectGender('F')"
+          >
+            Женский
+          </div>
         </div>
       </div>
     </div>
@@ -130,6 +135,7 @@
               type="text"
               [(ngModel)]="passengerDataList[selectedIndex].date_of_birth"
               placeholder="дд.мм.гггг"
+              name="phone"
               class="text-field"
               inputmode="numeric"
               pattern="^([0-2]\d|3[0-1])\.(0\d|1[0-2])\.\d{4}$"
@@ -139,7 +145,7 @@
           </div>
           <div
             class="invalid-field"
-            *ngIf="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex].date_of_birth)"
+            *ngIf="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.date_of_birth)"
           >
             Поле должно быть заполнено в формате дд.мм.гггг*
           </div>
@@ -182,8 +188,9 @@
             type="text"
             [(ngModel)]="passengerDataList[selectedIndex].document_number"
             placeholder="Серия и номер документа"
-            [class.error]="isValidationTriggered && !passengerDataList[selectedIndex]?.document_number"
             class="text-field"
+            name="documentNumber"
+            [class.error]="isValidationTriggered && !passengerDataList[selectedIndex]?.document_number"
           >
         </div>
         <div class="invalid-field" *ngIf="isValidationTriggered && !passengerDataList[selectedIndex]?.document_number">
@@ -203,6 +210,7 @@
               placeholder="дд.мм.гггг"
               class="text-field"
               inputmode="numeric"
+              name="expirationDate"
               pattern="^([0-2]\d|3[0-1])\.(0\d|1[0-2])\.\d{4}$"
               [class.error]="isValidationExpirationTriggered && !isValidDate(passengerDataList[selectedIndex].expiration_date)"
               (input)="formatExpirationDateInput($event)"
@@ -227,6 +235,7 @@
             type="text"
             minlength="9"
             maxlength="9"
+            name="phone"
             [class.error]="isValidationTriggered && !passengerDataList[selectedIndex]?.phone"
           >
         </div>
@@ -252,7 +261,8 @@
             placeholder="E-mail"
             class="text-field"
             [class.error]="isValidationTriggered && !passengerDataList[selectedIndex]?.email"
-            type="text"
+            type="email"
+            name="email"
           >
         </div>
         <div class="invalid-field" *ngIf="isValidationTriggered && !passengerDataList[selectedIndex]?.email">

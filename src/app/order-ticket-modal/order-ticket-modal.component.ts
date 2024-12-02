@@ -41,6 +41,7 @@ export class OrderTicketModalComponent implements OnInit {
     infantsWithSeat: number
   } = {adults: 0, children: 0, infantsWithSeat: 0, infantsWithoutSeat: 0}
   @Output() detailPassengerSelected = new EventEmitter<any>;
+
   private apiUrl = 'https://integration.cbt.tj/api/flytj/book';
   //private apiUrl = 'http://192.168.40.238:9800/api/flytj/book';
   // private apiUrl = 'http://localhost:5273/api/flytj/book';
@@ -203,7 +204,6 @@ export class OrderTicketModalComponent implements OnInit {
       next: (response) => {
         if (response.statusCode === 200) {
           window.location.href = response.data.paymentUrl;
-          console.log('Заказ успешно создан', response);
         }
       },
       error: (error) => {

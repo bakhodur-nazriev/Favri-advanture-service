@@ -1,11 +1,12 @@
 .tickets-modal__block {
   z-index: 10;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   position: absolute;
   top: 0;
   left: 0;
   background: var(--bg-color);
+  overflow: auto;
 
   .tickets-modal__content {
     gap: 20px;

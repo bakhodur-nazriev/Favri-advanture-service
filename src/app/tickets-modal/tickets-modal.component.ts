@@ -65,9 +65,7 @@ export class TicketsModalComponent implements OnInit {
     },
   ];
 
-  ngOnInit() {
-    // console.log(this.flightSelected)
-  }
+  ngOnInit() {}
 
   selectFlight(flight: any) {
     this.flightSelected.emit(flight);
@@ -119,6 +117,7 @@ export class TicketsModalComponent implements OnInit {
     const ticketModalBlock = document.querySelector('.tickets-modal__block');
     if (ticketModalBlock) {
       ticketModalBlock.classList.add('overflow-hidden');
+      ticketModalBlock.classList.add('h-100');
     }
 
     this.isBookingInfoModal = true;
@@ -128,6 +127,7 @@ export class TicketsModalComponent implements OnInit {
     const ticketModalBlock = document.querySelector('.tickets-modal__block');
     if (ticketModalBlock) {
       ticketModalBlock.classList.remove('overflow-hidden');
+      ticketModalBlock.classList.remove('h-100')
     }
 
     this.isBookingInfoModal = false;

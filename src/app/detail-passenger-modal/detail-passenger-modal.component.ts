@@ -33,7 +33,7 @@ import {COUNTRIES} from '../../coutries';
 })
 export class DetailPassengerModalComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
-  @Input() passenger: any;
+  @Input() passenger: any = {};
 
   public isValidationTriggered: boolean = false;
   public isValidationExpirationTriggered: boolean = false;
@@ -41,6 +41,7 @@ export class DetailPassengerModalComponent implements OnInit {
   public isAnimating: boolean = false;
   public dropdownOpen: boolean = false;
   public openDropdownPassport: boolean = false;
+  public selectedGender: string = 'M';
   public selectedCountry: string = '';
   public selectedCountryCode: string = '';
   selectedDate: string = '';
@@ -54,7 +55,7 @@ export class DetailPassengerModalComponent implements OnInit {
   passengerDataList: any[] = [];
   public countries = COUNTRIES;
 
-  selectedIndex: number = 0
+  selectedIndex: number = 0;
 
   constructor(public passengerDataService: PassengerDataService) {
   }
@@ -140,6 +141,7 @@ export class DetailPassengerModalComponent implements OnInit {
     this.passengerDataService.event$.subscribe((passenger: any) => {
       const index = this.passengerDataService.selectedPassengerIndex ?? 0;
       this.selectedIndex = index;
+
       if (!this.passengerDataList[index]) {
         this.passengerDataList[index] = {
           name: '',
@@ -147,16 +149,17 @@ export class DetailPassengerModalComponent implements OnInit {
           middle_name: '',
           type: passenger.passengerType,
           citizenship: this.selectedCountryCode || this.passengerDataList[this.selectedIndex]?.citizenship,
-          gender: this.passengerDataList[this.selectedIndex]?.gender || 'M',
+          gender: this.selectedGender || this.passengerDataList[this.selectedIndex]?.gender,
           document_type: this.selectedPassportType || this.passports[0]?.name,
           document_number: '',
-          date_of_birth: passenger.date_of_birth,
-          expiration_date: passenger.expiration_date,
+          date_of_birth: '',
+          expiration_date: '',
           phone: '',
           email: ''
         };
       }
-    });
+    })
+
 
     if (this.passports.length > 0) {
       this.selectedPassportType = this.passports[0].name;
@@ -169,6 +172,7 @@ export class DetailPassengerModalComponent implements OnInit {
       this.selectedCountryCode = tajikistan.code;
     }
   }
+
   get name(): string {
     return this.passengerDataList[this.selectedIndex]?.name || '';
   }
