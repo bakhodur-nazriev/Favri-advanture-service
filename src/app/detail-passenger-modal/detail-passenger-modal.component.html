@@ -138,14 +138,14 @@
               name="phone"
               class="text-field"
               inputmode="numeric"
-              pattern="^([0-2]\d|3[0-1])\.(0\d|1[0-2])\.\d{4}$"
-              [class.error]="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex].date_of_birth)"
+              pattern="[0-9]*"
+              [class.error]="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.date_of_birth)"
               (input)="formatDateInput($event)"
             >
           </div>
           <div
             class="invalid-field"
-            *ngIf="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex]?.date_of_birth)"
+            *ngIf="isValidationTriggered && !isValidDate(passengerDataList[selectedIndex].date_of_birth)"
           >
             Поле должно быть заполнено в формате дд.мм.гггг*
           </div>
@@ -211,8 +211,8 @@
               class="text-field"
               inputmode="numeric"
               name="expirationDate"
-              pattern="^([0-2]\d|3[0-1])\.(0\d|1[0-2])\.\d{4}$"
-              [class.error]="isValidationExpirationTriggered && !isValidDate(passengerDataList[selectedIndex].expiration_date)"
+              pattern="[0-9]*"
+              [class.error]="isValidationExpirationTriggered && !isValidDate(passengerDataList[selectedIndex]?.expiration_date)"
               (input)="formatExpirationDateInput($event)"
             >
           </div>

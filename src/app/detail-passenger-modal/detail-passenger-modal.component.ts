@@ -60,19 +60,13 @@ export class DetailPassengerModalComponent implements OnInit {
   constructor(public passengerDataService: PassengerDataService) {
   }
 
-  isValidDate(date: string): boolean {
-    const dateRegex = /^([0-2]\d|3[0-1])\.(0\d|1[0-2])\.\d{4}$/;
-    if (!dateRegex.test(date)) {
-      return false;
-    }
+  isValidDate(dateString: string): boolean {
+    const regex = /^([0-2]\d|3[0-1])\.(0\d|1[0-2])\.\d{4}$/;
+    if (!regex.test(dateString)) return false;
 
-    const [day, month, year] = date.split('.').map(Number);
-    const dateObj = new Date(`${year}-${month}-${day}`);
-    return (
-      dateObj.getDate() === day &&
-      dateObj.getMonth() + 1 === month &&
-      dateObj.getFullYear() === year
-    );
+    const [day, month, year] = dateString.split('.').map(Number);
+    const date = new Date(year, month - 1, day);
+    return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
   }
 
   formatDateInput(event: Event): void {
