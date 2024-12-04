@@ -167,7 +167,7 @@ export class OrderTicketModalComponent implements OnInit {
     const convertToISO = (dateString: string) => {
       const [day, month, year] = dateString.split('.').map(Number);
       const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0)); // Set to UTC midnight
-      return date.toISOString(); // Convert to ISO string
+      return date.toISOString();
     };
 
     const passengers = this.passengersList.map((passenger, index) => ({

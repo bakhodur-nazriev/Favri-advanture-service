@@ -129,11 +129,11 @@
               [(ngModel)]="email"
               placeholder="Email"
               class="text-field"
-              [class.error]="isValidationTriggered && !email"
+              [class.error]="!isValidationTriggered && !email"
               type="text"
             >
           </div>
-          <div class="invalid-field" *ngIf="isValidationTriggered && !email">Объязательное поле*</div>
+          <div class="invalid-field" *ngIf="!isValidationTriggered && !email">Объязательное поле*</div>
         </div>
 
         <div class="card-block">
@@ -143,13 +143,13 @@
               placeholder="Номер телефона"
               class="text-field"
               inputmode="numeric"
-              [class.error]="isValidationTriggered && !walletPhone"
+              [class.error]="!isValidationTriggered && !walletPhone"
               type="text"
               minlength="9"
               maxlength="9"
             >
           </div>
-          <div class="invalid-field" *ngIf="isValidationTriggered && !walletPhone">Объязательное поле*</div>
+          <div class="invalid-field" *ngIf="!isValidationTriggered && !walletPhone">Объязательное поле*</div>
         </div>
       </div>
 
@@ -164,7 +164,6 @@
         class="btn-primary"
         (click)="createOrderRequest()"
         [disabled]="!isPassengerFormValid"
-        [class.inValid]="!isPassengerFormValid"
       >
         Оформить
       </button>
