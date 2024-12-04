@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {ActivatedRoute} from '@angular/router';
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
@@ -62,6 +62,7 @@ export class OrderTicketModalComponent implements OnInit {
   public email: string = '';
   public phone: string = '';
   public walletPhone: string = "123456789";
+  public validationPopup: boolean = false;
 
   getPassengerList() {
     let passengerList = [];
@@ -158,9 +159,13 @@ export class OrderTicketModalComponent implements OnInit {
   }
 
   createOrderRequest() {
+    this.isValidationTriggered = true;
     if (!this.isValidForm()) {
-      this.isValidationTriggered = true;
+      return;
+    }
 
+    if (!this.isPassengerValidForm()) {
+      this.validationPopup = true;
       return;
     }
 
@@ -233,6 +238,27 @@ export class OrderTicketModalComponent implements OnInit {
   }
 
   isValidForm(): boolean {
-    return this.walletPhone.length > 0;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmailValid = emailRegex.test(this.email);
+
+    return this.walletPhone.length > 0 && isEmailValid;
+  }
+
+  isPassengerValidForm() {
+    return this.isPassengerFormValid;
+  }
+
+  isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  isValidPhone(phone: string): boolean {
+    const phoneRegex = /^\d{9}$/;
+    return phoneRegex.test(phone);
+  }
+
+  closeValidationPopup() {
+    this.validationPopup = false;
   }
 }
