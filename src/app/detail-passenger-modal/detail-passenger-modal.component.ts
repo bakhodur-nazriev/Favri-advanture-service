@@ -34,6 +34,7 @@ import {COUNTRIES} from '../../coutries';
 export class DetailPassengerModalComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Input() passenger: any = {};
+  @Output() validationStatusChanged = new EventEmitter<boolean>();
 
   public isValidationTriggered: boolean = false;
   public isValidationExpirationTriggered: boolean = false;
@@ -212,6 +213,8 @@ export class DetailPassengerModalComponent implements OnInit {
       return;
     }
 
+    this.checkValidationStatus();
+
     if (this.passengerDataService.selectedPassengerIndex != null) {
       if (!this.passengerDataList[this.passengerDataService.selectedPassengerIndex].phone.startsWith('+992')) {
         this.passengerDataList[this.passengerDataService.selectedPassengerIndex].phone = `+992${this.passengerDataList[this.passengerDataService.selectedPassengerIndex].phone}`;
@@ -259,5 +262,12 @@ export class DetailPassengerModalComponent implements OnInit {
     const phone = this.passengerDataList[this.selectedIndex]?.phone;
     const normalizedPhone = phone?.startsWith('+992') ? phone.slice(4) : phone;
     return normalizedPhone && normalizedPhone.length === 9 && /^\d+$/.test(normalizedPhone);
+  }
+
+  checkValidationStatus(): void {
+    if (this.isValidForm()) {
+      const isValid = true;
+      this.validationStatusChanged.emit(isValid);
+    }
   }
 }

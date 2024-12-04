@@ -164,6 +164,7 @@
     #orderTicketModal
     [passengers]="passengers"
     [flight]="selectedFlight"
+    [isPassengerFormValid]="isPassengerFormValid"
     (detailPassengerSelected)="openDetailPassengerModal($event)"
   />
 
@@ -171,6 +172,7 @@
     #detailPassengerModal
     *ngIf="selectedPassenger"
     [passenger]="selectedPassenger"
+    (validationStatusChanged)="onValidationStatusChanged($event)"
   />
 </main>
 

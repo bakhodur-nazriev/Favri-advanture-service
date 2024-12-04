@@ -89,8 +89,13 @@ export class AppComponent implements OnInit {
 
   public passengerCount: number = 0;
   public travelClassText: string = '';
+  isPassengerFormValid: boolean = false;
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
+  }
+
+  onValidationStatusChanged(isValid: boolean): void {
+    this.isPassengerFormValid = isValid;
   }
 
   onFlightSelected(flight: any) {
@@ -272,7 +277,7 @@ export class AppComponent implements OnInit {
     this.selectedStartDate = today;
     this.selectedDateText = this.formatDate(today);
 
-    sessionStorage.setItem('company_req_id', '26');
+    sessionStorage.setItem('company_req_id', '4');
 
     this.route.queryParams.subscribe(params => {
       const walletPhone = params['walletPhone'];
