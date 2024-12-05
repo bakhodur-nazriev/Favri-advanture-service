@@ -108,6 +108,10 @@ body {
   transform: translateX(-50%);
   bottom: 80px;
   width: 85%;
+
+  button  {
+    padding: 0;
+  }
 }
 
 .input-from__block,

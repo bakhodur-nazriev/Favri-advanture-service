@@ -72,6 +72,15 @@ export class AppComponent implements OnInit {
     infantsWithoutSeat: 0,
     travelClass: 'economy'
   }
+
+  public tempPassengers: Passengers = {
+    adults: 1,
+    children: 0,
+    infantsWithSeat: 0,
+    infantsWithoutSeat: 0,
+    travelClass: 'economy'
+  };
+
   public travelClass: string = 'Эконом';
   public selectedDateText: string = '';
   public isLoading: boolean = false;
@@ -155,7 +164,7 @@ export class AppComponent implements OnInit {
   }
 
   handlePassengersAndClass(event: Passengers) {
-    this.passengers = {...event};
+    this.tempPassengers = {...event};
     this.calculatePassengerCount();
     this.travelClassText = this.getTravelClassText(event.travelClass);
   }
@@ -195,6 +204,7 @@ export class AppComponent implements OnInit {
   }
 
   searchTickets() {
+    this.passengers = {...this.tempPassengers};
     const url = `${this.apiUrl}/search`;
     this.ticketsModal.openModal();
     this.isLoading = true;
@@ -277,7 +287,7 @@ export class AppComponent implements OnInit {
     this.selectedStartDate = today;
     this.selectedDateText = this.formatDate(today);
 
-    sessionStorage.setItem('company_req_id', '4');
+    sessionStorage.setItem('company_req_id', '26');
 
     this.route.queryParams.subscribe(params => {
       const walletPhone = params['walletPhone'];

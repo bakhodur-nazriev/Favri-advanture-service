@@ -35,7 +35,19 @@ export class ModalPassengersComponent {
   public infantsWithSeat: number = 0;
   public infantsWithoutSeat: number = 0;
 
+  public tempSelectedClass: string = this.selectedClass;
+  public tempAdults: number = this.adults;
+  public tempChildren: number = this.children;
+  public tempInfantsWithSeat: number = this.infantsWithSeat;
+  public tempInfantsWithoutSeat: number = this.infantsWithoutSeat;
+
   confirmSelection() {
+    this.selectedClass = this.tempSelectedClass;
+    this.adults = this.tempAdults;
+    this.children = this.tempChildren;
+    this.infantsWithSeat = this.tempInfantsWithSeat;
+    this.infantsWithoutSeat = this.tempInfantsWithoutSeat;
+
     this.selectPassengersAndClass.emit({
       adults: this.adults,
       children: this.children,
@@ -43,10 +55,16 @@ export class ModalPassengersComponent {
       infantsWithoutSeat: this.infantsWithoutSeat,
       travelClass: this.selectedClass
     });
-    this.closeModal();
+    this.isVisible = false;
+    this.isAnimating = true;
   }
 
   openModal() {
+    this.tempSelectedClass = this.selectedClass;
+    this.tempAdults = this.adults;
+    this.tempChildren = this.children;
+    this.tempInfantsWithSeat = this.infantsWithSeat;
+    this.tempInfantsWithoutSeat = this.infantsWithoutSeat;
     this.isVisible = true;
   }
 
@@ -69,50 +87,50 @@ export class ModalPassengersComponent {
   }
 
   increaseAdults() {
-    if (this.adults < 8) {
-      this.adults++;
+    if (this.tempAdults < 8) {
+      this.tempAdults++;
     }
   }
 
   decreaseAdults() {
-    if (this.adults >= 1) {
-      this.adults--;
+    if (this.tempAdults >= 1) {
+      this.tempAdults--;
     }
   }
 
   increaseChildren() {
-    if (this.children < 8) {
-      this.children++;
+    if (this.tempChildren < 8) {
+      this.tempChildren++;
     }
   }
 
   decreaseChildren() {
-    if (this.children >= 1) {
-      this.children--;
+    if (this.tempChildren >= 0) {
+      this.tempChildren--;
     }
   }
 
   increaseInfantsWithSeat() {
-    if (this.infantsWithSeat < 8) {
-      this.infantsWithSeat++;
+    if (this.tempInfantsWithSeat < 8) {
+      this.tempInfantsWithSeat++;
     }
   }
 
   decreaseInfantsWithSeat() {
-    if (this.infantsWithSeat >= 1) {
-      this.infantsWithSeat--;
+    if (this.tempInfantsWithSeat >= 0) {
+      this.tempInfantsWithSeat--;
     }
   }
 
   increaseInfantsWithoutSeat() {
-    if (this.infantsWithoutSeat < 8) {
-      this.infantsWithoutSeat++;
+    if (this.tempInfantsWithoutSeat < 8) {
+      this.tempInfantsWithoutSeat++;
     }
   }
 
   decreaseInfantsWithoutSeat() {
-    if (this.infantsWithoutSeat >= 1) {
-      this.infantsWithoutSeat--;
+    if (this.tempInfantsWithoutSeat >= 0) {
+      this.tempInfantsWithoutSeat--;
     }
   }
 }

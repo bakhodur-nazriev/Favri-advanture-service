@@ -108,8 +108,10 @@
                   stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
 
-          <span>{{ passengers.adults + passengers.children + passengers.infantsWithoutSeat + passengers.infantsWithSeat }}
-            пасс, {{ travelClass }}</span>
+          <span>
+            {{ tempPassengers.adults + tempPassengers.children + tempPassengers.infantsWithoutSeat + tempPassengers.infantsWithSeat }}
+            пасс, {{ travelClass }}
+          </span>
         </button>
       </div>
     </div>
@@ -165,6 +167,7 @@
     [passengers]="passengers"
     [flight]="selectedFlight"
     [isPassengerFormValid]="isPassengerFormValid"
+    [passengersList]="passengersList"
     (detailPassengerSelected)="openDetailPassengerModal($event)"
   />
 
