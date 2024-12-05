@@ -47,6 +47,7 @@ export class OrderTicketModalComponent implements OnInit {
   //private apiUrl = 'http://192.168.40.238:9800/api/flytj/book';
   // private apiUrl = 'http://localhost:5273/api/flytj/book';
   passengersList: any[] = [];
+  passengersDataList: any[] = [];
 
   constructor(
     private passengerDataService: PassengerDataService,
@@ -70,7 +71,8 @@ export class OrderTicketModalComponent implements OnInit {
       passengerList.push({
         count: `Пассажир ${i}`,
         type: 'Взрослый, старше 12 лет',
-        passengerType: 'adt'
+        passengerType: 'adt',
+        isValidPassenger: false,
       });
     }
 
@@ -78,7 +80,8 @@ export class OrderTicketModalComponent implements OnInit {
       passengerList.push({
         count: `Пассажир ${i + this.passengers.adults}`,
         type: 'Детей от 2 до 12 лет',
-        passengerType: 'chd'
+        passengerType: 'chd',
+        isValidPassenger: false,
       });
     }
 
@@ -86,7 +89,8 @@ export class OrderTicketModalComponent implements OnInit {
       passengerList.push({
         count: `Пассажир ${i + this.passengers.adults + this.passengers.children}`,
         type: 'Младенец с местом',
-        passengerType: 'inf'
+        passengerType: 'inf',
+        isValidPassenger: false,
       });
     }
 
@@ -94,10 +98,51 @@ export class OrderTicketModalComponent implements OnInit {
       passengerList.push({
         count: `Пассажир ${i + this.passengers.adults + this.passengers.children + this.passengers.infantsWithSeat}`,
         type: 'Младенец без места',
-        passengerType: 'inf'
+        passengerType: 'inf',
+        isValidPassenger: false,
       });
     }
     return passengerList;
+  }
+
+  initializePassengerList() {
+    this.passengersDataList = [];
+
+    for (let i = 1; i <= this.passengers.adults; i++) {
+      this.passengersDataList.push({
+        count: `Пассажир ${i}`,
+        type: 'Взрослый, старше 12 лет',
+        passengerType: 'adt',
+        isValidPassenger: false,
+      });
+    }
+
+    for (let i = 1; i <= this.passengers.children; i++) {
+      this.passengersDataList.push({
+        count: `Пассажир ${i + this.passengers.adults}`,
+        type: 'Детей от 2 до 12 лет',
+        passengerType: 'chd',
+        isValidPassenger: false,
+      });
+    }
+
+    for (let i = 1; i <= this.passengers.infantsWithSeat; i++) {
+      this.passengersDataList.push({
+        count: `Пассажир ${i + this.passengers.adults + this.passengers.children}`,
+        type: 'Младенец с местом',
+        passengerType: 'inf',
+        isValidPassenger: false,
+      });
+    }
+
+    for (let i = 1; i <= this.passengers.infantsWithoutSeat; i++) {
+      this.passengersDataList.push({
+        count: `Пассажир ${i + this.passengers.adults + this.passengers.children + this.passengers.infantsWithSeat}`,
+        type: 'Младенец без места',
+        passengerType: 'inf',
+        isValidPassenger: false,
+      });
+    }
   }
 
   onAnimationEvent(event: AnimationEvent) {
@@ -141,6 +186,7 @@ export class OrderTicketModalComponent implements OnInit {
   }
 
   selectPassenger(passenger: any, index: number) {
+    passenger.isValidPassenger = true;
     this.passengerDataService.selectedPassengerIndex = index;
     this.passengerDataService.sendEvent(passenger);
     this.detailPassengerSelected.emit(passenger);
@@ -156,6 +202,8 @@ export class OrderTicketModalComponent implements OnInit {
     this.passengerDataService.getPassengersDataList().subscribe((data) => {
       this.passengersList = data;
     });
+
+    this.initializePassengerList();
   }
 
   createOrderRequest() {
