@@ -21,6 +21,7 @@ import sha512 from 'crypto-js/sha512';
 import {format} from 'date-fns';
 import dayjs from 'dayjs';
 import {ModalOrderSucceedComponent} from "./modal-order-succeed/modal-order-succeed.component";
+import {PassengerDataService} from "./services/passenger-data.service";
 
 @Component({
   selector: 'app-root',
@@ -100,7 +101,7 @@ export class AppComponent implements OnInit {
   public travelClassText: string = '';
   isPassengerFormValid: boolean = false;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, private passengerDataService: PassengerDataService) {
   }
 
   onValidationStatusChanged(isValid: boolean): void {
@@ -204,6 +205,8 @@ export class AppComponent implements OnInit {
   }
 
   searchTickets() {
+    this.passengerDataService.sendPassengersEvent(this.tempPassengers);
+
     this.passengers = {...this.tempPassengers};
     const url = `${this.apiUrl}/search`;
     this.ticketsModal.openModal();

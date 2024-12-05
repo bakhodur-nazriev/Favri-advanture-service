@@ -36,6 +36,8 @@ export class DetailPassengerModalComponent implements OnInit {
   @Input() passenger: any = {};
   @Output() validationStatusChanged = new EventEmitter<boolean>();
 
+  selectedPassenger: any;
+
   public isValidationTriggered: boolean = false;
   public isValidationExpirationTriggered: boolean = false;
   public isVisible: boolean = false;
@@ -134,6 +136,7 @@ export class DetailPassengerModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.passengerDataService.event$.subscribe((passenger: any) => {
+     this.selectedPassenger =  passenger
       const index = this.passengerDataService.selectedPassengerIndex ?? 0;
       this.selectedIndex = index;
 
@@ -226,7 +229,8 @@ export class DetailPassengerModalComponent implements OnInit {
         citizenship: this.selectedCountryCode,
       }
     }
-
+    //this.passengerDataService.selectedPassenger.isValidPassenger = true;
+    this.selectedPassenger.isValidPassenger = true
     this.passengerDataService.setPassengersDataList(this.passengerDataList);
     this.closeModal();
   }
@@ -266,8 +270,7 @@ export class DetailPassengerModalComponent implements OnInit {
 
   checkValidationStatus(): void {
     if (this.isValidForm()) {
-      const isValid = true;
-      this.validationStatusChanged.emit(isValid);
+      this.validationStatusChanged.emit(true);
     }
   }
 }

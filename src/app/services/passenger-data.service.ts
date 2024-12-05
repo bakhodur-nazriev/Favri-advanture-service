@@ -19,6 +19,13 @@ export class PassengerDataService {
     this.eventSource.next(passenger);
   }
 
+  private eventPassengersSource = new Subject<any>();
+  passengerEvent$ = this.eventPassengersSource.asObservable();
+
+  sendPassengersEvent(passengers: any) {
+    this.eventPassengersSource.next(passengers);
+  }
+
   setPassengersDataList(passengers: any[]) {
     this.passengerDataSource.next(passengers);
   }
