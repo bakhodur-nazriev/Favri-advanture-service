@@ -188,12 +188,17 @@ export class AppComponent implements OnInit {
 
   private getTravelClassText(travelClass: string): string {
     switch (travelClass.toLowerCase()) {
-      case 'economy': return 'Эконом';
-      case 'business': return 'Бизнес';
-      case 'first': return 'Первый класс';
-      default: return 'Эконом';
+      case 'economy':
+        return 'Эконом';
+      case 'business':
+        return 'Бизнес';
+      case 'first':
+        return 'Первый класс';
+      default:
+        return 'Эконом';
     }
   }
+
   private generateSelectedDateText(dates: { startDate: Date, endDate: Date | null }): string {
     if (dates.startDate && dates.endDate) {
       return `${this.formatDate(dates.startDate)} - ${this.formatDate(dates.endDate)}`;
@@ -226,10 +231,10 @@ export class AppComponent implements OnInit {
       .set('routes[0][from]', this.fromAirportCode)
       .set('routes[0][to]', this.toAirportCode)
       .set('routes[0][date]', formattedDate)
-      // .set('routes[1][from]', this.to)
-      // .set('routes[1][to]', this.from)
-      // .set('routes[1][date]', '2024-10-12')
-      .set('flight_type', 'OW')
+      .set('routes[1][from]', this.toAirportCode)
+      .set('routes[1][to]', this.fromAirportCode)
+      .set('routes[1][date]', this.selectedEndDate ? dayjs(this.selectedEndDate).format('YYYY-MM-DD') : '')
+      .set('flight_type', this.selectedEndDate ? 'RT' : 'OW')
       .set('cabin', this.passengers.travelClass.toLowerCase())
       .set('company_req_id', companyReqId)
       .set('language', 'ru');
@@ -286,11 +291,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    const today = new Date();
-    this.selectedStartDate = today;
-    this.selectedDateText = this.formatDate(today);
+    const tomorrow = dayjs().add(1, 'day').toDate();
+    this.selectedStartDate = tomorrow;
+    this.selectedDateText = this.formatDate(tomorrow);
 
-    sessionStorage.setItem('company_req_id', '26');
+    sessionStorage.setItem('company_req_id', '4');
 
     this.route.queryParams.subscribe(params => {
       const walletPhone = params['walletPhone'];
@@ -306,7 +311,7 @@ export class AppComponent implements OnInit {
   };
 
   private calculatePassengerCount() {
-    const { adults, children, infantsWithSeat, infantsWithoutSeat } = this.passengers;
+    const {adults, children, infantsWithSeat, infantsWithoutSeat} = this.passengers;
     this.passengerCount = adults + children + infantsWithSeat + infantsWithoutSeat;
   }
 }

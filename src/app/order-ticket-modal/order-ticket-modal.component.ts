@@ -121,8 +121,7 @@ export class OrderTicketModalComponent implements OnInit {
     this.passengerDataService.getPassengersDataList().subscribe((data) => {
       this.passengersList = data;
     });
-    this.passengerDataService.passengerEvent$.subscribe((passengers: any)=>{
-      //this.initializePassengerList();
+    this.passengerDataService.passengerEvent$.subscribe((passengers: any) => {
       this.passengersDataList = [];
 
       for (let i = 1; i <= passengers.adults; i++) {
