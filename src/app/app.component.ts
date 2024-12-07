@@ -1,7 +1,7 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
+import {Component, ViewChild, OnInit, LOCALE_ID} from '@angular/core';
 import {RouterOutlet, ActivatedRoute, Router} from '@angular/router';
 import {CustomInputComponent} from "./custom-input/custom-input.component";
-import {NgIf, NgOptimizedImage} from "@angular/common";
+import {NgIf, NgOptimizedImage, registerLocaleData} from "@angular/common";
 import {ModalPassengersComponent} from "./modal-passengers/modal-passengers.component";
 import {DatepickerModalComponent} from "./datepicker-modal/datepicker-modal.component";
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -22,6 +22,9 @@ import {format} from 'date-fns';
 import dayjs from 'dayjs';
 import {ModalOrderSucceedComponent} from "./modal-order-succeed/modal-order-succeed.component";
 import {PassengerDataService} from "./services/passenger-data.service";
+import localeRu from '@angular/common/locales/ru';
+
+registerLocaleData(localeRu);
 
 @Component({
   selector: 'app-root',
@@ -46,7 +49,10 @@ import {PassengerDataService} from "./services/passenger-data.service";
     ModalOrderSucceedComponent,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  providers: [
+    { provide: LOCALE_ID, useValue: 'ru-RU' }
+  ],
 })
 
 export class AppComponent implements OnInit {
@@ -295,7 +301,7 @@ export class AppComponent implements OnInit {
     this.selectedStartDate = tomorrow;
     this.selectedDateText = this.formatDate(tomorrow);
 
-    sessionStorage.setItem('company_req_id', '4');
+    sessionStorage.setItem('company_req_id', '26');
 
     this.route.queryParams.subscribe(params => {
       const walletPhone = params['walletPhone'];

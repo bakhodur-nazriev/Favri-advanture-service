@@ -1,3 +1,4 @@
+<!-- src/app/datepicker-modal/datepicker-modal.component.html -->
 <div *ngIf="isVisible" class="datepicker-modal__background" (click)="closeModal()">
   <div
     class="datepicker-modal__content"
@@ -59,10 +60,12 @@
 
         <mat-card class="calendar-card">
           <mat-calendar
+            [headerComponent]="calendarHeader"
+            [startAt]="currentMonth"
             [(selected)]="selectedDate"
             [minDate]="minDate"
-            (selectedChange)="onDateSelected($event)"
-          ></mat-calendar>
+            (selectedChange)="onDateSelected($event)">
+          </mat-calendar>
         </mat-card>
       </div>
 
