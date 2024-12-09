@@ -1,27 +1,27 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
-import {RouterOutlet, ActivatedRoute, Router} from '@angular/router';
-import {CustomInputComponent} from "./custom-input/custom-input.component";
-import {NgIf, NgOptimizedImage} from "@angular/common";
-import {ModalPassengersComponent} from "./modal-passengers/modal-passengers.component";
-import {DatepickerModalComponent} from "./datepicker-modal/datepicker-modal.component";
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatInputModule} from '@angular/material/input';
-import {MatNativeDateModule} from '@angular/material/core';
-import {DirectionFromModalComponent} from './direction-from-modal/direction-from-modal.component'
-import {DirectionToModalComponent} from "./direction-to-modal/direction-to-modal.component";
-import {FormsModule} from "@angular/forms";
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Passengers} from "./models/passengers.interface";
-import {TicketsModalComponent} from "./tickets-modal/tickets-modal.component";
-import {PreorderModalComponent} from "./preorder-modal/preorder-modal.component";
-import {Included} from "./models/flights-included.interface";
-import {OrderTicketModalComponent} from "./order-ticket-modal/order-ticket-modal.component";
-import {DetailPassengerModalComponent} from "./detail-passenger-modal/detail-passenger-modal.component";
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { RouterOutlet, ActivatedRoute, Router } from '@angular/router';
+import { CustomInputComponent } from "./custom-input/custom-input.component";
+import { NgIf, NgOptimizedImage } from "@angular/common";
+import { ModalPassengersComponent } from "./modal-passengers/modal-passengers.component";
+import { DatepickerModalComponent } from "./datepicker-modal/datepicker-modal.component";
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { DirectionFromModalComponent } from './direction-from-modal/direction-from-modal.component'
+import { DirectionToModalComponent } from "./direction-to-modal/direction-to-modal.component";
+import { FormsModule } from "@angular/forms";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Passengers } from "./models/passengers.interface";
+import { TicketsModalComponent } from "./tickets-modal/tickets-modal.component";
+import { PreorderModalComponent } from "./preorder-modal/preorder-modal.component";
+import { Included } from "./models/flights-included.interface";
+import { OrderTicketModalComponent } from "./order-ticket-modal/order-ticket-modal.component";
+import { DetailPassengerModalComponent } from "./detail-passenger-modal/detail-passenger-modal.component";
 import sha512 from 'crypto-js/sha512';
-import {format} from 'date-fns';
+import { format } from 'date-fns';
 import dayjs from 'dayjs';
-import {ModalOrderSucceedComponent} from "./modal-order-succeed/modal-order-succeed.component";
-import {PassengerDataService} from "./services/passenger-data.service";
+import { ModalOrderSucceedComponent } from "./modal-order-succeed/modal-order-succeed.component";
+import { PassengerDataService } from "./services/passenger-data.service";
 
 @Component({
   selector: 'app-root',
@@ -161,11 +161,11 @@ export class AppComponent implements OnInit {
   }
 
   private formatDate(date: Date): string {
-    return date.toLocaleDateString('ru-RU', {month: 'short', day: 'numeric'});
+    return date.toLocaleDateString('ru-RU', { month: 'short', day: 'numeric' });
   }
 
   handlePassengersAndClass(event: Passengers) {
-    this.tempPassengers = {...event};
+    this.tempPassengers = { ...event };
     this.calculatePassengerCount();
     this.travelClassText = this.getTravelClassText(event.travelClass);
   }
@@ -212,7 +212,7 @@ export class AppComponent implements OnInit {
   searchTickets() {
     this.passengerDataService.sendPassengersEvent(this.tempPassengers);
 
-    this.passengers = {...this.tempPassengers};
+    this.passengers = { ...this.tempPassengers };
     const url = `${this.apiUrl}/search`;
     this.ticketsModal.openModal();
     this.isLoading = true;
@@ -231,38 +231,42 @@ export class AppComponent implements OnInit {
       .set('routes[0][from]', this.fromAirportCode)
       .set('routes[0][to]', this.toAirportCode)
       .set('routes[0][date]', formattedDate)
-      .set('routes[1][from]', this.toAirportCode)
-      .set('routes[1][to]', this.fromAirportCode)
-      .set('routes[1][date]', this.selectedEndDate ? dayjs(this.selectedEndDate).format('YYYY-MM-DD') : '')
       .set('flight_type', this.selectedEndDate ? 'RT' : 'OW')
       .set('cabin', this.passengers.travelClass.toLowerCase())
       .set('company_req_id', companyReqId)
       .set('language', 'ru');
 
-    const token = sessionStorage.getItem('token');
+      if (this.selectedEndDate) {
+        params = params
+          .set('routes[1][from]', this.toAirportCode)
+          .set('routes[1][to]', this.fromAirportCode)
+          .set('routes[1][date]', dayjs(this.selectedEndDate).format('YYYY-MM-DD'));
+      }
 
-    if (token) {
-      const headers = {
-        Authorization: `Bearer ${token}`
-      };
+      const token = sessionStorage.getItem('token');
 
-      this.http.get(url, {params, headers}).subscribe(
-        (response: any) => {
-          sessionStorage.setItem('sessionId', response.data.session);
-          this.flights = response.data.flights;
-          this.included = response.data.included;
-          this.isLoading = false;
-        },
-        (error) => {
-          console.error('Search ticket error:', error);
-          this.isLoading = false;
-        }
-      );
-    } else {
-      console.error('Token is not available.');
-      this.isLoading = false;
+      if (token) {
+        const headers = {
+          Authorization: `Bearer ${token}`
+        };
+
+        this.http.get(url, { params, headers }).subscribe(
+          (response: any) => {
+            sessionStorage.setItem('sessionId', response.data.session);
+            this.flights = response.data.flights;
+            this.included = response.data.included;
+            this.isLoading = false;
+          },
+          (error) => {
+            console.error('Search ticket error:', error);
+            this.isLoading = false;
+          }
+        );
+      } else {
+        console.error('Token is not available.');
+        this.isLoading = false;
+      }
     }
-  }
 
   private generateSignature(login: string, date: string): string {
     const signatureString = `${login}${this.companyReqId}${this.secretKey}${date}`;
@@ -295,7 +299,7 @@ export class AppComponent implements OnInit {
     this.selectedStartDate = tomorrow;
     this.selectedDateText = this.formatDate(tomorrow);
 
-    sessionStorage.setItem('company_req_id', '4');
+    sessionStorage.setItem('company_req_id', '26');
 
     this.route.queryParams.subscribe(params => {
       const walletPhone = params['walletPhone'];
@@ -311,7 +315,7 @@ export class AppComponent implements OnInit {
   };
 
   private calculatePassengerCount() {
-    const {adults, children, infantsWithSeat, infantsWithoutSeat} = this.passengers;
+    const { adults, children, infantsWithSeat, infantsWithoutSeat } = this.passengers;
     this.passengerCount = adults + children + infantsWithSeat + infantsWithoutSeat;
   }
 }
