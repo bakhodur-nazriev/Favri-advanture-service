@@ -2,6 +2,7 @@ import {Component, EventEmitter, model, Output} from '@angular/core';
 import {animate, style, transition, trigger, AnimationEvent} from "@angular/animations";
 import {DatePipe, NgIf} from "@angular/common";
 import {CustomDatePickerComponent} from "../custom-date-picker/custom-date-picker.component";
+import {CalendarHeaderComponent, CustomDateAdapter} from '../calendar-header/calendar-header.component';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
@@ -9,6 +10,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatCardModule} from '@angular/material/card';
 import {FormsModule} from "@angular/forms";
 import {MatIcon} from "@angular/material/icon";
+import {MatToolbar} from "@angular/material/toolbar";
+import {MatIconButton} from "@angular/material/button";
+import {DateAdapter} from "@angular/material/core";
 
 @Component({
   selector: 'app-datepicker-modal',
@@ -22,7 +26,10 @@ import {MatIcon} from "@angular/material/icon";
     MatCardModule,
     DatePipe,
     FormsModule,
-    MatIcon
+    MatIcon,
+    MatToolbar,
+    MatIconButton,
+    CalendarHeaderComponent
   ],
   templateUrl: './datepicker-modal.component.html',
   styleUrl: './datepicker-modal.component.scss',
@@ -36,9 +43,17 @@ import {MatIcon} from "@angular/material/icon";
         animate('0.15s ease-out', style({transform: 'translateY(100%)', opacity: 0}))
       ])
     ])
-  ]
+  ],
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: CustomDateAdapter
+    },
+  ],
 })
 export class DatepickerModalComponent {
+  @Output() datesSelected = new EventEmitter<{ startDate: Date, endDate: Date | null }>();
+
   public isVisible = false;
   public isAnimating = false;
   selected = model<Date | null>(null);
@@ -46,29 +61,35 @@ export class DatepickerModalComponent {
   public endDate: Date | null = null;
   public selectedDate: Date | null = null;
   public minDate: Date = new Date();
-  @Output() datesSelected = new EventEmitter<{ startDate: Date, endDate: Date | null }>();
+  currentMonth: Date = new Date();
+  calendarHeader = CalendarHeaderComponent;
 
   clearStartDate() {
     this.startDate = null;
   }
+
   clearEndDate() {
     this.endDate = null;
   }
+
   openModal() {
     this.isVisible = true;
   }
+
   closeModal() {
     if (!this.isAnimating) {
       this.isAnimating = true;
       this.isVisible = false;
     }
   }
+
   onAnimationEvent(event: AnimationEvent) {
     if (event.phaseName === 'done' && event.toState === 'void') {
       this.isVisible = false;
       this.isAnimating = false;
     }
   }
+
   onDateSelected(date: Date | null) {
     if (!this.startDate) {
       this.startDate = date;
@@ -80,11 +101,12 @@ export class DatepickerModalComponent {
     }
 
     // @ts-ignore
-    this.datesSelected.emit({ startDate: this.startDate, endDate: this.endDate });
+    this.datesSelected.emit({startDate: this.startDate, endDate: this.endDate});
   }
+
   confirmDates() {
     if (this.startDate) {
-      this.datesSelected.emit({ startDate: this.startDate, endDate: this.endDate });
+      this.datesSelected.emit({startDate: this.startDate, endDate: this.endDate});
     }
     this.closeModal();
   }

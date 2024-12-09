@@ -1,27 +1,30 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { RouterOutlet, ActivatedRoute, Router } from '@angular/router';
-import { CustomInputComponent } from "./custom-input/custom-input.component";
-import { NgIf, NgOptimizedImage } from "@angular/common";
-import { ModalPassengersComponent } from "./modal-passengers/modal-passengers.component";
-import { DatepickerModalComponent } from "./datepicker-modal/datepicker-modal.component";
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
-import { MatNativeDateModule } from '@angular/material/core';
-import { DirectionFromModalComponent } from './direction-from-modal/direction-from-modal.component'
-import { DirectionToModalComponent } from "./direction-to-modal/direction-to-modal.component";
-import { FormsModule } from "@angular/forms";
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Passengers } from "./models/passengers.interface";
-import { TicketsModalComponent } from "./tickets-modal/tickets-modal.component";
-import { PreorderModalComponent } from "./preorder-modal/preorder-modal.component";
-import { Included } from "./models/flights-included.interface";
-import { OrderTicketModalComponent } from "./order-ticket-modal/order-ticket-modal.component";
-import { DetailPassengerModalComponent } from "./detail-passenger-modal/detail-passenger-modal.component";
+import {Component, ViewChild, OnInit, LOCALE_ID} from '@angular/core';
+import {RouterOutlet, ActivatedRoute, Router} from '@angular/router';
+import {CustomInputComponent} from "./custom-input/custom-input.component";
+import {NgIf, NgOptimizedImage, registerLocaleData} from "@angular/common";
+import {ModalPassengersComponent} from "./modal-passengers/modal-passengers.component";
+import {DatepickerModalComponent} from "./datepicker-modal/datepicker-modal.component";
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatNativeDateModule} from '@angular/material/core';
+import {DirectionFromModalComponent} from './direction-from-modal/direction-from-modal.component'
+import {DirectionToModalComponent} from "./direction-to-modal/direction-to-modal.component";
+import {FormsModule} from "@angular/forms";
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Passengers} from "./models/passengers.interface";
+import {TicketsModalComponent} from "./tickets-modal/tickets-modal.component";
+import {PreorderModalComponent} from "./preorder-modal/preorder-modal.component";
+import {Included} from "./models/flights-included.interface";
+import {OrderTicketModalComponent} from "./order-ticket-modal/order-ticket-modal.component";
+import {DetailPassengerModalComponent} from "./detail-passenger-modal/detail-passenger-modal.component";
 import sha512 from 'crypto-js/sha512';
 import { format } from 'date-fns';
 import dayjs from 'dayjs';
-import { ModalOrderSucceedComponent } from "./modal-order-succeed/modal-order-succeed.component";
-import { PassengerDataService } from "./services/passenger-data.service";
+import {ModalOrderSucceedComponent} from "./modal-order-succeed/modal-order-succeed.component";
+import {PassengerDataService} from "./services/passenger-data.service";
+import localeRu from '@angular/common/locales/ru';
+
+registerLocaleData(localeRu);
 
 @Component({
   selector: 'app-root',
@@ -46,7 +49,10 @@ import { PassengerDataService } from "./services/passenger-data.service";
     ModalOrderSucceedComponent,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  providers: [
+    { provide: LOCALE_ID, useValue: 'ru-RU' }
+  ],
 })
 
 export class AppComponent implements OnInit {
@@ -161,11 +167,11 @@ export class AppComponent implements OnInit {
   }
 
   private formatDate(date: Date): string {
-    return date.toLocaleDateString('ru-RU', { month: 'short', day: 'numeric' });
+    return date.toLocaleDateString('ru-RU', {month: 'short', day: 'numeric'});
   }
 
   handlePassengersAndClass(event: Passengers) {
-    this.tempPassengers = { ...event };
+    this.tempPassengers = {...event};
     this.calculatePassengerCount();
     this.travelClassText = this.getTravelClassText(event.travelClass);
   }
@@ -245,28 +251,28 @@ export class AppComponent implements OnInit {
 
       const token = sessionStorage.getItem('token');
 
-      if (token) {
-        const headers = {
-          Authorization: `Bearer ${token}`
-        };
+    if (token) {
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
 
-        this.http.get(url, { params, headers }).subscribe(
-          (response: any) => {
-            sessionStorage.setItem('sessionId', response.data.session);
-            this.flights = response.data.flights;
-            this.included = response.data.included;
-            this.isLoading = false;
-          },
-          (error) => {
-            console.error('Search ticket error:', error);
-            this.isLoading = false;
-          }
-        );
-      } else {
-        console.error('Token is not available.');
-        this.isLoading = false;
-      }
+      this.http.get(url, {params, headers}).subscribe(
+        (response: any) => {
+          sessionStorage.setItem('sessionId', response.data.session);
+          this.flights = response.data.flights;
+          this.included = response.data.included;
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error('Search ticket error:', error);
+          this.isLoading = false;
+        }
+      );
+    } else {
+      console.error('Token is not available.');
+      this.isLoading = false;
     }
+  }
 
   private generateSignature(login: string, date: string): string {
     const signatureString = `${login}${this.companyReqId}${this.secretKey}${date}`;
@@ -315,7 +321,7 @@ export class AppComponent implements OnInit {
   };
 
   private calculatePassengerCount() {
-    const { adults, children, infantsWithSeat, infantsWithoutSeat } = this.passengers;
+    const {adults, children, infantsWithSeat, infantsWithoutSeat} = this.passengers;
     this.passengerCount = adults + children + infantsWithSeat + infantsWithoutSeat;
   }
 }
