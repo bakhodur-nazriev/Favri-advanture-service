@@ -159,23 +159,6 @@
   margin: 40px 0 0;
 }
 
-.mat-calendar-body-cell .range-start {
-  background-color: #2ecc71;
-  border-radius: 50%;
-  color: white;
-}
-
-.mat-calendar-body-cell .range-end {
-  background-color: #2ecc71;
-  border-radius: 50%;
-  color: white;
-}
-
-.mat-calendar-body-cell .in-range {
-  background-color: #a5d6a7;
-  color: white;
-}
-
 .month-display {
   font-size: 1.2rem;
   font-weight: bold;
@@ -189,4 +172,30 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+::ng-deep .mat-calendar-range-start {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+  border-radius: 10px !important;
+
+  span {
+    color: #fff;
+  }
+}
+
+::ng-deep .mat-calendar-in-range {
+  background-color: rgba(76, 175, 80, 0.3) !important;
+  border-radius: 10px !important;
+  color: #fff !important;
+}
+
+::ng-deep .mat-calendar-range-end {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+  border-radius: 10px !important;
+}
+
+::ng-deep .mat-calendar-body-cell-content {
+  border-radius: 10px !important;
 }

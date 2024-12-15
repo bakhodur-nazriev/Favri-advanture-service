@@ -1,10 +1,10 @@
-import {Component, EventEmitter, model, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, model, Output, ViewChild} from '@angular/core';
 import {animate, style, transition, trigger, AnimationEvent} from "@angular/animations";
 import {DatePipe, NgIf} from "@angular/common";
 import {CustomDatePickerComponent} from "../custom-date-picker/custom-date-picker.component";
 import {CalendarHeaderComponent, CustomDateAdapter} from '../calendar-header/calendar-header.component';
 
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatCalendar, MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatCardModule} from '@angular/material/card';
@@ -53,6 +53,7 @@ import {DateAdapter} from "@angular/material/core";
 })
 export class DatepickerModalComponent {
   @Output() datesSelected = new EventEmitter<{ startDate: Date, endDate: Date | null }>();
+  @ViewChild(MatCalendar) calendar: MatCalendar<Date> | undefined;
 
   public isVisible = false;
   public isAnimating = false;
@@ -61,8 +62,10 @@ export class DatepickerModalComponent {
   public endDate: Date | null = null;
   public selectedDate: Date | null = null;
   public minDate: Date = new Date();
-  currentMonth: Date = new Date();
   calendarHeader = CalendarHeaderComponent;
+
+  constructor(private cdr: ChangeDetectorRef) {
+  }
 
   clearStartDate() {
     this.startDate = null;
@@ -90,19 +93,48 @@ export class DatepickerModalComponent {
     }
   }
 
-  onDateSelected(date: Date | null) {
-    if (!this.startDate) {
-      this.startDate = date;
-    } else if (!this.endDate) {
-      this.endDate = date;
-    } else {
-      this.startDate = date;
-      this.endDate = null;
+  dateClass = (date: Date): string => {
+    if (this.startDate && !this.endDate) {
+      if (date.getTime() === this.startDate.getTime()) {
+        return 'mat-calendar-range-start';
+      }
     }
 
-    // @ts-ignore
-    this.datesSelected.emit({startDate: this.startDate, endDate: this.endDate});
+    if (this.startDate && this.endDate) {
+      if (date.getTime() === this.startDate.getTime()) {
+        return 'mat-calendar-range-start';
+      }
+      if (date.getTime() === this.endDate.getTime()) {
+        return 'mat-calendar-range-end';
+      }
+      if (date > this.startDate && date < this.endDate) {
+        return 'mat-calendar-in-range';
+      }
+    }
+
+    return '';
+  };
+
+  onDateSelected(date: Date | null) {
+    if (!this.startDate || (this.startDate && this.endDate)) {
+      this.startDate = date;
+      this.endDate = null;
+    } else if (date && this.startDate && date >= this.startDate) {
+      this.endDate = date;
+    }
+
+    this.datesSelected.emit({
+      startDate: this.startDate as Date,
+      endDate: this.endDate,
+    });
+
+    if (this.calendar) {
+      this.calendar.updateTodaysDate();
+    }
+
+    this.cdr.detectChanges();
   }
+
 
   confirmDates() {
     if (this.startDate) {

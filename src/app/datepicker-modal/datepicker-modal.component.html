@@ -61,9 +61,9 @@
         <mat-card class="calendar-card">
           <mat-calendar
             [headerComponent]="calendarHeader"
-            [startAt]="currentMonth"
             [(selected)]="selectedDate"
             [minDate]="minDate"
+            [dateClass]="dateClass"
             (selectedChange)="onDateSelected($event)">
           </mat-calendar>
         </mat-card>
