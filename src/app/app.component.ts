@@ -305,7 +305,7 @@ export class AppComponent implements OnInit {
     this.selectedStartDate = tomorrow;
     this.selectedDateText = this.formatDate(tomorrow);
 
-    sessionStorage.setItem('company_req_id', '26');
+    sessionStorage.setItem('company_req_id', '4');
 
     this.route.queryParams.subscribe(params => {
       const walletPhone = params['walletPhone'];

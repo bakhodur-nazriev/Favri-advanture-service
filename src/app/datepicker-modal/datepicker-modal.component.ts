@@ -69,10 +69,21 @@ export class DatepickerModalComponent {
 
   clearStartDate() {
     this.startDate = null;
+    this.endDate = null;
+    this.selectedDate = null;
+    if (this.calendar) {
+      this.calendar.updateTodaysDate();
+    }
+    this.cdr.detectChanges();
   }
 
   clearEndDate() {
     this.endDate = null;
+    this.selectedDate = null;
+    if (this.calendar) {
+      this.calendar.updateTodaysDate();
+    }
+    this.cdr.detectChanges();
   }
 
   openModal() {
