@@ -18,7 +18,7 @@ import {Included} from "./models/flights-included.interface";
 import {OrderTicketModalComponent} from "./order-ticket-modal/order-ticket-modal.component";
 import {DetailPassengerModalComponent} from "./detail-passenger-modal/detail-passenger-modal.component";
 import sha512 from 'crypto-js/sha512';
-import { format } from 'date-fns';
+import {format} from 'date-fns';
 import dayjs from 'dayjs';
 import {ModalOrderSucceedComponent} from "./modal-order-succeed/modal-order-succeed.component";
 import {PassengerDataService} from "./services/passenger-data.service";
@@ -51,7 +51,7 @@ registerLocaleData(localeRu);
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [
-    { provide: LOCALE_ID, useValue: 'ru-RU' }
+    {provide: LOCALE_ID, useValue: 'ru-RU'}
   ],
 })
 
@@ -76,7 +76,6 @@ export class AppComponent implements OnInit {
     adults: 1,
     children: 0,
     infantsWithSeat: 0,
-    infantsWithoutSeat: 0,
     travelClass: 'economy'
   }
 
@@ -84,7 +83,6 @@ export class AppComponent implements OnInit {
     adults: 1,
     children: 0,
     infantsWithSeat: 0,
-    infantsWithoutSeat: 0,
     travelClass: 'economy'
   };
 
@@ -102,6 +100,7 @@ export class AppComponent implements OnInit {
   public selectedEndDate: Date | null = null;
   selectedFlight: any;
   public selectedPassenger: any;
+  public isProfileModalOpen: boolean = false;
 
   public passengerCount: number = 0;
   public travelClassText: string = '';
@@ -222,7 +221,7 @@ export class AppComponent implements OnInit {
   searchTickets() {
     this.passengerDataService.sendPassengersEvent(this.tempPassengers);
 
-    this.passengers = { ...this.tempPassengers };
+    this.passengers = {...this.tempPassengers};
     const url = `${this.apiUrl}/search`;
     this.ticketsModal.openModal();
     this.isLoading = true;
@@ -237,7 +236,6 @@ export class AppComponent implements OnInit {
       .set('passengers[adt]', this.passengers.adults.toString())
       .set('passengers[chd]', this.passengers.children.toString())
       .set('passengers[ins]', this.passengers.infantsWithSeat.toString())
-      .set('passengers[inf]', this.passengers.infantsWithoutSeat.toString())
       .set('routes[0][from]', this.fromAirportCode)
       .set('routes[0][to]', this.toAirportCode)
       .set('routes[0][date]', formattedDate)
@@ -246,14 +244,14 @@ export class AppComponent implements OnInit {
       .set('company_req_id', companyReqId)
       .set('language', 'ru');
 
-      if (this.selectedEndDate) {
-        params = params
-          .set('routes[1][from]', this.toAirportCode)
-          .set('routes[1][to]', this.fromAirportCode)
-          .set('routes[1][date]', dayjs(this.selectedEndDate).format('YYYY-MM-DD'));
-      }
+    if (this.selectedEndDate) {
+      params = params
+        .set('routes[1][from]', this.toAirportCode)
+        .set('routes[1][to]', this.fromAirportCode)
+        .set('routes[1][date]', dayjs(this.selectedEndDate).format('YYYY-MM-DD'));
+    }
 
-      const token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     if (token) {
       const headers = {
@@ -325,7 +323,11 @@ export class AppComponent implements OnInit {
   };
 
   private calculatePassengerCount() {
-    const {adults, children, infantsWithSeat, infantsWithoutSeat} = this.passengers;
-    this.passengerCount = adults + children + infantsWithSeat + infantsWithoutSeat;
+    const {adults, children, infantsWithSeat} = this.passengers;
+    this.passengerCount = adults + children + infantsWithSeat;
+  }
+
+  openProfile() {
+    this.isProfileModalOpen = true
   }
 }

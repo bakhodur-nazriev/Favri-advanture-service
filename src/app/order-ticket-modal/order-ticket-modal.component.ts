@@ -36,10 +36,9 @@ export class OrderTicketModalComponent implements OnInit {
   @Input() flight!: any;
   @Input() passengers: {
     children: number;
-    infantsWithoutSeat: number;
     adults: number;
     infantsWithSeat: number
-  } = {adults: 0, children: 0, infantsWithSeat: 0, infantsWithoutSeat: 0}
+  } = {adults: 0, children: 0, infantsWithSeat: 0}
   @Output() detailPassengerSelected = new EventEmitter<any>;
   @Input() isPassengerFormValid: boolean = false;
 
@@ -150,16 +149,6 @@ export class OrderTicketModalComponent implements OnInit {
           isValidPassenger: false,
         });
       }
-
-      for (let i = 1; i <= passengers.infantsWithoutSeat; i++) {
-        this.passengersDataList.push({
-          count: `Пассажир ${i + passengers.adults + passengers.children + passengers.infantsWithSeat}`,
-          type: 'Младенец без места',
-          passengerType: 'inf',
-          isValidPassenger: false,
-        });
-      }
-
     })
   }
 

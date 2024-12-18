@@ -33,26 +33,22 @@ export class ModalPassengersComponent {
   public adults: number = 1;
   public children: number = 0;
   public infantsWithSeat: number = 0;
-  public infantsWithoutSeat: number = 0;
 
   public tempSelectedClass: string = this.selectedClass;
   public tempAdults: number = this.adults;
   public tempChildren: number = this.children;
   public tempInfantsWithSeat: number = this.infantsWithSeat;
-  public tempInfantsWithoutSeat: number = this.infantsWithoutSeat;
 
   confirmSelection() {
     this.selectedClass = this.tempSelectedClass;
     this.adults = this.tempAdults;
     this.children = this.tempChildren;
     this.infantsWithSeat = this.tempInfantsWithSeat;
-    this.infantsWithoutSeat = this.tempInfantsWithoutSeat;
 
     this.selectPassengersAndClass.emit({
       adults: this.adults,
       children: this.children,
       infantsWithSeat: this.infantsWithSeat,
-      infantsWithoutSeat: this.infantsWithoutSeat,
       travelClass: this.selectedClass
     });
     this.isVisible = false;
@@ -64,7 +60,6 @@ export class ModalPassengersComponent {
     this.tempAdults = this.adults;
     this.tempChildren = this.children;
     this.tempInfantsWithSeat = this.infantsWithSeat;
-    this.tempInfantsWithoutSeat = this.infantsWithoutSeat;
     this.isVisible = true;
   }
 
@@ -119,18 +114,6 @@ export class ModalPassengersComponent {
   decreaseInfantsWithSeat() {
     if (this.tempInfantsWithSeat >= 0) {
       this.tempInfantsWithSeat--;
-    }
-  }
-
-  increaseInfantsWithoutSeat() {
-    if (this.tempInfantsWithoutSeat < 8) {
-      this.tempInfantsWithoutSeat++;
-    }
-  }
-
-  decreaseInfantsWithoutSeat() {
-    if (this.tempInfantsWithoutSeat >= 0) {
-      this.tempInfantsWithoutSeat--;
     }
   }
 }
