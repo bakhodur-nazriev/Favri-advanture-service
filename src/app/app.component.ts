@@ -139,9 +139,13 @@ export class AppComponent implements OnInit {
   }
 
   swapLocations() {
-    const temp = this.fromAirportCode;
+    const tempCode = this.fromAirportCode;
     this.fromAirportCode = this.toAirportCode;
-    this.toAirportCode = temp;
+    this.toAirportCode = tempCode;
+
+    const tempCity = this.fromCity;
+    this.fromCity = this.toCity;
+    this.toCity = tempCity;
 
     const tempPlaceholder = this.fromPlaceholder;
     this.fromPlaceholder = this.toPlaceholder;
