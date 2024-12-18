@@ -236,6 +236,7 @@ export class AppComponent implements OnInit {
       .set('passengers[adt]', this.passengers.adults.toString())
       .set('passengers[chd]', this.passengers.children.toString())
       .set('passengers[ins]', this.passengers.infantsWithSeat.toString())
+      .set('passengers[inf]', 0)
       .set('routes[0][from]', this.fromAirportCode)
       .set('routes[0][to]', this.toAirportCode)
       .set('routes[0][date]', formattedDate)
