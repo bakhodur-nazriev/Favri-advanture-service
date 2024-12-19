@@ -15,9 +15,10 @@
       <h2>Пассажиры</h2>
 
       <ul class="passengers-class__list">
+        <span class="toggle-indicator" [class.economy]="selectedClass === 'economy'" [class.business]="selectedClass === 'business'"></span>
         <li class="passengers-class__list-item">
           <button
-            class="passengers-class__button active"
+            class="passengers-class__button"
             [class.active]="selectedClass === 'economy'"
             (click)="selectClass('economy')"
           >
@@ -43,20 +44,18 @@
           </div>
 
           <div class="right-block">
-            <button (click)="decreaseAdults()">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
-                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <button (click)="decreaseAdults()" class="decrease-button">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <rect width="32" height="32" rx="16" fill="#E3E6EA"/>
+                <path d="M10 16H22" stroke="#666F8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
             <span>{{ tempAdults }}</span>
-            <button (click)="increaseAdults()">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
-                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <button (click)="increaseAdults()" class="increase-button">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <rect width="32" height="32" rx="16" fill="#00B06C"/>
+                <path d="M9.5 16H21.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15.5 22V10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
           </div>
@@ -68,20 +67,18 @@
           </div>
 
           <div class="right-block">
-            <button (click)="decreaseChildren()">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
-                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <button (click)="decreaseChildren()" class="decrease-button">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <rect width="32" height="32" rx="16" fill="#E3E6EA"/>
+                <path d="M10 16H22" stroke="#666F8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
             <span>{{ tempChildren }}</span>
-            <button (click)="increaseChildren()">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
-                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <button (click)="increaseChildren()" class="increase-button">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <rect width="32" height="32" rx="16" fill="#00B06C"/>
+                <path d="M9.5 16H21.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15.5 22V10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
           </div>
@@ -94,20 +91,18 @@
           </div>
 
           <div class="right-block">
-            <button (click)="decreaseInfantsWithSeat()">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M8 12H16" stroke="#95A5A6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#95A5A6"
-                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <button (click)="decreaseInfantsWithSeat()" class="decrease-button">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <rect width="32" height="32" rx="16" fill="#E3E6EA"/>
+                <path d="M10 16H22" stroke="#666F8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
             <span>{{ tempInfantsWithSeat }}</span>
-            <button (click)="increaseInfantsWithSeat()">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M8 12H16" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12 16V8" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#00B06C"
-                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <button (click)="increaseInfantsWithSeat()" class="increase-button">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <rect width="32" height="32" rx="16" fill="#00B06C"/>
+                <path d="M9.5 16H21.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15.5 22V10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
           </div>

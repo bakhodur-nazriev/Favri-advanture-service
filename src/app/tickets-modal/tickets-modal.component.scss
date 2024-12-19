@@ -150,7 +150,9 @@
 .loader-block {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 40px 0;
+  position: relative;
 
   img {
     @keyframes rotate {
@@ -162,8 +164,15 @@
         transform: rotate(360deg);
       }
     }
-
     animation: rotate 2s linear infinite;
+    width: 200px;
+  }
+
+  span {
+    position: absolute;
+    color: #666F8D;
+    font-size: 20px;
+    text-align: center;
   }
 }
 

@@ -3,7 +3,7 @@ import {FormsModule} from "@angular/forms";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {AnimationEvent} from "@angular/animations";
 import {CityService} from "../services/city-service.service";
-import { debounceTime, switchMap, catchError } from 'rxjs/operators';
+import {debounceTime, switchMap, catchError} from 'rxjs/operators';
 import {of} from "rxjs";
 
 @Component({
@@ -97,13 +97,14 @@ export class DirectionFromModalComponent {
   ]
   public filteredDirections = [...this.directionsCity];
   public searchTerm = '';
-  public isVisible = false;
+  public isVisible = true;
   public isAnimating = false;
   public isLoading = false;
 
   @Output() selectDirection = new EventEmitter<any>();
   @ViewChild('searchFromInput') searchFromInput!: ElementRef;
   searchInput: any;
+
   constructor(private cityService: CityService) {
   }
 
@@ -147,7 +148,7 @@ export class DirectionFromModalComponent {
     this.isVisible = true;
     this.isAnimating = false;
 
-    setTimeout(()=>{
+    setTimeout(() => {
       this.searchInput = document.getElementById('searchFromInput');
       (this.searchInput as HTMLInputElement).focus();
     }, 100)
