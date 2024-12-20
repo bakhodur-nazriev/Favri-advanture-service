@@ -14,45 +14,43 @@
     display: flex;
     flex-direction: column;
 
-    .arrow-left__button {
-      all: unset;
-    }
 
     .directions-title__block {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 6px;
+      background: linear-gradient(90deg, #00B06C 0%, #34D399 100%);
+      border-radius: 12px;
+      padding: 17px;
 
       .directions-info__title {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 4px;
 
         .directions-title {
-          font-size: 24px;
-          font-weight: 500;
+          font-size: 17px;
+          font-weight: 600;
+          color: #fff;
         }
-      }
 
-      .booking-info__title {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        width: max-content;
-        padding: 6px 16px;
-        background-color: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 13px 0 rgba(43, 69, 78, 0.1019607843);
-
-        span {
-          font-size: 15px;
-          font-weight: 500;
+        .dash-block {
+          text-align: center;
+          width: 10px;
+          height: 2px;
+          border-radius: 8px;
+          background-color: #fff;
         }
       }
 
       .booking-info__title-passengers {
         display: flex;
         gap: 6px;
+        color: #fff;
+
+        span {
+          font-size: 17px;
+        }
       }
     }
 
@@ -144,6 +142,61 @@
       height: 100%;
       overflow: scroll;
     }
+
+    .booking-info__title {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      padding: 10px 16px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 13px 0 rgba(43, 69, 78, 0.1019607843);
+
+      .booking-info__top,
+      .booking-info__bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .close-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #acacac;
+          border-radius: 50%;
+          min-width: 20px;
+          min-height: 20px;
+        }
+
+        .arrow-left__icon {
+          display: flex;
+          align-items: center;
+        }
+
+        .booking-info__bottom-title {
+          color: var(--primary-color);
+          font-size: 15px;
+        }
+      }
+
+      .booking-info__divider {
+        height: 1px;
+        background-color: rgba(151, 151, 151, 0.38);
+      }
+
+      .booking-info__top-title {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .top-nav__block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 20px;
   }
 }
 

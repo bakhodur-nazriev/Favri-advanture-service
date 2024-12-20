@@ -1,31 +1,48 @@
 <div *ngIf="isVisible" class="tickets-modal__block">
-  <div class="tickets-modal__content">
-    <button class="arrow-left__button" (click)="closeModal()">
+  <div class="top-nav__block">
+    <div (click)="closeModal()">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path d="M15 19.92L8.48 13.4C7.71 12.63 7.71 11.37 8.48 10.6L15 4.08" stroke="#1D2935" stroke-width="1.5"
               stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-    </button>
+    </div>
+
+    <div>
+      <span>{{ fromCity }}</span> - <span>{{ toCity }}</span>
+    </div>
+
+    <div (click)="openFiltersModal()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M18.25 7C18.25 9.07107 16.5711 10.75 14.5 10.75C12.4289 10.75 10.75 9.07107 10.75 7C10.75 4.92893 12.4289 3.25 14.5 3.25C16.5711 3.25 18.25 4.92893 18.25 7ZM14.5 9.25C15.7426 9.25 16.75 8.24264 16.75 7C16.75 5.75736 15.7426 4.75 14.5 4.75C13.2574 4.75 12.25 5.75736 12.25 7C12.25 8.24264 13.2574 9.25 14.5 9.25Z"
+              fill="#00B06C"/>
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M5.75 17C5.75 19.0711 7.42893 20.75 9.5 20.75C11.5711 20.75 13.25 19.0711 13.25 17C13.25 14.9289 11.5711 13.25 9.5 13.25C7.42893 13.25 5.75 14.9289 5.75 17ZM9.5 19.25C8.25736 19.25 7.25 18.2426 7.25 17C7.25 15.7574 8.25736 14.75 9.5 14.75C10.7426 14.75 11.75 15.7574 11.75 17C11.75 18.2426 10.7426 19.25 9.5 19.25Z"
+              fill="#00B06C"/>
+        <path
+          d="M14.25 16.9585C14.25 16.5443 14.5858 16.2085 15 16.2085H22C22.4142 16.2085 22.75 16.5443 22.75 16.9585C22.75 17.3727 22.4142 17.7085 22 17.7085H15C14.5858 17.7085 14.25 17.3727 14.25 16.9585Z"
+          fill="#00B06C"/>
+        <path
+          d="M9 6.20852C9.41421 6.20852 9.75 6.54431 9.75 6.95852C9.75 7.37273 9.41421 7.70852 9 7.70852L2 7.70852C1.58579 7.70852 1.25 7.37273 1.25 6.95852C1.25 6.54431 1.58579 6.20852 2 6.20852L9 6.20852Z"
+          fill="#00B06C"/>
+        <path
+          d="M1.25 16.9585C1.25 16.5443 1.58579 16.2085 2 16.2085H4C4.41421 16.2085 4.75 16.5443 4.75 16.9585C4.75 17.3727 4.41421 17.7085 4 17.7085H2C1.58579 17.7085 1.25 17.3727 1.25 16.9585Z"
+          fill="#00B06C"/>
+        <path
+          d="M22 6.20852C22.4142 6.20852 22.75 6.54431 22.75 6.95852C22.75 7.37273 22.4142 7.70852 22 7.70852H20C19.5858 7.70852 19.25 7.37273 19.25 6.95852C19.25 6.54431 19.5858 6.20852 20 6.20852H22Z"
+          fill="#00B06C"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="tickets-modal__content">
 
     <div class="main-tickets__block">
       <div class="directions-title__block">
         <div class="directions-info__title">
           <span class="directions-title">{{ fromCity }}</span>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round"
-                  stroke-linejoin="round"/>
-          </svg>
+          <span class="dash-block"></span>
           <span class="directions-title">{{ toCity }}</span>
-        </div>
-        <div class="booking-info__title" (click)="openBookingInfoModal()">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                  stroke="#656565" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 8V13" stroke="#656565" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M11.9945 16H12.0035" stroke="#656565" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round"/>
-          </svg>
-          <span>Цена билетов может меняться</span>
         </div>
 
         <div class="booking-info__title-passengers">
@@ -33,50 +50,35 @@
           <span>{{ passengerCount }} {{ passengerCount === 1 ? 'пассажир' : 'пассажира' }},</span>
           <span>{{ travelClassText }}</span>
         </div>
+      </div>
 
-        <div class="filters-block" *ngIf="!isLoading && flights.length > 1">
-          <button
-            (click)="openPriceFilter()"
-            class="filter-price__button"
-            [class.active-filter__price]="currentSort"
-          >
-            <span>Цена</span>
-            <!--            <svg-->
-            <!--              *ngIf="currentSort === 'asc' || currentSort === 'desc'"-->
-            <!--              viewBox="0 0 72 72"-->
-            <!--              width="16px"-->
-            <!--              height="16px"-->
-            <!--            >-->
-            <!--              <path-->
-            <!--                d="M 19 15 C 17.977 15 16.951875 15.390875 16.171875 16.171875 C 14.609875 17.733875 14.609875 20.266125 16.171875 21.828125 L 30.34375 36 L 16.171875 50.171875 C 14.609875 51.733875 14.609875 54.266125 16.171875 55.828125 C 16.951875 56.608125 17.977 57 19 57 C 20.023 57 21.048125 56.609125 21.828125 55.828125 L 36 41.65625 L 50.171875 55.828125 C 51.731875 57.390125 54.267125 57.390125 55.828125 55.828125 C 57.391125 54.265125 57.391125 51.734875 55.828125 50.171875 L 41.65625 36 L 55.828125 21.828125 C 57.390125 20.266125 57.390125 17.733875 55.828125 16.171875 C 54.268125 14.610875 51.731875 14.609875 50.171875 16.171875 L 36 30.34375 L 21.828125 16.171875 C 21.048125 15.391875 20.023 15 19 15 z"/>-->
-            <!--            </svg>-->
-            <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
-              <path d="M14.9401 6.74999L10.0501 11.64C9.47256 12.2175 8.52756 12.2175 7.95006 11.64L3.06006 6.74999"
-                    stroke="#1D2935" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                    stroke-linejoin="round"/>
+      <div class="booking-info__title" *ngIf="isModalBookingVisible">
+        <div class="booking-info__top">
+          <span class="booking-info__top-title">Цена билетов может меняться</span>
+          <span class="close-icon" (click)="closeModalBooking()">
+             <svg viewBox="0 0 50 50" fill="#fff" width="12px" height="12px">
+                <path
+                  d="M 9.15625 6.3125 L 6.3125 9.15625 L 22.15625 25 L 6.21875 40.96875 L 9.03125 43.78125 L 25 27.84375 L 40.9375 43.78125 L 43.78125 40.9375 L 27.84375 25 L 43.6875 9.15625 L 40.84375 6.3125 L 25 22.15625 Z"/>
+             </svg>
+          </span>
+        </div>
+
+        <span class="booking-info__divider"></span>
+
+        <div class="booking-info__bottom" (click)="openBookingInfoModal()">
+          <span class="booking-info__bottom-title">Подробнее</span>
+          <span class="arrow-left__icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path
+                d="M7.49997 3.39997L12.9333 8.83331C13.575 9.47498 13.575 10.525 12.9333 11.1666L7.49997 16.6"
+                stroke="#00B06C"
+                stroke-width="1.5"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
-          </button>
-          <button
-            (click)="openTransferFilter()"
-            class="filter-price__button"
-            [class.active-filter__transfer]="currentFilter !== 'all'"
-          >
-            <span>Пересадки</span>
-            <!--            <svg-->
-            <!--              *ngIf="currentFilter !== 'all'"-->
-            <!--              viewBox="0 0 72 72"-->
-            <!--              width="16px"-->
-            <!--              height="16px"-->
-            <!--            >-->
-            <!--              <path-->
-            <!--                d="M 19 15 C 17.977 15 16.951875 15.390875 16.171875 16.171875 C 14.609875 17.733875 14.609875 20.266125 16.171875 21.828125 L 30.34375 36 L 16.171875 50.171875 C 14.609875 51.733875 14.609875 54.266125 16.171875 55.828125 C 16.951875 56.608125 17.977 57 19 57 C 20.023 57 21.048125 56.609125 21.828125 55.828125 L 36 41.65625 L 50.171875 55.828125 C 51.731875 57.390125 54.267125 57.390125 55.828125 55.828125 C 57.391125 54.265125 57.391125 51.734875 55.828125 50.171875 L 41.65625 36 L 55.828125 21.828125 C 57.390125 20.266125 57.390125 17.733875 55.828125 16.171875 C 54.268125 14.610875 51.731875 14.609875 50.171875 16.171875 L 36 30.34375 L 21.828125 16.171875 C 21.048125 15.391875 20.023 15 19 15 z"/>-->
-            <!--            </svg>-->
-            <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
-              <path d="M14.9401 6.74999L10.0501 11.64C9.47256 12.2175 8.52756 12.2175 7.95006 11.64L3.06006 6.74999"
-                    stroke="#1D2935" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-            </svg>
-          </button>
+          </span>
         </div>
       </div>
 
@@ -163,103 +165,6 @@
           <p>Заполните данные и оплатите авиабилет в течение 10 минут, чтобы цена не изменилась.</p>
 
           <button class="btn-primary" (click)="closeBookingInfoModal()">Понятно</button>
-        </div>
-      </div>
-
-      <!-- Price filter modal -->
-      <div class="price-filter__modal-layout" *ngIf="isPriceFilter" (click)="closePriceFilter()">
-        <div
-          class="price-filter__modal"
-          @slideInOut
-          (@slideInOut.done)="onAnimationBookingInfoEvent($event)"
-          (click)="$event.stopPropagation()"
-        >
-          <div class="holder-button">
-            <svg width="35" height="4" viewBox="0 0 35 4" fill="none">
-              <rect width="35" height="4" rx="2" fill="#95A5A6" fill-opacity="0.5"/>
-            </svg>
-          </div>
-          <h1>Цена</h1>
-
-          <ul>
-            <li (click)="sortFlightsByPrice('asc')" class="sort-by__price-item">
-              <span>Сначало дешёвые</span>
-              <svg
-                *ngIf="currentSort === 'asc'"
-                viewBox="0 0 24 24"
-                width="16px"
-                height="16px"
-              >
-                <path d="M9 19.4L3.3 13.7 4.7 12.3 9 16.6 20.3 5.3 21.7 6.7z" fill="#999999"/>
-              </svg>
-            </li>
-            <li (click)="sortFlightsByPrice('desc')" class="sort-by__price-item">
-              <span>Сначало дорогие</span>
-              <svg
-                *ngIf="currentSort === 'desc'"
-                viewBox="0 0 24 24"
-                width="16px"
-                height="16px"
-              >
-                <path d="M9 19.4L3.3 13.7 4.7 12.3 9 16.6 20.3 5.3 21.7 6.7z" fill="#999999"/>
-              </svg>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Transfer filter modal -->
-      <div class="transfer-filter__modal-layout" *ngIf="isTransferFilter" (click)="closeTransferFilter()">
-        <div
-          class="transfer-filter__modal"
-          @slideInOut
-          (@slideInOut.done)="onAnimationBookingInfoEvent($event)"
-          (click)="$event.stopPropagation()"
-        >
-          <div class="holder-button">
-            <svg width="35" height="4" viewBox="0 0 35 4" fill="none">
-              <rect width="35" height="4" rx="2" fill="#95A5A6" fill-opacity="0.5"/>
-            </svg>
-          </div>
-          <h1>Пересадки</h1>
-
-          <ul>
-            <li (click)="setFilter('direct')" class="sort-by__flight-item">
-              <span>Прямой</span>
-              <svg
-                *ngIf="currentFilter === 'direct'"
-                viewBox="0 0 24 24"
-                width="16px"
-                height="16px"
-              >
-                <path d="M9 19.4L3.3 13.7 4.7 12.3 9 16.6 20.3 5.3 21.7 6.7z" fill="#999999"/>
-              </svg>
-            </li>
-            <li (click)="setFilter('oneStop')" [class.active]="currentFilter === 'oneStop'"
-                class="sort-by__flight-item">
-              <span>1 пересадка</span>
-              <svg
-                *ngIf="currentFilter === 'oneStop'"
-                viewBox="0 0 24 24"
-                width="16px"
-                height="16px"
-              >
-                <path d="M9 19.4L3.3 13.7 4.7 12.3 9 16.6 20.3 5.3 21.7 6.7z" fill="#999999"/>
-              </svg>
-            </li>
-            <li (click)="setFilter('multipleStops')" [class.active]="currentFilter === 'multipleStops'"
-                class="sort-by__flight-item">
-              <span>2 пересадки и более</span>
-              <svg
-                *ngIf="currentFilter === 'multipleStops'"
-                viewBox="0 0 24 24"
-                width="16px"
-                height="16px"
-              >
-                <path d="M9 19.4L3.3 13.7 4.7 12.3 9 16.6 20.3 5.3 21.7 6.7z" fill="#999999"/>
-              </svg>
-            </li>
-          </ul>
         </div>
       </div>
     </div>

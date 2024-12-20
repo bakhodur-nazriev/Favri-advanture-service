@@ -26,7 +26,7 @@ import {animate, AnimationEvent, style, transition, trigger} from "@angular/anim
     ])
   ]
 })
-export class TicketsModalComponent implements OnInit {
+export class TicketsModalComponent {
   @Input() flights: any[] = ['flights'];
   @Input() fromCity!: string;
   @Input() toCity!: string;
@@ -41,11 +41,13 @@ export class TicketsModalComponent implements OnInit {
   arrivalAirport: any;
   flightDuration: string = '';
   public isBookingInfoModal: boolean = false;
+  public isModalBookingVisible: boolean = true;
   public isPriceFilter: boolean = false;
   public isTransferFilter: boolean = false;
   public isAnimatingBookingInfo: boolean = false;
   currentSort: 'asc' | 'desc' | null = null;
   currentFilter: string = 'all';
+  public isOpenFilterModal: boolean = false;
 
   constructor() {
     this.initializeFlightData();
@@ -64,8 +66,6 @@ export class TicketsModalComponent implements OnInit {
       ],
     },
   ];
-
-  ngOnInit() {}
 
   selectFlight(flight: any) {
     this.flightSelected.emit(flight);
@@ -133,40 +133,14 @@ export class TicketsModalComponent implements OnInit {
     this.isBookingInfoModal = false;
   }
 
-  openPriceFilter() {
-    this.isPriceFilter = true;
-
+  closeModalBooking() {
     const ticketModalBlock = document.querySelector('.tickets-modal__block');
     if (ticketModalBlock) {
       ticketModalBlock.classList.add('overflow-hidden');
+      ticketModalBlock.classList.add('h-100');
     }
-  }
 
-  openTransferFilter() {
-    this.isTransferFilter = true;
-
-    const ticketModalBlock = document.querySelector('.tickets-modal__block');
-    if (ticketModalBlock) {
-      ticketModalBlock.classList.add('overflow-hidden');
-    }
-  }
-
-  closePriceFilter() {
-    this.isPriceFilter = false;
-
-    const ticketModalBlock = document.querySelector('.tickets-modal__block');
-    if (ticketModalBlock) {
-      ticketModalBlock.classList.remove('overflow-hidden');
-    }
-  }
-
-  closeTransferFilter() {
-    this.isTransferFilter = false;
-
-    const ticketModalBlock = document.querySelector('.tickets-modal__block');
-    if (ticketModalBlock) {
-      ticketModalBlock.classList.remove('overflow-hidden');
-    }
+    this.isModalBookingVisible = false;
   }
 
   onAnimationBookingInfoEvent(event: AnimationEvent) {
@@ -187,25 +161,7 @@ export class TicketsModalComponent implements OnInit {
     return this.flights;
   }
 
-  setFilter(filter: string) {
-    this.closeTransferFilter();
-    this.currentFilter = filter;
-  }
-
-  sortFlightsByPrice(order: 'asc' | 'desc'): void {
-    this.currentSort = order;
-    this.flights.sort((a, b) =>
-      order === 'asc' ? a.total_price.TJS - b.total_price.TJS : b.total_price.TJS - a.total_price.TJS
-    );
-
-    this.closePriceFilter();
-  }
-
-  clearPriceFilter() {
-    this.currentSort = null;
-  }
-
-  clearTransferFilter() {
-    this.currentFilter = 'all';
+  openFiltersModal() {
+    this.isOpenFilterModal = true;
   }
 }

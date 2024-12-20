@@ -97,7 +97,7 @@ export class DirectionFromModalComponent {
   ]
   public filteredDirections = [...this.directionsCity];
   public searchTerm = '';
-  public isVisible = true;
+  public isVisible = false;
   public isAnimating = false;
   public isLoading = false;
 
@@ -115,6 +115,7 @@ export class DirectionFromModalComponent {
       this.isLoading = true;
       this.cityService.searchCities(searchTermTrimmed).subscribe({
         next: (res) => {
+          console.log(res.data);
           this.filteredDirections = res.data.map((item: any) => ({
             city: item.item.ru || item.item.en || item.item.tj || item.item.uz,
             airportCode: item.item_code,
