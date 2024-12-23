@@ -25,9 +25,8 @@
     margin-bottom: 20px;
 
     h2 {
-      margin: 0 0 0 25px;
+      margin: 0;
       font-size: 18px;
-      font-weight: 400;
       color: var(--seconday-text-color);
     }
 
@@ -36,20 +35,18 @@
       height: 20px;
       cursor: pointer;
     }
-
-    .clear-input__button {
-      color: var(--primary-color);
-    }
   }
 
   .search-input__block {
-    background-color: #ecf0f1;
+    background-color: #fff;
     border-radius: 8px;
+    border: 1px solid #CBD5E1;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    padding: 10px 8px;
-    gap: 10px;
-    margin-bottom: 25px;
+    padding: 0 12px;
+    gap: 5px;
+    min-height: 48px;
 
     input {
       border: none;
@@ -59,15 +56,30 @@
       width: 100%;
     }
 
-    svg {
-      fill: #515151;
-    }
-
-    .loader-block {
+    .search-icon__block {
       display: flex;
       justify-content: center;
       align-items: center;
     }
+
+    .clear-icon__block {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #999999;
+      border-radius: 50%;
+      min-width: 22px;
+      min-height: 22px;
+
+      svg {
+        width: 15px;
+        height: 15px;
+      }
+    }
+  }
+
+  .title-list__directions {
+    color: #666F8D;
   }
 
   .directions-list {
@@ -78,21 +90,54 @@
     flex-direction: column;
     overflow-y: auto;
     height: -webkit-fill-available;
-    gap: 26px;
+    gap: 15px;
 
     &__item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
 
-      .cities-airportCode__block {
+      .flight-routes__block {
         display: flex;
         flex-direction: column;
-        gap: 5px;
-      }
+        gap: 8px;
 
-      .countries {
-        color: #656565;
+        .location-info {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          &__left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            &-block {
+              .county {
+                margin-left: 8px;
+                color: rgb(132, 134, 135);
+              }
+            }
+          }
+        }
+
+        .airports-block {
+          .airports-list {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            padding-left: 18px;
+            gap: 15px;
+
+            &__item {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+
+              &-left {
+                display: flex;
+                align-items: center;
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -100,7 +145,6 @@
 
 .highlight-country {
   padding-left: 30px;
-  cursor: pointer;
 }
 
 .divider-block {

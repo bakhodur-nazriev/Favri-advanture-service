@@ -6,64 +6,83 @@
     (click)="$event.stopPropagation()"
   >
     <div class="top-actions__block">
+      <h2>Куда</h2>
+
       <button (click)="closeModal()">
-        <svg viewBox="0 0 50 50" width="20px" height="20px">
+        <svg viewBox="0 0 50 50" fill="#515151" width="20px" height="20px">
           <path
             d="M 9.15625 6.3125 L 6.3125 9.15625 L 22.15625 25 L 6.21875 40.96875 L 9.03125 43.78125 L 25 27.84375 L 40.9375 43.78125 L 43.78125 40.9375 L 27.84375 25 L 43.6875 9.15625 L 40.84375 6.3125 L 25 22.15625 Z"/>
         </svg>
       </button>
-
-      <h2>Куда</h2>
-
-      <button class="clear-input__button" (click)="resetSearch()">Сбросить</button>
     </div>
 
     <div class="search-input__block">
-      <svg viewBox="0 0 30 30" width="20px" height="20px">
-        <path
-          d="M 13 3 C 7.4889971 3 3 7.4889971 3 13 C 3 18.511003 7.4889971 23 13 23 C 15.396508 23 17.597385 22.148986 19.322266 20.736328 L 25.292969 26.707031 A 1.0001 1.0001 0 1 0 26.707031 25.292969 L 20.736328 19.322266 C 22.148986 17.597385 23 15.396508 23 13 C 23 7.4889971 18.511003 3 13 3 z M 13 5 C 17.430123 5 21 8.5698774 21 13 C 21 17.430123 17.430123 21 13 21 C 8.5698774 21 5 17.430123 5 13 C 5 8.5698774 8.5698774 5 13 5 z"/>
-      </svg>
+      <div class="search-icon__block">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M11.5 2.75C6.66751 2.75 2.75 6.66751 2.75 11.5C2.75 16.3325 6.66751 20.25 11.5 20.25C16.3325 20.25 20.25 16.3325 20.25 11.5C20.25 6.66751 16.3325 2.75 11.5 2.75ZM1.25 11.5C1.25 5.83908 5.83908 1.25 11.5 1.25C17.1609 1.25 21.75 5.83908 21.75 11.5C21.75 14.0605 20.8111 16.4017 19.2589 18.1982L22.5303 21.4697C22.8232 21.7626 22.8232 22.2374 22.5303 22.5303C22.2374 22.8232 21.7626 22.8232 21.4697 22.5303L18.1982 19.2589C16.4017 20.8111 14.0605 21.75 11.5 21.75C5.83908 21.75 1.25 17.1609 1.25 11.5Z"
+                fill="#666F8D"/>
+        </svg>
+      </div>
       <input
         #searchToInput
         id="searchToInput"
         type="text"
         [(ngModel)]="searchTerm"
         (input)="onSearchChange()"
-        placeholder="Поиск..."
+        placeholder="Поиск..." t
       >
-
-      <!-- Loader -->
-      <div *ngIf="isLoading" class="loader-block">
-        <svg viewBox="20 20 60 60" width="20px" height="20px">
-          <path fill="#00B06C"
-                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-            <animateTransform
-              attributeName="transform"
-              attributeType="XML"
-              type="rotate"
-              dur="1s"
-              from="0 50 50"
-              to="360 50 50"
-              repeatCount="indefinite"
-            />
-          </path>
+      <div class="clear-icon__block" *ngIf="searchTerm.length" (click)="resetSearch()">
+        <svg viewBox="0 0 50 50" fill="#fff">
+          <path
+            d="M 9.15625 6.3125 L 6.3125 9.15625 L 22.15625 25 L 6.21875 40.96875 L 9.03125 43.78125 L 25 27.84375 L 40.9375 43.78125 L 43.78125 40.9375 L 27.84375 25 L 43.6875 9.15625 L 40.84375 6.3125 L 25 22.15625 Z"/>
         </svg>
       </div>
     </div>
 
+    <p class="title-list__directions">Популярные направления</p>
     <ul class="directions-list">
       <li
         *ngFor="let direction of filteredDirections"
         [ngClass]="{'highlight-country': !direction.country}"
-        class="directions-list__item"
         (click)="chooseDirection(direction)"
+        class="directions-list__item"
       >
-        <div class="cities-airportCode__block">
-          <span>{{ direction.city }}</span>
-          <span class="countries">{{ direction.country || '' }}</span>
-        </div>
+        <div class="flight-routes__block">
+          <div class="location-info">
+            <div class="location-info__left">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M3.25 10.1433C3.25 5.24427 7.15501 1.25 12 1.25C16.845 1.25 20.75 5.24427 20.75 10.1433C20.75 12.5084 20.076 15.0479 18.8844 17.2419C17.6944 19.4331 15.9556 21.3372 13.7805 22.3539C12.6506 22.882 11.3494 22.882 10.2195 22.3539C8.04437 21.3372 6.30562 19.4331 5.11556 17.2419C3.92403 15.0479 3.25 12.5084 3.25 10.1433ZM12 2.75C8.00843 2.75 4.75 6.04748 4.75 10.1433C4.75 12.2404 5.35263 14.5354 6.4337 16.526C7.51624 18.5192 9.04602 20.1496 10.8546 20.995C11.5821 21.335 12.4179 21.335 13.1454 20.995C14.954 20.1496 16.4838 18.5192 17.5663 16.526C18.6474 14.5354 19.25 12.2404 19.25 10.1433C19.25 6.04748 15.9916 2.75 12 2.75ZM12 7.75C10.7574 7.75 9.75 8.75736 9.75 10C9.75 11.2426 10.7574 12.25 12 12.25C13.2426 12.25 14.25 11.2426 14.25 10C14.25 8.75736 13.2426 7.75 12 7.75ZM8.25 10C8.25 7.92893 9.92893 6.25 12 6.25C14.0711 6.25 15.75 7.92893 15.75 10C15.75 12.0711 14.0711 13.75 12 13.75C9.92893 13.75 8.25 12.0711 8.25 10Z"
+                      fill="#666F8D"/>
+              </svg>
 
-        <span>{{ direction.airportCode }}</span>
+              <div class="location-info__left-block">
+                <span class="city">{{ direction.city }}</span>
+                <span class="county">{{ direction.country }}</span>
+              </div>
+            </div>
+
+            <span>{{ direction.airport_code }}</span>
+          </div>
+
+          <div class="airports-block" *ngIf="direction.airports && direction.airports.length > 1">
+            <ul class="airports-list">
+              <li class="airports-list__item" *ngFor="let airport of direction.airports">
+                <div class="airports-list__item-left">
+                  <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                    <path
+                      d="M6.10586 20.0738L7.39603 17.3159C7.59522 16.9001 7.4451 16.3399 7.06474 16.0795L4.56848 14.3362C4.16791 13.8844 4.25789 13.177 4.76637 12.8337L5.93717 12.0645C6.21779 11.8754 6.70025 11.86 6.99419 12.0297L9.78402 13.6323C9.98257 13.7551 10.3253 13.7978 10.5475 13.7383L13.3004 13.0007C13.706 12.892 13.819 12.5408 13.5635 12.2055L10.2449 8.01147C9.7269 7.35311 9.95987 6.63846 10.7713 6.42106L12.0173 6.08718C12.6645 5.91377 13.5376 6.19744 13.9492 6.72903L17.7239 11.5048C17.833 11.6412 18.072 11.7221 18.2459 11.6755L21.1437 10.8991C22.0516 10.6558 23.3024 11.035 23.9352 11.7351C24.1577 11.986 24.2483 12.3241 24.181 12.6527C23.9831 13.5754 23.0799 14.5317 22.1719 14.775L19.2741 15.5515C19.1002 15.5981 18.9336 15.7876 18.9074 15.9603L18.0238 21.9739C17.9427 22.6375 17.3284 23.3198 16.6812 23.4932L15.4352 23.827C14.6238 24.0444 14.0647 23.542 14.1842 22.7129L14.9611 17.4215C15.027 17.0104 14.7413 16.7557 14.3356 16.8644L11.5827 17.602C11.3606 17.6615 11.0851 17.8699 10.972 18.0659L9.35721 20.8486C9.1875 21.1426 8.77164 21.3679 8.42442 21.3471L7.02586 21.2663C6.41903 21.2425 5.97775 20.6775 6.10586 20.0738Z"
+                      stroke="#666F8D" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>{{ airport.city }}</span>
+                </div>
+
+                <span>{{ airport.airport_code }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </li>
     </ul>
   </div>

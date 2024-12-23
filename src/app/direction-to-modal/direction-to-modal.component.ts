@@ -3,6 +3,8 @@ import {FormsModule} from "@angular/forms";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {CityService} from "../services/city-service.service";
 import {AnimationEvent} from "@angular/animations";
+import {debounceTime} from "rxjs/operators";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-direction-to-modal',
@@ -17,82 +19,72 @@ import {AnimationEvent} from "@angular/animations";
   styleUrl: './direction-to-modal.component.scss'
 })
 export class DirectionToModalComponent {
-  public directionsCity = [
+  private searchSubject: Subject<string> = new Subject<string>();
+  public flightRoutes = [
     {
       city: 'Душанбе',
-      country: 'Таджикистан',
-      airportCode: 'DYU'
-    },
-    {
-      city: 'Душанбе',
-      airportCode: 'DYU'
+      country: 'Республика Таджикистан',
+      airport_code: 'DYU'
     },
     {
       city: 'Куляб',
-      airportCode: 'TJU'
+      country: 'Республика Таджикистан',
+      airport_code: 'TJU'
     },
     {
       city: 'Худжанд',
-      airportCode: 'LBD'
+      country: 'Республика Таджикистан',
+      airport_code: 'LBD'
     },
     {
       city: 'Бохтар',
-      airportCode: 'KQT'
+      country: 'Республика Таджикистан',
+      airport_code: 'KQT'
     },
     {
       city: 'Москва',
       country: 'Российская Федерация (Россия)',
-      airportCode: 'MOW'
-    },
-    {
-      city: 'Быково',
-      airportCode: 'BKA'
-    },
-    {
-      city: 'Шереметьево',
-      airportCode: 'SVO'
-    },
-    {
-      city: 'Внуково',
-      airportCode: 'VKO'
-    },
-    {
-      city: 'Домодедово',
-      airportCode: 'DME'
-    },
-    {
-      city: 'Жуковсикй',
-      airportCode: 'ZIA'
+      airport_code: 'MOW',
+      airports: [
+        {
+          city: 'Быково',
+          airport_code: 'BKA'
+        },
+        {
+          city: 'Шереметьево',
+          airport_code: 'SVO'
+        },
+        {
+          city: 'Внуково',
+          airport_code: 'VKO'
+        },
+        {
+          city: 'Домодедово',
+          airport_code: 'DME'
+        },
+        {
+          city: 'Жуковсикй',
+          airport_code: 'ZIA'
+        },
+      ]
     },
     {
       city: 'Алматы',
       country: 'Казахстан',
-      airportCode: 'ALA',
-    },
-    {
-      city: 'Алматы',
-      airportCode: 'ALA'
+      airport_code: 'ALA',
     },
     {
       city: 'Стамбул',
       country: 'Тугрция',
-      airportCode: 'IST',
-    },
-    {
-      city: 'Стамбул',
-      airportCode: 'Турция'
+      airport_code: 'IST',
     },
     {
       city: 'Дубай',
       country: 'Объединенные Арабские Эмираты',
-      airportCode: 'DXB',
-    },
-    {
-      city: 'Дубай',
-      airportCode: 'DXB'
+      airport_code: 'DXB',
     },
   ]
-  public filteredDirections = [...this.directionsCity];
+  public filteredDirections = [...this.flightRoutes];
   public searchTerm = '';
   public isVisible = false;
   public isAnimating = false;
@@ -100,35 +92,46 @@ export class DirectionToModalComponent {
 
   @Output() selectDirection = new EventEmitter<any>();
   @ViewChild('searchToInput') searchToInput!: ElementRef<HTMLInputElement>;
-
   searchInput: any;
 
   constructor(private cityService: CityService) {
+    this.searchSubject.pipe(debounceTime(300)).subscribe((searchTermTrimmed) => {
+      this.performSearch(searchTermTrimmed);
+    });
   }
 
-  onSearchChange() {
-    const searchTermTrimmed = this.searchTerm.trim();
+  private performSearch(searchTermTrimmed: string) {
+    this.isLoading = true;
 
     if (searchTermTrimmed.length > 0) {
-      this.isLoading = true;
       this.cityService.searchCities(searchTermTrimmed).subscribe({
         next: (res) => {
+          console.log(res.data);
           this.filteredDirections = res.data.map((item: any) => ({
-            city: item.item.ru || item.item.en || item.item.tj || item.item.uz,
-            airportCode: item.item_code,
-            country: item.country.ru || item.country.en || item.country.tj || item.country.uz,
+            city: item.item.ru || item.item.tj,
+            airport_code: item.item_code,
+            airports: item.airports.map((airport: any) => ({
+              city: airport.airport.ru,
+              airport_code: airport.airport_code,
+            })),
+            country: item.country.ru || item.country.tj,
           }));
           this.isLoading = false;
         },
         error: (err) => {
           console.error('Ошибка при поиске городов:', err);
           this.isLoading = false;
-        }
+        },
       });
     } else {
-      this.filteredDirections = [...this.directionsCity]
+      this.filteredDirections = [...this.flightRoutes];
       this.isLoading = false;
     }
+  }
+
+  onSearchChange() {
+    const searchTermTrimmed = this.searchTerm.trim();
+    this.searchSubject.next(searchTermTrimmed);
   }
 
   chooseDirection(direction: any) {
@@ -138,7 +141,7 @@ export class DirectionToModalComponent {
 
   resetSearch() {
     this.searchTerm = ''
-    this.filteredDirections = [...this.directionsCity]
+    this.filteredDirections = [...this.flightRoutes]
     this.isLoading = false;
   }
 
