@@ -1,6 +1,7 @@
-import {Component, EventEmitter, Input, Output, OnInit, HostListener} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnInit, HostListener, ViewChild} from '@angular/core';
 import {JsonPipe, KeyValuePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
+import {FilterTicketsComponent} from "../filter-tickets/filter-tickets.component";
 
 @Component({
   selector: 'app-tickets-modal',
@@ -11,6 +12,7 @@ import {animate, AnimationEvent, style, transition, trigger} from "@angular/anim
     NgForOf,
     KeyValuePipe,
     JsonPipe,
+    FilterTicketsComponent,
   ],
   templateUrl: './tickets-modal.component.html',
   styleUrl: './tickets-modal.component.scss',
@@ -35,19 +37,16 @@ export class TicketsModalComponent {
   @Input() passengerCount: number = 0;
   @Input() travelClassText: string = '';
   @Input() selectedDateText: string = '';
+  @ViewChild('filterTickets') filterTickets!: FilterTicketsComponent
 
-  public isVisible: boolean = false;
+  isVisible: boolean = true;
   departureAirport: any;
   arrivalAirport: any;
   flightDuration: string = '';
   public isBookingInfoModal: boolean = false;
   public isModalBookingVisible: boolean = true;
-  public isPriceFilter: boolean = false;
-  public isTransferFilter: boolean = false;
   public isAnimatingBookingInfo: boolean = false;
-  currentSort: 'asc' | 'desc' | null = null;
   currentFilter: string = 'all';
-  public isOpenFilterModal: boolean = false;
 
   constructor() {
     this.initializeFlightData();
@@ -161,7 +160,11 @@ export class TicketsModalComponent {
     return this.flights;
   }
 
-  openFiltersModal() {
-    this.isOpenFilterModal = true;
+  openFilterModal() {
+    if (this.filterTickets) {
+      this.filterTickets.openModal();
+    } else {
+      console.error('FilterTicketsComponent не найден');
+    }
   }
 }
