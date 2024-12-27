@@ -84,6 +84,10 @@ body {
   justify-content: center;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .pa-0 {
   padding: 0;
 }
@@ -120,4 +124,24 @@ body {
 
 .h-100 {
   height: 100%;
+}
+
+.gap-0 {
+  gap: 0;
+}
+
+.gap-1 {
+  gap: 4px;
+}
+
+.gap-2 {
+  gap: 8px;
+}
+
+.gap-3 {
+  gap: 16px;
+}
+
+.gap-4 {
+  gap: 24px;
 }

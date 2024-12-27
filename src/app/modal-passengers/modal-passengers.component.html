@@ -15,7 +15,11 @@
       <h2>Пассажиры</h2>
 
       <ul class="passengers-class__list">
-        <span class="toggle-indicator" [class.economy]="selectedClass === 'economy'" [class.business]="selectedClass === 'business'"></span>
+        <span
+          class="toggle-indicator"
+          [class.economy]="selectedClass === 'economy'"
+          [class.business]="selectedClass === 'business'"
+        ></span>
         <li class="passengers-class__list-item">
           <button
             class="passengers-class__button"

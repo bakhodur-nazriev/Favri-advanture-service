@@ -1,0 +1,200 @@
+<div class="main-block">
+  <div class="top-nav__block">
+    <span class="close-button" (click)="closeModal()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M15 19.92L8.47997 13.4C7.70997 12.63 7.70997 11.37 8.47997 10.6L15 4.07999"
+          stroke="#292929"
+          stroke-width="1.5"
+          stroke-miterlimit="10"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </span>
+
+    <h3>Добавить</h3>
+  </div>
+
+  <div class="main-content">
+    <div class="inputs-blocks">
+      <div class="card-block">
+        <div class="card">
+          <input
+            [(ngModel)]="name"
+            placeholder="Имя"
+            class="text-field"
+          >
+        </div>
+      </div>
+
+      <div class="card-block">
+        <div class="card">
+          <input
+            [(ngModel)]="surname"
+            placeholder="Фамилия"
+            class="text-field"
+            type="text"
+          >
+        </div>
+      </div>
+
+      <div class="birthday-block">
+        <span>Дата рождения</span>
+        <div class="card-block">
+          <div class="card">
+            <input
+              type="text"
+              placeholder="дд.мм.гггг"
+              name="phone"
+              class="text-field"
+              inputmode="numeric"
+              pattern="[0-9]*"
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="card-block">
+        <div
+          class="card citizenship-block"
+          [class.error]="isValidationTriggered && !passengerDataList[selectedIndex]?.citizenship"
+          (click)="toggleDropdown()"
+        >
+          <span
+            *ngIf="!passengerDataList[selectedIndex]?.citizenship"
+            class="selector-country__title"
+          >
+            Гражданство
+          </span>
+          <span
+            class="selected-country"
+            *ngIf="passengerDataList[selectedIndex]?.citizenship"
+          >
+          {{ selectedCountry }}
+        </span>
+          <div class="dropdown" *ngIf="dropdownOpen" (click)="$event.stopPropagation()">
+            <ul>
+              <li
+                *ngFor="let country of countries"
+                (click)="selectCountry(country)"
+              >
+                {{ country.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3>Паспорт</h3>
+      <div class="card-block">
+        <div
+          class="card citizenship-block"
+          [class.error]=" isValidationTriggered && !passengerDataList[selectedIndex]?.citizenship"
+          (click)="toggleDropdown()"
+        >
+          <span
+            *ngIf="!passengerDataList[selectedIndex]?.citizenship"
+            class="selector-country__title"
+          >
+            Гражданство
+          </span>
+          <span
+            class="selected-country"
+            *ngIf="passengerDataList[selectedIndex]?.citizenship"
+          >
+          {{ selectedCountry }}
+        </span>
+          <div class="dropdown" *ngIf="dropdownOpen" (click)="$event.stopPropagation()">
+            <ul>
+              <li
+                *ngFor="let country of countries"
+                (click)="selectCountry(country)"
+              >
+                {{ country.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="invalid-field" *ngIf=" isValidationTriggered &&!passengerDataList[selectedIndex]?.citizenship">
+          Объязательное поле*
+        </div>
+      </div>
+
+      <div class="card-block">
+        <div class="card citizenship-block" (click)="togglePassportDropdown()">
+        <span
+          *ngIf="!passengerDataList[selectedIndex]?.document_type"
+          class="selector-passport__title"
+        >
+          Тип документа
+        </span>
+          <span
+            class="selected-passport"
+            *ngIf="passengerDataList[selectedIndex]?.document_type"
+          >
+          {{ selectedPassportType }}
+        </span>
+          <div class="dropdown" *ngIf="openDropdownPassport" (click)="$event.stopPropagation()">
+            <ul>
+              <li
+                *ngFor="let passport of passports"
+                (click)="selectPassport(passport.name, passport.code)"
+              >
+                {{ passport.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="invalid-field" *ngIf="!passengerDataList[selectedIndex]?.document_type">
+          Объязательное поле*
+        </div>
+      </div>
+
+      <div class="birthday-block">
+        <span>Дата выдачи документа</span>
+        <div class="card-block">
+          <div class="card">
+            <input
+              type="text"
+              placeholder="дд.мм.гггг"
+              name="phone"
+              class="text-field"
+              inputmode="numeric"
+              pattern="[0-9]*"
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="card-block">
+        <div class="card">
+          <input
+            type="text"
+            placeholder="Серия и номер документа"
+            class="text-field"
+            name="documentNumber"
+          >
+        </div>
+      </div>
+
+      <div class="birthday-block">
+        <span>Срок действия</span>
+        <div class="card-block">
+          <div class="card">
+            <input
+              type="text"
+              placeholder="дд.мм.гггг"
+              class="text-field"
+              inputmode="numeric"
+              name="expirationDate"
+              pattern="[0-9]*"
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

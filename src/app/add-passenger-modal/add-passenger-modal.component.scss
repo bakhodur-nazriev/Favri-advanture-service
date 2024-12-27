@@ -1,0 +1,21 @@
+.main-block {
+
+  .top-nav__block {
+    display: flex;
+    align-items: center;
+    height: 58px;
+    background-color: #fff;
+
+    .close-button {
+      display: flex;
+      justify-content: center;
+    }
+
+    h3 {
+      width: 100%;
+      text-align: center;
+      font-weight: 400;
+      margin: 0 25px 0 0;
+    }
+  }
+}

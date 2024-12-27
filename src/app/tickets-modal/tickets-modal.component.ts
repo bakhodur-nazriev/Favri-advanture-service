@@ -39,7 +39,7 @@ export class TicketsModalComponent {
   @Input() selectedDateText: string = '';
   @ViewChild('filterTickets') filterTickets!: FilterTicketsComponent
 
-  isVisible: boolean = true;
+  isVisible: boolean = false;
   departureAirport: any;
   arrivalAirport: any;
   flightDuration: string = '';

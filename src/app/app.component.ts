@@ -23,6 +23,7 @@ import dayjs from 'dayjs';
 import {ModalOrderSucceedComponent} from "./modal-order-succeed/modal-order-succeed.component";
 import {PassengerDataService} from "./services/passenger-data.service";
 import localeRu from '@angular/common/locales/ru';
+import {ProfileComponent} from "./profile/profile.component";
 
 registerLocaleData(localeRu);
 
@@ -47,6 +48,7 @@ registerLocaleData(localeRu);
     OrderTicketModalComponent,
     DetailPassengerModalComponent,
     ModalOrderSucceedComponent,
+    ProfileComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

@@ -127,7 +127,7 @@
           </svg>
 
           <span>
-            {{ tempPassengers.adults + tempPassengers.children  + tempPassengers.infantsWithSeat }}
+            {{ tempPassengers.adults + tempPassengers.children + tempPassengers.infantsWithSeat }}
             пасс, {{ travelClass }}
           </span>
         </button>
@@ -194,6 +194,8 @@
     [passenger]="selectedPassenger"
     (validationStatusChanged)="onValidationStatusChanged($event)"
   />
+
+  <app-profile *ngIf="true"/>
 </main>
 
 <router-outlet/>
