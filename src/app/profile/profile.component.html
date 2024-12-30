@@ -60,12 +60,26 @@
       <span class="text-center">Здесь будут показаны ваши билеты и <br> бронирования</span>
     </div>
 
-    <div *ngIf="selectedItem === 'passenger'" class="passengers-tab">
+    <div
+      *ngIf="selectedItem === 'passenger'"
+      class="passengers-tab"
+    >
+      <div *ngIf="profileDataList">
+        <ul class="passengers-list">
+          <li
+            *ngFor="let passenger of profileDataList"
+            class="passengers-list__item"
+          >
+            {{ passenger.firstName }} {{ passenger.surName }} {{ passenger.middleName }}
+          </li>
+        </ul>
+      </div>
+
       <span class="add-passenger__button" (click)="addProfile()">
         <span class="plus-sign">+</span> Добавить
       </span>
     </div>
   </div>
 
-  <app-add-passenger-modal class="add-passenger__block"/>
+  <app-add-passenger-modal class="add-passenger__block" *ngIf="false"/>
 </div>

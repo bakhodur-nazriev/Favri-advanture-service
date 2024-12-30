@@ -63,6 +63,28 @@
           margin-right: 6px;
         }
       }
+
+      .passengers-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        &__item {
+        }
+
+        &::after {
+          content: url("/assets/svg/arrow-left.svg");
+          position: absolute;
+          right: 16px;
+          transform: translateY(-50%);
+          font-size: 12px;
+          color: #666;
+        }
+
+        &__title {
+          color: #666F8D;
+        }
+      }
     }
   }
 }
@@ -139,6 +161,7 @@
 .add-passenger__block {
   position: absolute;
   top: 0;
+  left: 0;
   z-index: 12;
   background-color: #EFF6FF;
   width: -webkit-fill-available;

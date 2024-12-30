@@ -20,6 +20,7 @@ export class AddPassengerModalComponent {
   public surname: string = '';
   public isValidationTriggered: boolean = false;
   public dropdownOpen: boolean = false;
+  public openGenderPassport: boolean = false;
   public openDropdownPassport: boolean = false;
   public selectedGender: string = 'M';
   public selectedCountry: string = '';
@@ -31,19 +32,31 @@ export class AddPassengerModalComponent {
     {name: 'Загран паспорт', code: 'NP'},
     {name: 'Паспорт РТ', code: 'NP'}
   ];
+  public genders: any[] = [
+    {text: 'Мужчина', value: 'M',},
+    {text: 'Женщина', value: 'F'}
+  ]
+
+  protected readonly countries = COUNTRIES;
 
   closeModal() {
 
   }
 
-  protected readonly countries = COUNTRIES;
-
   toggleDropdown(): void {
     this.dropdownOpen = !this.dropdownOpen;
   }
 
+  toggleGenderDropdown(): void {
+    this.openGenderPassport = !this.openGenderPassport;
+  }
+
   togglePassportDropdown(): void {
     this.openDropdownPassport = !this.openDropdownPassport;
+  }
+
+  selectGender(gender: string) {
+    this.passengerDataList[this.selectedIndex].gender = gender;
   }
 
   selectCountry(country: { name: string, code: string }): void {
