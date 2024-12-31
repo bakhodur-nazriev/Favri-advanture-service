@@ -1,0 +1,278 @@
+<div class="main-block">
+  <div class="top-nav__block">
+    <span class="close-button" (click)="closeModal()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M15 19.92L8.47997 13.4C7.70997 12.63 7.70997 11.37 8.47997 10.6L15 4.07999"
+          stroke="#292929"
+          stroke-width="1.5"
+          stroke-miterlimit="10"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </span>
+
+    <h3 class="top-nav__block-title">Детали пассажира</h3>
+
+    <span class="edit-button">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M16.652 3.45506L17.3009 2.80624C18.3759 1.73125 20.1188 1.73125 21.1938 2.80624C22.2687 3.88124 22.2687 5.62415 21.1938 6.69914L20.5449 7.34795M16.652 3.45506C16.652 3.45506 16.7331 4.83379 17.9497 6.05032C19.1662 7.26685 20.5449 7.34795 20.5449 7.34795M16.652 3.45506L10.6872 9.41993C10.2832 9.82394 10.0812 10.0259 9.90743 10.2487C9.70249 10.5114 9.52679 10.7957 9.38344 11.0965C9.26191 11.3515 9.17157 11.6225 8.99089 12.1646L8.41242 13.9M20.5449 7.34795L14.5801 13.3128C14.1761 13.7168 13.9741 13.9188 13.7513 14.0926C13.4886 14.2975 13.2043 14.4732 12.9035 14.6166C12.6485 14.7381 12.3775 14.8284 11.8354 15.0091L10.1 15.5876M10.1 15.5876L8.97709 15.9619C8.71035 16.0508 8.41626 15.9814 8.21744 15.7826C8.01862 15.5837 7.9492 15.2897 8.03811 15.0229L8.41242 13.9M10.1 15.5876L8.41242 13.9"
+          stroke="#00B06C" stroke-width="1.5"/>
+        <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2" stroke="#00B06C"
+              stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </span>
+  </div>
+
+  <div class="main-content">
+    <h3 class="mt-0">Взрослый</h3>
+    <ul class="inputs-list">
+      <li class="inputs-list__item">
+        <div class="inputs-list__item-block">
+          <input
+            [(ngModel)]="passenger.firstName"
+            placeholder="Имя"
+            class="text-field"
+            type="text"
+          >
+        </div>
+      </li>
+      <li class="inputs-list__item">
+        <div class="inputs-list__item-block">
+          <input
+            [(ngModel)]="passenger.surName"
+            placeholder="Фамилия"
+            class="text-field"
+            type="text"
+          >
+        </div>
+      </li>
+      <li class="inputs-list__item">
+        <div class="inputs-list__item-block">
+          <span class="date-icon">
+             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M7.99997 2.00001V5.00001" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 2.00001V5.00001" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3.49997 9.09001H20.5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M21 8.50001V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.50001C3 5.50001 4.5 3.50001 8 3.50001H16C19.5 3.50001 21 5.50001 21 8.50001Z"
+                stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                stroke-linejoin="round"/>
+              <path d="M15.6945 13.7H15.7035" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M15.6945 16.7H15.7035" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M11.9954 13.7H12.0044" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M11.9954 16.7H12.0044" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M8.29443 13.7H8.30341" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M8.29443 16.7H8.30341" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <input
+            [(ngModel)]="passenger.birthDate"
+            type="text"
+            placeholder="Дата рождения"
+            name="phone"
+            class="text-field"
+            inputmode="numeric"
+            pattern="[0-9]*"
+          >
+        </div>
+      </li>
+      <li class="inputs-list__item">
+        <div class="selector-block" (click)="toggleGenderDropdown()">
+          <!-- Отображение выбранного пола -->
+          <span class="selected-passport" *ngIf="passenger.gender">
+            {{ getGenderText(passenger.gender) }}
+          </span>
+          <span *ngIf="!passenger.gender" class="selected-passport">
+            Выберите пол
+          </span>
+
+          <!-- Выпадающий список -->
+          <div class="dropdown" *ngIf="isGenderDropdownOpen" (click)="$event.stopPropagation()">
+            <ul class="gender-list">
+              <li
+                class="gender-list__item"
+                *ngFor="let gender of genders"
+                (click)="selectGender(gender.value)"
+              >
+                {{ gender.text }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <h3>Паспорт</h3>
+
+    <ul class="inputs-list">
+      <!--<li class="inputs-list__item">
+        <div
+          class="selector-block"
+          (click)="toggleDropdown()"
+        >
+                <span
+                  *ngIf="!passengerDataList[selectedIndex]?.citizenship"
+                  class="selector-block__title"
+                >
+                  Гражданство
+                </span>
+          <span
+            class="selected-country"
+            *ngIf="passengerDataList[selectedIndex]?.citizenship"
+          >
+                  {{ selectedCountry }}
+                </span>
+          <div class="dropdown" *ngIf="dropdownOpen" (click)="$event.stopPropagation()">
+            <ul>
+              <li
+                *ngFor="let country of countries"
+                (click)="selectCountry(country)"
+              >
+                {{ country.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>-->
+      <li class="inputs-list__item">
+        <div class="selector-block" (click)="togglePassportDropdown()">
+          <!-- Отображение выбранного пола -->
+          <span class="selected-passport" *ngIf="passenger.documentType">
+            {{ getPassportText(passenger.documentType) }}
+          </span>
+          <span *ngIf="!passenger.gender" class="selected-passport">
+            Выберите тип документа
+          </span>
+
+          <!-- Выпадающий список -->
+          <div class="dropdown" *ngIf="isPassportDropdownOpen" (click)="$event.stopPropagation()">
+            <ul class="gender-list">
+              <li
+                class="gender-list__item"
+                *ngFor="let passport of passports"
+                (click)="selectPassport(passport.value)"
+              >
+                {{ passport.text }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="inputs-list__item">
+        <div class="inputs-list__item-block">
+          <span class="date-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M7.99997 2.00001V5.00001" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 2.00001V5.00001" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3.49997 9.09001H20.5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M21 8.50001V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.50001C3 5.50001 4.5 3.50001 8 3.50001H16C19.5 3.50001 21 5.50001 21 8.50001Z"
+                stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                stroke-linejoin="round"/>
+              <path d="M15.6945 13.7H15.7035" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M15.6945 16.7H15.7035" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M11.9954 13.7H12.0044" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M11.9954 16.7H12.0044" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M8.29443 13.7H8.30341" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M8.29443 16.7H8.30341" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <input
+            [(ngModel)]="passenger.birthDate"
+            type="text"
+            placeholder="Дата выдачи документа"
+            name="start-date-document"
+            class="text-field"
+            inputmode="numeric"
+            pattern="[0-9]*"
+          >
+        </div>
+      </li>
+      <li class="inputs-list__item">
+        <div class="inputs-list__item-block">
+          <input
+            [(ngModel)]="passenger.documentNumber"
+            type="text"
+            placeholder="Серия и номер документа"
+            class="text-field"
+            name="document-number"
+          >
+        </div>
+      </li>
+      <li class="inputs-list__item">
+        <div class="inputs-list__item-block">
+          <span class="date-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M7.99997 2.00001V5.00001" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 2.00001V5.00001" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3.49997 9.09001H20.5" stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M21 8.50001V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.50001C3 5.50001 4.5 3.50001 8 3.50001H16C19.5 3.50001 21 5.50001 21 8.50001Z"
+                stroke="#00B06C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                stroke-linejoin="round"/>
+              <path d="M15.6945 13.7H15.7035" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M15.6945 16.7H15.7035" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M11.9954 13.7H12.0044" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M11.9954 16.7H12.0044" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M8.29443 13.7H8.30341" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              <path d="M8.29443 16.7H8.30341" stroke="#00B06C" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <input
+            [(ngModel)]="passenger.expirationDate"
+            type="text"
+            placeholder="Срок действия"
+            class="text-field"
+            inputmode="numeric"
+            name="expiration-date-document"
+            pattern="[0-9]*"
+          >
+        </div>
+      </li>
+    </ul>
+
+    <button class="d-flex align-center justify-center gap-2 btn-error mt-4">
+      <span>Удалить</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M9.17065 4C9.58249 2.83481 10.6937 2 11.9999 2C13.3062 2 14.4174 2.83481 14.8292 4" stroke="#FF1216"
+              stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M20.5 6H3.49992" stroke="#FF1216" stroke-width="1.5" stroke-linecap="round"/>
+        <path
+          d="M18.8333 8.5L18.3734 15.3991C18.1964 18.054 18.1079 19.3815 17.2429 20.1907C16.3779 21 15.0475 21 12.3867 21H11.6133C8.95251 21 7.62211 21 6.7571 20.1907C5.8921 19.3815 5.8036 18.054 5.6266 15.3991L5.16666 8.5"
+          stroke="#FF1216" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M9.5 11L10 16" stroke="#FF1216" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M14.5 11L14 16" stroke="#FF1216" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</div>

@@ -11,7 +11,7 @@ import {DirectionFromModalComponent} from './direction-from-modal/direction-from
 import {DirectionToModalComponent} from "./direction-to-modal/direction-to-modal.component";
 import {FormsModule} from "@angular/forms";
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Passengers} from "./models/passengers.interface";
+import {Passengers} from "./models/passengers-type.interface";
 import {TicketsModalComponent} from "./tickets-modal/tickets-modal.component";
 import {PreorderModalComponent} from "./preorder-modal/preorder-modal.component";
 import {Included} from "./models/flights-included.interface";
@@ -102,7 +102,7 @@ export class AppComponent implements OnInit {
   public selectedEndDate: Date | null = null;
   selectedFlight: any;
   public selectedPassenger: any;
-  public isProfileModalOpen: boolean = false;
+  public isProfileModalOpen: boolean = true;
 
   public passengerCount: number = 0;
   public travelClassText: string = '';
@@ -330,7 +330,11 @@ export class AppComponent implements OnInit {
     this.passengerCount = adults + children + infantsWithSeat;
   }
 
-  openProfile() {
-    this.isProfileModalOpen = true
+  openProfileModal() {
+    this.isProfileModalOpen = true;
+  }
+
+  closeProfileModal() {
+    this.isProfileModalOpen = false;
   }
 }

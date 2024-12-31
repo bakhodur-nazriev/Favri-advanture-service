@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {AddPassengerModalComponent} from "../add-passenger-modal/add-passenger-modal.component";
 import {ProfileService} from "../services/profile.service";
+import {EditPassengerModalComponent} from "../edit-passenger-modal/edit-passenger-modal.component";
 
 @Component({
   selector: 'app-profile',
@@ -9,21 +10,31 @@ import {ProfileService} from "../services/profile.service";
   imports: [
     NgIf,
     AddPassengerModalComponent,
-    NgForOf
+    NgForOf,
+    EditPassengerModalComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
-  public selectedItem: string = 'passenger';
+  @Output() closeModalEvent = new EventEmitter<void>();
+
+  public selectedTab: string = 'passenger';
   public isVisible: boolean = false;
   openDropdownPassport: boolean = false;
   selectedIndex: number = 0;
   selectedPassportType: string = '';
   profileDataList: any[] = [];
   walletPhone: string = '+992937454571';
+  showEditPassengerModal: boolean = false;
+  showAddPassengerModal: boolean = false;
+  passenger = {};
 
   constructor(private profileService: ProfileService) {
+  }
+
+  closeModal() {
+    this.closeModalEvent.emit();
   }
 
   ngOnInit(): void {
@@ -43,10 +54,7 @@ export class ProfileComponent implements OnInit {
   }
 
   selectItem(item: string) {
-    this.selectedItem = item;
-  }
-
-  addProfile() {
+    this.selectedTab = item;
   }
 
   togglePassengerDropdown() {
@@ -55,5 +63,22 @@ export class ProfileComponent implements OnInit {
   selectPassport(name: string, code: string): void {
     this.selectedPassportType = name;
     this.openDropdownPassport = false;
+  }
+
+  addPassengerModal() {
+    this.showAddPassengerModal = true;
+  }
+
+  closeAddPassengerModal(){
+    this.showAddPassengerModal = false;
+  }
+
+  openEditPassengerModal(passenger: any): void {
+    this.passenger = passenger;
+    this.showEditPassengerModal = true;
+  }
+
+  closeEditPassengerModal(): void {
+    this.showEditPassengerModal = false;
   }
 }

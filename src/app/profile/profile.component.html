@@ -1,6 +1,6 @@
 <div class="main-block">
   <div class="top-nav__block">
-    <span class="close-button">
+    <span class="close-button" (click)="closeModal()">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path
           d="M15 19.92L8.47997 13.4C7.70997 12.63 7.70997 11.37 8.47997 10.6L15 4.07999"
@@ -20,13 +20,13 @@
     <ul class="profile-class__list">
       <span
         class="toggle-indicator"
-        [class.my-tickets]="selectedItem === 'my-tickets'"
-        [class.passenger]="selectedItem === 'passenger'"
+        [class.my-tickets]="selectedTab === 'my-tickets'"
+        [class.passenger]="selectedTab === 'passenger'"
       ></span>
       <li class="profile-class__list-item">
         <button
           class="profile-class__button"
-          [class.active]="selectedItem === 'my-tickets'"
+          [class.active]="selectedTab === 'my-tickets'"
           (click)="selectItem('my-tickets')"
         >
           Мои билеты
@@ -35,7 +35,7 @@
       <li class="profile-class__list-item">
         <button
           class="profile-class__button"
-          [class.active]="selectedItem === 'passenger'"
+          [class.active]="selectedTab === 'passenger'"
           (click)="selectItem('passenger')"
         >
           Пассажиры
@@ -43,7 +43,10 @@
       </li>
     </ul>
 
-    <div *ngIf="selectedItem === 'my-tickets'" class="my-tickets-tab d-flex flex-column align-center gap-2">
+    <div
+      *ngIf="selectedTab === 'my-tickets'"
+      class="my-tickets-tab d-flex flex-column align-center gap-2"
+    >
       <span class="ticket-icon">
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <path
@@ -61,7 +64,7 @@
     </div>
 
     <div
-      *ngIf="selectedItem === 'passenger'"
+      *ngIf="selectedTab === 'passenger'"
       class="passengers-tab"
     >
       <div *ngIf="profileDataList">
@@ -69,17 +72,29 @@
           <li
             *ngFor="let passenger of profileDataList"
             class="passengers-list__item"
+            (click)="openEditPassengerModal(passenger)"
           >
-            {{ passenger.firstName }} {{ passenger.surName }} {{ passenger.middleName }}
+            <span>{{ passenger.firstName }} {{ passenger.surName }} {{ passenger.middleName }}</span>
           </li>
         </ul>
       </div>
 
-      <span class="add-passenger__button" (click)="addProfile()">
+      <span class="add-passenger__button" (click)="addPassengerModal()">
         <span class="plus-sign">+</span> Добавить
       </span>
     </div>
   </div>
 
-  <app-add-passenger-modal class="add-passenger__block" *ngIf="false"/>
+  <app-add-passenger-modal
+    class="add-passenger__block"
+    *ngIf="showAddPassengerModal"
+    (closeModalEvent)="closeAddPassengerModal()"
+  />
+
+  <app-edit-passenger-modal
+    class="edit-passenger__block"
+    [passenger]="passenger"
+    *ngIf="showEditPassengerModal"
+    (closeModalEvent)="closeEditPassengerModal()"
+  />
 </div>

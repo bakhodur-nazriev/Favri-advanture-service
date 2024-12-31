@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {COUNTRIES} from "../../coutries";
@@ -39,8 +39,10 @@ export class AddPassengerModalComponent {
 
   protected readonly countries = COUNTRIES;
 
-  closeModal() {
+  @Output() closeModalEvent = new EventEmitter<void>();
 
+  closeModal() {
+    this.closeModalEvent.emit();
   }
 
   toggleDropdown(): void {

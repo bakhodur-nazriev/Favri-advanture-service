@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {animate, style, transition, trigger, AnimationEvent} from "@angular/animations";
-import {Passengers} from "../models/passengers.interface";
+import {Passengers} from "../models/passengers-type.interface";
 
 @Component({
   selector: 'app-modal-passengers',
