@@ -3,6 +3,7 @@ import {NgForOf, NgIf} from "@angular/common";
 import {AddPassengerModalComponent} from "../add-passenger-modal/add-passenger-modal.component";
 import {ProfileService} from "../services/profile.service";
 import {EditPassengerModalComponent} from "../edit-passenger-modal/edit-passenger-modal.component";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-profile',
@@ -21,16 +22,16 @@ export class ProfileComponent implements OnInit {
 
   public selectedTab: string = 'passenger';
   public isVisible: boolean = false;
-  openDropdownPassport: boolean = false;
-  selectedIndex: number = 0;
-  selectedPassportType: string = '';
   profileDataList: any[] = [];
-  walletPhone: string = '+992937454571';
+  walletPhone: string = '';
   showEditPassengerModal: boolean = false;
   showAddPassengerModal: boolean = false;
   passenger = {};
 
-  constructor(private profileService: ProfileService) {
+  constructor(
+    private profileService: ProfileService,
+    private route: ActivatedRoute
+  ) {
   }
 
   closeModal() {
@@ -39,6 +40,11 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProfile();
+
+    this.route.queryParams.subscribe(params => {
+      this.walletPhone = params['walletPhone'] || '';
+      console.log('walletPhone initialized:', this.walletPhone);
+    });
   }
 
   loadProfile(): void {
@@ -57,19 +63,11 @@ export class ProfileComponent implements OnInit {
     this.selectedTab = item;
   }
 
-  togglePassengerDropdown() {
-  }
-
-  selectPassport(name: string, code: string): void {
-    this.selectedPassportType = name;
-    this.openDropdownPassport = false;
-  }
-
   addPassengerModal() {
     this.showAddPassengerModal = true;
   }
 
-  closeAddPassengerModal(){
+  closeAddPassengerModal() {
     this.showAddPassengerModal = false;
   }
 

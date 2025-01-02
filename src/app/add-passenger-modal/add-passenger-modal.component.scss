@@ -4,11 +4,14 @@
   gap: 20px;
 
   .top-nav__block {
+    position: fixed;
     display: flex;
     align-items: center;
     height: 58px;
     background-color: #fff;
     padding-left: 20px;
+    z-index: 15;
+    width: 100%;
 
     .close-button {
       display: flex;
@@ -25,10 +28,11 @@
   }
 
   .main-content {
-    padding: 20px;
+    padding: 0 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-top: 75px;
 
     .inputs-list {
       padding: 0;
@@ -57,7 +61,8 @@
             border: none;
             outline: none;
             font-size: 16px;
-            color: #666F8D;
+            color: #030712;
+            width: 100%;
           }
         }
 
@@ -94,12 +99,10 @@
       }
     }
 
+
     .save-button {
-      position: absolute;
-      bottom: 60px;
-      left: 20px;
-      right: 20px;
-      width: auto;
+      margin-top: 40px;
+      margin-bottom: 30px;
     }
   }
 }

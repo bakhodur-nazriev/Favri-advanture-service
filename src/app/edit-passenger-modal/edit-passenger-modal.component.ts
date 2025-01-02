@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '
 import {COUNTRIES} from "../../coutries";
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
+import {ProfileService} from "../services/profile.service";
 
 @Component({
   selector: 'app-edit-passenger-modal',
@@ -16,13 +17,16 @@ import {NgForOf, NgIf} from "@angular/common";
 })
 export class EditPassengerModalComponent implements OnChanges {
   @Output() closeModalEvent = new EventEmitter<void>();
-
   @Input() passenger: any = {};
+
+  constructor(private profileService: ProfileService) {
+  }
 
   protected readonly countries = COUNTRIES;
 
   isGenderDropdownOpen: boolean = false;
   isPassportDropdownOpen: boolean = false;
+  isCitizenshipDropdownOpen: boolean = false;
   public genders: any[] = [
     {text: 'Мужчина', value: 'M'},
     {text: 'Женщина', value: 'F'}
@@ -68,5 +72,57 @@ export class EditPassengerModalComponent implements OnChanges {
   selectPassport(passportValue: string) {
     this.passenger.documentType = passportValue;
     this.isPassportDropdownOpen = false;
+  }
+
+  toggleCitizenship() {
+    this.isCitizenshipDropdownOpen = !this.isCitizenshipDropdownOpen;
+  }
+
+  getCitizenshipText(citizenshipValue: string): string {
+    const citizenship = this.countries.find(c => c.code === citizenshipValue);
+    return citizenship ? citizenship.name : 'Не выбран'
+  }
+
+  selectCountry(country: string) {
+    this.passenger.citizenShip = country;
+    this.isCitizenshipDropdownOpen = false;
+  }
+
+  getAgeCategory(birthDate: string): string {
+    if (!birthDate) {
+      return 'Пассажир';
+    }
+
+    const birthYear = new Date(birthDate).getFullYear();
+    if (isNaN(birthYear)) {
+      return 'Пассажир';
+    }
+    const currentYear = new Date().getFullYear();
+
+    const age = currentYear - birthYear;
+
+    if (age >= 12) {
+      return 'Взрослый';
+    } else if (age >= 2) {
+      return 'Ребёнок';
+    } else {
+      return 'Младенец';
+    }
+  }
+
+  deletePassenger(passengerId: number): void {
+    if (!passengerId) return;
+
+    if (confirm('Вы уверены, что хотите удалить пассажира')) {
+      this.profileService.deletePassenger(passengerId).subscribe(
+        () => {
+          console.log('Пассажир успешно удалён');
+        },
+        (error) => {
+          console.error('Ошибка при удалении пассажира: ', error);
+          console.log('Не удалось удалить пассажира');
+        }
+      )
+    }
   }
 }

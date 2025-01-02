@@ -6,12 +6,41 @@ import {Observable} from "rxjs";
   providedIn: 'root'
 })
 export class ProfileService {
-  private apiUrl = 'https://integration.cbt.tj/api/flytj/passenger/list';
+  private apiUrl = 'https://integration.cbt.tj/api/flytj/passenger';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getPassengers(walletPhone: string): Observable<any> {
     const params = new HttpParams().set('walletPhone', walletPhone);
-    return this.http.get<any>(this.apiUrl, { params });
+    return this.http.get<any>(`${this.apiUrl}/list`, {params});
+  }
+
+  addPassenger(passenger: {
+    firstName: string,
+    surName: string,
+    middleName: string,
+    citizenShip: string,
+    gender: string,
+    type: string,
+    documentType: string
+    documentNumber: string,
+    email: string,
+    phone: string,
+    birthDate: string,
+    expirationDate: string,
+    passportIssueDate: string,
+    walletPhone: string
+  }): Observable<any> {
+    const url = `${this.apiUrl}`
+    return this.http.post<any>(url, passenger);
+  }
+
+  updatePassenger() {
+  }
+
+  deletePassenger(passengerId: number): Observable<any> {
+    const url = `${this.apiUrl}/${passengerId}`;
+    return this.http.delete<any>(url);
   }
 }
