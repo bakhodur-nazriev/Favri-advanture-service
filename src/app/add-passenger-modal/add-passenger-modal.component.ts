@@ -19,6 +19,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class AddPassengerModalComponent implements OnInit {
   @Output() closeModalEvent = new EventEmitter<void>();
+  @Output() passengerAddedEvent = new EventEmitter<void>();
 
   public walletPhone: string = "";
   public firstName: string = "";
@@ -63,7 +64,6 @@ export class AddPassengerModalComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.walletPhone = params['walletPhone'] || '';
-      console.log('walletPhone initialized:', this.walletPhone);
     });
   }
 
@@ -122,7 +122,8 @@ export class AddPassengerModalComponent implements OnInit {
 
     this.profileService.addPassenger(passenger).subscribe({
       next: (res) => {
-        console.log('Пассажир успешно добавлен: ', res)
+        this.passengerAddedEvent.emit();
+        this.closeModal();
         this.resetForm();
       },
       error: (err) => {

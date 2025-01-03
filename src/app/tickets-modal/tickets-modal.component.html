@@ -51,33 +51,32 @@
         </div>
       </div>
 
-      <div class="booking-info__title" *ngIf="isModalBookingVisible">
+      <div
+        class="booking-info__title"
+        *ngIf="isModalBookingVisible"
+        (click)="openBookingInfoModal()"
+      >
         <div class="booking-info__top">
-          <span class="booking-info__top-title">Цена билетов может меняться</span>
-          <span class="close-icon" (click)="closeModalBooking()">
-             <svg viewBox="0 0 50 50" fill="#fff" width="12px" height="12px">
-                <path
-                  d="M 9.15625 6.3125 L 6.3125 9.15625 L 22.15625 25 L 6.21875 40.96875 L 9.03125 43.78125 L 25 27.84375 L 40.9375 43.78125 L 43.78125 40.9375 L 27.84375 25 L 43.6875 9.15625 L 40.84375 6.3125 L 25 22.15625 Z"/>
-             </svg>
-          </span>
-        </div>
-
-        <span class="booking-info__divider"></span>
-
-        <div class="booking-info__bottom" (click)="openBookingInfoModal()">
-          <span class="booking-info__bottom-title">Подробнее</span>
-          <span class="arrow-left__icon">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path
-                d="M7.49997 3.39997L12.9333 8.83331C13.575 9.47498 13.575 10.525 12.9333 11.1666L7.49997 16.6"
-                stroke="#00B06C"
-                stroke-width="1.5"
-                stroke-miterlimit="10"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
+          <div class="d-flex mr-2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="#00B06C" stroke-width="1.5"/>
+              <path d="M12 17V11" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="1" cy="1" r="1" transform="matrix(1 0 0 -1 11 9)" fill="#00B06C"/>
             </svg>
-          </span>
+          </div>
+          <span class="booking-info__top-title">Цена билетов может меняться</span>
+        </div>
+        <div class="arrow-left__icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M7.49997 3.39997L12.9333 8.83331C13.575 9.47498 13.575 10.525 12.9333 11.1666L7.49997 16.6"
+              stroke="#666F8D"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
         </div>
       </div>
 
@@ -146,24 +145,46 @@
       </div>
 
       <!-- Booking info modal -->
-      <div class="booking-info__modal-layout" *ngIf="isBookingInfoModal" (click)="closeBookingInfoModal()">
+      <div
+        class="booking-info__modal-layout"
+        *ngIf="isBookingInfoModal"
+        (click)="closeBookingInfoModal()"
+      >
         <div
           class="booking-info__modal"
-          @slideInOut
-          (@slideInOut.done)="onAnimationBookingInfoEvent($event)"
           (click)="$event.stopPropagation()"
         >
-          <div class="holder-button">
-            <svg width="35" height="4" viewBox="0 0 35 4" fill="none">
-              <rect width="35" height="4" rx="2" fill="#95A5A6" fill-opacity="0.5"/>
+          <div
+            class="d-flex justify-end pa-8 pb-0"
+            (click)="closeBookingInfoModal()"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0C15.5228 0 20 4.47715 20 10ZM6.96963 6.96965C7.26252 6.67676 7.73739 6.67676 8.03029 6.96965L9.99997 8.93933L11.9696 6.96967C12.2625 6.67678 12.7374 6.67678 13.0303 6.96967C13.3232 7.26256 13.3232 7.73744 13.0303 8.03033L11.0606 9.99999L13.0303 11.9696C13.3232 12.2625 13.3232 12.7374 13.0303 13.0303C12.7374 13.3232 12.2625 13.3232 11.9696 13.0303L9.99997 11.0607L8.03031 13.0303C7.73742 13.3232 7.26254 13.3232 6.96965 13.0303C6.67676 12.7374 6.67676 12.2625 6.96965 11.9697L8.93931 9.99999L6.96963 8.03031C6.67673 7.73742 6.67673 7.26254 6.96963 6.96965Z"
+                fill="#94A3B8"
+              />
             </svg>
           </div>
-          <h1>Цена билетов может меняться</h1>
-          <span>Почему?</span>
-          <p>Пока вы ищите свою карту или паспорт, цена может обновиться.</p>
-          <p>Заполните данные и оплатите авиабилет в течение 10 минут, чтобы цена не изменилась.</p>
 
-          <button class="btn-primary" (click)="closeBookingInfoModal()">Понятно</button>
+          <div class="pa-8 pt-0">
+            <svg width="57" height="56" viewBox="0 0 57 56" fill="none">
+              <rect x="0.5" width="56" height="56" rx="28" fill="#E1FFF3"/>
+              <circle cx="28.5" cy="28.0001" r="13.3333" stroke="#00B06C" stroke-width="3"/>
+              <path d="M28.5 34.6667V26.6667" stroke="#00B06C" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="1.33333" cy="1.33333" r="1.33333" transform="matrix(1 0 0 -1 27.1667 24)" fill="#00B06C"/>
+            </svg>
+
+            <h1 class="booking-info__modal-title">Цена билетов может меняться</h1>
+            <p class="booking-info__modal-text">
+              Заполните информацию и оплатите<br>
+              авиабилет в течение 10 минут, чтобы<br>
+              избежать изменения цены.
+            </p>
+
+            <button class="btn-primary" (click)="closeBookingInfoModal()">Понятно</button>
+          </div>
         </div>
       </div>
     </div>

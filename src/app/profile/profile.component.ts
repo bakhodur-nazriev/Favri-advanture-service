@@ -20,7 +20,7 @@ import {ActivatedRoute} from "@angular/router";
 export class ProfileComponent implements OnInit {
   @Output() closeModalEvent = new EventEmitter<void>();
 
-  public selectedTab: string = 'passenger';
+  public selectedTab: string = 'my-tickets';
   public isVisible: boolean = false;
   profileDataList: any[] = [];
   walletPhone: string = '';
@@ -39,18 +39,15 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadProfile();
-
     this.route.queryParams.subscribe(params => {
       this.walletPhone = params['walletPhone'] || '';
-      console.log('walletPhone initialized:', this.walletPhone);
+      this.loadProfile();
     });
   }
 
   loadProfile(): void {
     this.profileService.getPassengers(this.walletPhone).subscribe({
       next: (data) => {
-        console.log(data.data);
         this.profileDataList = data.data;
       },
       error: (err) => {

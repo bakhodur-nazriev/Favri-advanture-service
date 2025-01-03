@@ -145,19 +145,21 @@
 
     .booking-info__title {
       display: flex;
-      justify-content: center;
-      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
       gap: 12px;
       padding: 10px 16px;
       background-color: #fff;
       border-radius: 12px;
       box-shadow: 0 4px 13px 0 rgba(43, 69, 78, 0.1019607843);
 
-      .booking-info__top,
-      .booking-info__bottom {
+      .booking-info__top {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+
+        &-title {
+          font-weight: 400;
+        }
 
         .close-icon {
           display: flex;
@@ -169,24 +171,16 @@
           min-height: 20px;
         }
 
-        .arrow-left__icon {
-          display: flex;
-          align-items: center;
-        }
-
         .booking-info__bottom-title {
           color: var(--primary-color);
           font-size: 15px;
         }
       }
 
-      .booking-info__divider {
-        height: 1px;
-        background-color: rgba(151, 151, 151, 0.38);
-      }
-
-      .booking-info__top-title {
-        font-weight: 500;
+      .arrow-left__icon {
+        display: flex;
+        align-items: center;
+        transform: rotate(90deg);
       }
     }
   }
@@ -239,19 +233,24 @@
   background: rgba(44, 44, 44, 0.7);
   display: flex;
   justify-content: center;
-  align-items: end;
+  align-items: center;
 
   .booking-info__modal {
-    padding: 15px 30px 30px;
     background-color: #fff;
-    border-top-right-radius: 20px;
-    border-top-left-radius: 20px;
+    border-radius: 20px;
     height: max-content;
-    width: 100%;
+    width: 85%;
+    text-align: center;
 
-    h1 {
+    &-title {
       font-weight: 500;
-      font-size: 18px;
+      font-size: 16px;
+      color: #030712;
+    }
+
+    &-text {
+      color: #666F8D;
+      font-size: 14px;
     }
   }
 }
@@ -322,11 +321,6 @@
       gap: 16px;
     }
   }
-}
-
-.holder-button {
-  display: flex;
-  justify-content: center;
 }
 
 .overflow-hidden {

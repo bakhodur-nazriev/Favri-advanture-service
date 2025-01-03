@@ -71,8 +71,8 @@
         <ul class="passengers-list">
           <li
             *ngFor="let passenger of profileDataList"
-            class="passengers-list__item"
             (click)="openEditPassengerModal(passenger)"
+            class="passengers-list__item"
           >
             <span>{{ passenger.firstName }} {{ passenger.surName }} {{ passenger.middleName }}</span>
           </li>
@@ -89,6 +89,7 @@
     class="add-passenger__block"
     *ngIf="showAddPassengerModal"
     (closeModalEvent)="closeAddPassengerModal()"
+    (passengerAddedEvent)="loadProfile()"
   />
 
   <app-edit-passenger-modal
@@ -96,5 +97,6 @@
     [passenger]="passenger"
     *ngIf="showEditPassengerModal"
     (closeModalEvent)="closeEditPassengerModal()"
+    (passengerDeletedEvent)="loadProfile()"
   />
 </div>

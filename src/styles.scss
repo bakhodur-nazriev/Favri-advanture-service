@@ -80,6 +80,14 @@ body {
   justify-content: space-between;
 }
 
+.justify-end {
+  justify-content: end;
+}
+
+.justify-start {
+  justify-content: start;
+}
+
 .justify-center {
   justify-content: center;
 }
@@ -92,8 +100,44 @@ body {
   padding: 0;
 }
 
-.ma-0 {
-  margin: 0;
+.pa-1 {
+  padding: 4px;
+}
+
+.pa-2 {
+  padding: 8px;
+}
+
+.pa-3 {
+  padding: 12px;
+}
+
+.pa-4 {
+  padding: 16px;
+}
+
+.pa-5 {
+  padding: 20px;
+}
+
+.pa-6 {
+  padding: 24px;
+}
+
+.pa-7 {
+  padding: 28px;
+}
+
+.pa-8 {
+  padding: 32px;
+}
+
+.pb-0 {
+  padding-bottom: 0;
+}
+
+.pt-0 {
+ padding-top: 0;
 }
 
 .btn-primary {
@@ -215,3 +259,34 @@ body {
   margin-top: 32px;
 }
 
+.mr-1 {
+  margin-right: 4px;
+}
+
+.mr-2 {
+  margin-right: 8px;
+}
+
+.mr-3 {
+  margin-right: 12px;
+}
+
+.mr-4 {
+  margin-right: 16px;
+}
+
+.mr-5 {
+  margin-right: 20px;
+}
+
+.mr-6 {
+  margin-right: 24px;
+}
+
+.mr-7 {
+  margin-right: 28px;
+}
+
+.mr-8 {
+  margin-right: 32px;
+}

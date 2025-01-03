@@ -36,7 +36,24 @@ export class ProfileService {
     return this.http.post<any>(url, passenger);
   }
 
-  updatePassenger() {
+  updatePassenger(updatedPassenger: {
+    firstName?: string,
+    surName?: string,
+    middleName?: string,
+    citizenShip?: string,
+    gender?: string,
+    type?: string,
+    documentType?: string
+    documentNumber?: string,
+    email?: string,
+    phone?: string,
+    birthDate?: string,
+    expirationDate?: string,
+    passportIssueDate?: string,
+    walletPhone?: string
+  }): Observable<any> {
+    const url = `${this.apiUrl}/update`
+    return this.http.put<any>(url, updatedPassenger)
   }
 
   deletePassenger(passengerId: number): Observable<any> {

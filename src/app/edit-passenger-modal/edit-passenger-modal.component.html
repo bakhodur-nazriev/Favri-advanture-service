@@ -55,8 +55,8 @@
             [(ngModel)]="passenger.middleName"
             placeholder="Отчество"
             class="text-field"
-            type="text"
             name="middleName"
+            type="text"
           >
         </div>
       </li>
@@ -119,6 +119,28 @@
               </li>
             </ul>
           </div>
+        </div>
+      </li>
+      <li class="inputs-list__item">
+        <div class="inputs-list__item-block">
+          <input
+            [(ngModel)]="passenger.email"
+            placeholder="Email"
+            class="text-field"
+            name="email"
+            type="email"
+          >
+        </div>
+      </li>
+      <li class="inputs-list__item">
+        <div class="inputs-list__item-block">
+          <input
+            [(ngModel)]="passenger.phone"
+            placeholder="Телефон"
+            class="text-field"
+            name="phone"
+            type="text"
+          >
         </div>
       </li>
     </ul>
@@ -269,7 +291,10 @@
       </li>
     </ul>
 
-    <button class="d-flex align-center justify-center gap-2 btn-primary mt-4">
+    <button
+      class="d-flex align-center justify-center gap-2 btn-primary mt-4"
+      (click)="saveChanges()"
+    >
       Сохранить
     </button>
     <button

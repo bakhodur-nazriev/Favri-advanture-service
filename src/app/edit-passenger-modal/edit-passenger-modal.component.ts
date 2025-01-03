@@ -17,6 +17,8 @@ import {ProfileService} from "../services/profile.service";
 })
 export class EditPassengerModalComponent implements OnChanges {
   @Output() closeModalEvent = new EventEmitter<void>();
+  @Output() passengerDeletedEvent = new EventEmitter<void>();
+  @Output() passengerUpdateEvent = new EventEmitter<void>();
   @Input() passenger: any = {};
 
   constructor(private profileService: ProfileService) {
@@ -113,16 +115,28 @@ export class EditPassengerModalComponent implements OnChanges {
   deletePassenger(passengerId: number): void {
     if (!passengerId) return;
 
-    if (confirm('Вы уверены, что хотите удалить пассажира')) {
-      this.profileService.deletePassenger(passengerId).subscribe(
-        () => {
-          console.log('Пассажир успешно удалён');
-        },
-        (error) => {
-          console.error('Ошибка при удалении пассажира: ', error);
-          console.log('Не удалось удалить пассажира');
-        }
-      )
-    }
+    this.profileService.deletePassenger(passengerId).subscribe(
+      () => {
+        this.passengerDeletedEvent.emit();
+        this.closeModal();
+      },
+      (error) => {
+        console.error('Ошибка при удалении пассажира: ', error);
+        console.log('Не удалось удалить пассажира');
+      }
+    )
+  }
+
+  saveChanges() {
+    this.profileService.updatePassenger(this.passenger).subscribe({
+      next: (res) => {
+        console.log('Passenger updated successfully:', res);
+        this.passengerUpdateEvent.emit();
+        this.closeModal();
+      },
+      error: (err) => {
+        console.error('Error updating passenger:', err);
+      }
+    })
   }
 }
