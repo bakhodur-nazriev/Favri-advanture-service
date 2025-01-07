@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {JsonPipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
 import {Included} from "../models/flights-included.interface";
 
@@ -9,7 +9,8 @@ import {Included} from "../models/flights-included.interface";
   imports: [
     NgOptimizedImage,
     NgIf,
-    NgForOf
+    NgForOf,
+    JsonPipe
   ],
   templateUrl: './preorder-modal.component.html',
   styleUrl: './preorder-modal.component.scss',
@@ -61,13 +62,6 @@ export class PreorderModalComponent {
     }
   }
 
-  onAnimationEvent(event: AnimationEvent) {
-    if (event.phaseName === 'done' && event.toState === 'void') {
-      this.isVisible = false;
-      this.isAnimating = false;
-    }
-  }
-
   convertDuration(duration: number): string {
     const hours = Math.floor(duration / 3600);
     const minutes = Math.floor(duration % 3600) / 60;
@@ -105,8 +99,25 @@ export class PreorderModalComponent {
   formatDate(dateString: string): string {
     const [day, month, year] = dateString.split(" ")[0].split(".");
     const date = new Date(+year, +month - 1, +day);
-    return date.toLocaleDateString("ru-RU", {day: 'numeric', month: 'long'});
+
+    const optionsDayMonth: Intl.DateTimeFormatOptions = {
+      day: 'numeric',
+      month: 'short',
+    };
+
+    const optionsWeekday: Intl.DateTimeFormatOptions = {
+      weekday: 'short',
+    };
+
+    const dayMonth = date
+      .toLocaleDateString("ru-RU", optionsDayMonth)
+      .replace('.', '');
+
+    const weekday = date.toLocaleDateString("ru-RU", optionsWeekday);
+
+    return `${dayMonth}, ${weekday}`;
   }
+
 
   getCityName(iataCode: any): any | null {
     if (!this.included || !this.included?.city) {
@@ -124,5 +135,14 @@ export class PreorderModalComponent {
     }
     const airport = this.included?.airport[iataCode];
     return airport ? airport.name.ru : iataCode;
+  }
+
+  getAirlineName(iataCode: string): string | null {
+    if (!this.included || !this.included.supplier) {
+      console.warn("Данные авиакомпаний не загружены.");
+      return iataCode;
+    }
+    const airline = this.included.supplier[iataCode];
+    return airline ? airline.name.ru : iataCode;
   }
 }

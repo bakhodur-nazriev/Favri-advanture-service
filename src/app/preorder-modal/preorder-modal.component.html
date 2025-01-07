@@ -1,35 +1,73 @@
-<div
-  *ngIf="isVisible"
-  class="modal-background"
->
-  <div
-    class="modal-content"
-    @slideInOut
-    (@slideInOut.done)="onAnimationEvent($event)"
-    (click)="$event.stopPropagation()"
-  >
-    <div>
-      <div>
-        <button class="arrow-left__button" (click)="closeModal()">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M15 19.92L8.48 13.4C7.71 12.63 7.71 11.37 8.48 10.6L15 4.08" stroke="#1D2935" stroke-width="1.5"
-                  stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
+<div *ngIf="isVisible" class="modal-background">
+  <div class="top-nav__block">
+    <span class="close-button" (click)="closeModal()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M15 19.92L8.47997 13.4C7.70997 12.63 7.70997 11.37 8.47997 10.6L15 4.07999"
+          stroke="#292929"
+          stroke-width="1.5"
+          stroke-miterlimit="10"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </span>
 
-        <div class="top-titles__block">
-          <h4>{{ fromCity }} - {{ toCity }}</h4>
-          <span>{{ convertDuration(flight.value.routes[0].duration) }}</span>
-
+    <h3>Детали билета</h3>
+  </div>
+  <div class="main-content" (click)="$event.stopPropagation()">
+    <div class="main-content__block">
+      <div class="top-titles__block">
+        <div class="price-title d-flex flex-column gap-1">
           <h1>{{ flight.value.total_price.TJS }} TJS</h1>
+          <span>Цена за 1 пассажира</span>
+        </div>
+
+        <div class="direction-title d-flex flex-column gap-1">
+          <div class="d-flex align-center gap-2">
+            <h4 class="ma-0">{{ fromCity }}</h4>
+            <svg
+              fill="#000000"
+              width="25px"
+              height="25px"
+              viewBox="0 0 24 24"
+              id="right-arrow"
+              data-name="Flat Line"
+              class="icon flat-line"
+            >
+              <line
+                id="primary"
+                x1="3"
+                y1="12"
+                x2="21"
+                y2="12"
+                style="fill: none;
+                stroke: rgb(0, 0, 0);
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-width: 2;"
+              ></line>
+              <polyline
+                id="primary-2"
+                data-name="primary"
+                points="18 15 21 12 18 9"
+                style="fill: none;
+                stroke: rgb(0, 0, 0);
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-width: 2;"
+              ></polyline>
+            </svg>
+            <h4 class="ma-0"> {{ toCity }}</h4>
+          </div>
+
+          <span>{{ convertDuration(flight.value.routes[0].duration) }}</span>
         </div>
       </div>
 
       <div class="preorder-main__block">
         <div>
-          <span>Туда</span>
-
-          <div class="ticket-from__block" *ngFor="let segment of flight.value.routes[0].segments; let i = index">
+          <!--<div class="ticket-from__block" *ngFor="let segment of flight.value.routes[0].segments; let i = index">
             <div class="ticket-from__block-top">
               <div class="">
                 <h3>Рейс {{ segment.operation_supplier }} - {{ segment.carrier_number }}</h3>
@@ -112,10 +150,129 @@
                 </svg>
             </span>
             </div>
+          </div>-->
+          <div
+            class="ticket-from__block"
+            *ngFor="let segment of flight.value.routes[0].segments; let i = index"
+          >
+            <div class="ticket-actions__block">
+              <div class="d-flex flex-column gap-2">
+                <span>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M6.87511 5.01242C6.87503 5.00829 6.87499 5.00415 6.87499 5.00001V4.16667C6.87499 2.44078 8.2741 1.04167 9.99999 1.04167C11.7259 1.04167 13.125 2.44078 13.125 4.16667V5.00001C13.125 5.00415 13.1249 5.00829 13.1249 5.01242C14.1976 5.04462 14.854 5.16034 15.3551 5.57623C16.0494 6.15246 16.2323 7.12783 16.5981 9.07856L17.223 12.4119C17.7374 15.155 17.9945 16.5265 17.2448 17.4299C16.495 18.3333 15.0996 18.3333 12.3087 18.3333H7.69128C4.9004 18.3333 3.50496 18.3333 2.7552 17.4299C2.00543 16.5265 2.2626 15.155 2.77692 12.4119L3.40192 9.07856C3.76769 7.12783 3.95057 6.15246 4.64488 5.57623C5.146 5.16034 5.8024 5.04462 6.87511 5.01242ZM8.12499 4.16667C8.12499 3.13114 8.96445 2.29167 9.99999 2.29167C11.0355 2.29167 11.875 3.13114 11.875 4.16667V5.00001C11.875 5 11.875 5.00001 11.875 5.00001C11.8123 4.99998 11.7485 5.00001 11.6837 5.00001H8.31629C8.25147 5.00001 8.18771 5.00001 8.12499 5.00003C8.12499 5.00002 8.12499 5.00003 8.12499 5.00003V4.16667Z"
+                      fill="#666F8D"
+                    />
+                  </svg>
+                  Без ручной клади
+                </span>
+                <span>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M9.99999 18.3333C14.6024 18.3333 18.3333 14.6024 18.3333 10C18.3333 5.39763 14.6024 1.66667 9.99999 1.66667C5.39762 1.66667 1.66666 5.39763 1.66666 10C1.66666 14.6024 5.39762 18.3333 9.99999 18.3333ZM13.2788 4.65965C13.5142 4.75552 13.668 4.98435 13.668 5.23847V7.50057C13.668 7.84575 13.3882 8.12557 13.043 8.12557H10.8333C10.5819 8.12557 10.3549 7.97487 10.2573 7.74312C10.1597 7.51137 10.2105 7.24371 10.3863 7.06383L11.0208 6.41421C9.81624 6.04286 8.4556 6.3442 7.5008 7.32164C6.11083 8.74457 6.11083 11.0575 7.5008 12.4804C8.88278 13.8952 11.1172 13.8952 12.4992 12.4804C13.064 11.9022 13.4004 11.176 13.5057 10.4204C13.5543 10.0721 13.831 9.77913 14.1826 9.77913C14.5205 9.77913 14.8008 10.0496 14.7681 10.3859C14.6631 11.4672 14.2059 12.5221 13.3934 13.3539C11.521 15.2707 8.47901 15.2707 6.60662 13.3539C4.74222 11.4453 4.74222 8.35677 6.60662 6.44817C8.05458 4.96588 10.2033 4.62888 11.9705 5.44198L12.596 4.80173C12.7735 4.61995 13.0435 4.56378 13.2788 4.65965Z"
+                      fill="#666F8D"
+                    />
+                  </svg>
+                  Возврат невозможен
+                </span>
+              </div>
+              <div class="d-flex flex-column gap-2">
+                <span>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7.97036 7.27541L8.39905 8.82713C8.80322 10.2901 9.00531 11.0216 9.59946 11.3543C10.1936 11.687 10.9478 11.491 12.4562 11.099L14.0561 10.6832C15.5645 10.2912 16.3187 10.0952 16.6617 9.51895C17.0048 8.94269 16.8027 8.2112 16.3985 6.74823L15.9698 5.1965C15.5656 3.73352 15.3636 3.00204 14.7694 2.66933C14.1752 2.33662 13.421 2.53262 11.9127 2.92462L10.3128 3.34041C8.80437 3.73241 8.05017 3.92841 7.70714 4.50468C7.3641 5.08095 7.56619 5.81244 7.97036 7.27541Z"
+                      fill="#00B06C"/>
+                    <path
+                      d="M1.89791 4.37245C1.99019 4.03984 2.33464 3.84501 2.66725 3.9373L4.087 4.3312C4.85107 4.54319 5.45575 5.13221 5.66669 5.89574L7.45922 12.3841L7.59112 12.8396C8.11874 13.0365 8.57191 13.4055 8.85953 13.8956L9.11785 13.8159L16.5096 11.8949C16.8437 11.8081 17.1849 12.0085 17.2717 12.3426C17.3586 12.6767 17.1581 13.0179 16.824 13.1047L9.45959 15.0186L9.18568 15.1031C9.18006 16.1623 8.44937 17.1295 7.34364 17.4169C6.01824 17.7613 4.65591 16.9985 4.30077 15.713C3.94563 14.4275 4.73218 13.1062 6.05757 12.7617C6.12325 12.7447 6.18902 12.7303 6.25475 12.7186L4.46182 6.22861C4.3716 5.90202 4.10748 5.6341 3.75281 5.5357L2.33307 5.1418C2.00045 5.04951 1.80563 4.70507 1.89791 4.37245Z"
+                      fill="#00B06C"/>
+                  </svg>
+                  Багаж до {{ segment.baggage.replace('KG', 'КГ') }}
+                </span>
+                <span>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M18.3334 10C18.3334 14.6024 14.6024 18.3333 10 18.3333C5.39765 18.3333 1.66669 14.6024 1.66669 10C1.66669 5.39763 5.39765 1.66667 10 1.66667C14.6024 1.66667 18.3334 5.39763 18.3334 10ZM4.55049 9.23612C4.86111 6.4999 7.18672 4.37501 10.008 4.37501C11.79 4.37501 13.3741 5.22328 14.3767 6.53539C14.5863 6.80966 14.5339 7.2019 14.2596 7.41148C13.9853 7.62105 13.5931 7.56861 13.3835 7.29434C12.6074 6.27871 11.3844 5.62501 10.008 5.62501C7.87679 5.62501 6.11368 7.19349 5.8111 9.23612H6.11379C6.36666 9.23612 6.59461 9.38848 6.6913 9.62214C6.78798 9.85579 6.73435 10.1247 6.55543 10.3034L5.58188 11.2756C5.33787 11.5193 4.94261 11.5193 4.6986 11.2756L3.72505 10.3034C3.54612 10.1247 3.49249 9.85579 3.58918 9.62214C3.68587 9.38848 3.91382 9.23612 4.16669 9.23612H4.55049ZM15.3015 8.72443C15.0575 8.48075 14.6622 8.48075 14.4182 8.72443L13.4446 9.69665C13.2657 9.87533 13.2121 10.1442 13.3088 10.3779C13.4055 10.6115 13.6334 10.7639 13.8863 10.7639H14.189C13.8864 12.8065 12.1233 14.375 9.99207 14.375C8.62206 14.375 7.40405 13.7274 6.62744 12.7199C6.41671 12.4465 6.02425 12.3957 5.75087 12.6064C5.47748 12.8171 5.42668 13.2096 5.63741 13.483C6.64074 14.7846 8.2184 15.625 9.99207 15.625C12.8133 15.625 15.1389 13.5001 15.4496 10.7639H15.8334C16.0862 10.7639 16.3142 10.6115 16.4109 10.3779C16.5076 10.1442 16.4539 9.87533 16.275 9.69665L15.3015 8.72443Z"
+                      fill="#666F8D"
+                    />
+                  </svg>
+                  Нет обмена
+                </span>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="ticket-from__block-titles">
+              <div class="left-block d-flex align-center gap-2">
+                <img
+                  ngSrc="assets/suppliers/{{ flight.value.validating_supplier }}.png"
+                  alt=""
+                  width="90"
+                  height="30"
+                >
+                <span>{{ getAirlineName(segment.operation_supplier) }}</span>
+              </div>
+              <div class="right-block d-flex align-center gap-4">
+                <span>Номер рейса: {{ segment.carrier_number }}</span>
+                <span>Класс: {{ getServiceClassInCyrillic(segment.service_class.name) }}</span>
+              </div>
+            </div>
+
+            <div class="ticket-from__block-center">
+              <div class="d-flex gap-5">
+                <div class="vertical-block"></div>
+                <div class="d-flex flex-column gap-4">
+                  <div class="time-departure__block">
+                    <span>{{ extractHours(segment.departure.time) }}</span>
+                    <small>{{ formatDate(segment.departure.time) }}</small>
+                  </div>
+
+                  <div class="time-arrival__block">
+                    <span>{{ extractHours(segment.arrival.time) }}</span>
+                    <small>{{ formatDate(segment.arrival.time) }}</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex flex-column gap-4">
+                <div class="place-departure__block">
+                  <span>{{ getCityName(segment.departure.city) }}</span>
+                  <small>
+                    {{ getCityName(segment.departure.city) }}, {{ segment.departure.airport }}
+                  </small>
+                </div>
+
+                <div class="place-arrival__block">
+                  <span>{{ getCityName(segment.arrival.city) }}</span>
+                  <small>{{ getCityName(segment.arrival.city) }}, {{ segment.arrival.airport }}</small>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div *ngIf="flight.value.routes[1]?.segments">
+        <!--<div *ngIf="flight.value.routes[1]?.segments">
           <span>Обратно</span>
 
           <div class="ticket-from__block" *ngFor="let segment of flight.value.routes[1].segments; let i = index">
@@ -202,12 +359,12 @@
             </span>
             </div>
           </div>
-        </div>
+        </div>-->
       </div>
     </div>
 
-    <div class="choose-class__block" (click)="selectFlight(flight)">
-      <button class="choose-preorder__button">Забронировать</button>
+    <div class="buy-ticket__block" (click)="selectFlight(flight)">
+      <button class="btn-primary">Купить билет</button>
     </div>
   </div>
 </div>

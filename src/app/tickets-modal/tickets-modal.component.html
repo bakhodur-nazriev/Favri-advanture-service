@@ -85,9 +85,9 @@
         <span>Ищем<br>билеты</span>
       </div>
 
-      <ul class="tickets-list" *ngIf="!isLoading">
+      <ul class="tickets-list">
         <li class="tickets-list__item" *ngFor="let flight of getFilteredFlights() | keyvalue">
-          <div (click)="selectFlight(flight)">
+          <div class="d-flex flex-column gap-3" (click)="selectFlight(flight)">
             <div class="tickets-list__item-top">
               <img
                 ngSrc="assets/suppliers/{{ flight.value.validating_supplier }}.png"
@@ -95,46 +95,58 @@
                 height="30"
                 width="90"
               >
-
               <div class="amount-money__block">
                 <span class="amount-title">{{ flight.value.total_price.TJS }} TJS</span>
-                <small>В одну сторону</small>
               </div>
             </div>
 
-            <div>
+            <div class="times-block">
+              <ul class="times-block__list">
+                <li
+                  class="times-block__list-time">{{ extractHours(flight.value.routes[0].segments[0].departure.time) }}
+                </li>
+                <li class="times-block__list-city">{{ fromCity }}</li>
+                <li class="times-block__list-airport">({{ flight.value.routes[0].segments[0].departure.airport }})</li>
+              </ul>
+
               <div class="airplane-icon__block">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 20 20" fill="none"
+                >
                   <path
                     d="M4.07033 13.3827L4.93044 11.5441C5.06323 11.267 4.96316 10.8935 4.70958 10.7199L3.0454 9.55766C2.77836 9.25652 2.83835 8.78492 3.17733 8.55605L3.95786 8.04323C4.14495 7.91718 4.46659 7.90692 4.66255 8.02006L6.52243 9.08842C6.6548 9.17028 6.88329 9.19878 7.0314 9.1591L8.86666 8.66734C9.13712 8.59487 9.21242 8.36074 9.04209 8.1372L6.82972 5.3412C6.48435 4.9023 6.63967 4.42587 7.18059 4.28093L8.01128 4.05835C8.44273 3.94274 9.02485 4.13186 9.29925 4.48624L11.8157 7.67009C11.8884 7.76104 12.0478 7.81496 12.1637 7.7839L14.0955 7.26627C14.7009 7.10407 15.5347 7.35687 15.9565 7.8236C16.1049 7.9909 16.1653 8.21628 16.1204 8.43535C15.9885 9.05046 15.3863 9.68804 14.781 9.85023L12.8492 10.3679C12.7332 10.3989 12.6222 10.5253 12.6047 10.6404L12.0156 14.6495C11.9616 15.0919 11.552 15.5467 11.1206 15.6623L10.2899 15.8849C9.74895 16.0299 9.37623 15.6949 9.45587 15.1421L9.97384 11.6145C10.0177 11.3405 9.8273 11.1707 9.55684 11.2431L7.72158 11.7349C7.57348 11.7746 7.38984 11.9135 7.31442 12.0442L6.23789 13.8993C6.12475 14.0953 5.84752 14.2455 5.61603 14.2316L4.68366 14.1777C4.27911 14.1619 3.98492 13.7852 4.07033 13.3827Z"
-                    stroke="#00B06C" stroke-linecap="round" stroke-linejoin="round"/>
+                    stroke="#00B06C"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
                 </svg>
+                <div class="times-block__title">
+                  <div class="divider" *ngFor="let _ of [1, 2, 3, 4, 5]"></div>
+                  <span>{{ convertDuration(flight.value.routes[0].duration) }}</span>
+                  <div class="divider" *ngFor="let _ of [1, 2, 3, 4, 5]"></div>
+                </div>
+                <span class="times-block__title"></span>
               </div>
 
-              <div class="times-block">
-              <span
-                class="times-block__item">{{ extractHours(flight.value.routes[0].segments[0].departure.time) }}</span>
-                <span class="times-block__title">{{ convertDuration(flight.value.routes[0].duration) }}</span>
-                <span
-                  class="times-block__item">{{ extractHours(flight.value.routes[0].segments[0].arrival.time) }}</span>
-              </div>
+              <ul class="times-block__list">
+                <li class="times-block__list-time">{{ extractHours(flight.value.routes[0].segments[0].arrival.time) }}
+                </li>
+                <li class="times-block__list-city">{{ toCity }}</li>
+                <li class="times-block__list-airport">
+                  ({{ flight.value.routes[0].segments[flight.value.routes[0].segments.length - 1].arrival.airport }})
+                </li>
+              </ul>
             </div>
 
-            <div class="divider"></div>
-
             <div class="tickets-list__item-bottom">
-              <span>{{ flight.value.routes[0].segments[0].departure.airport }}</span>
-
-              <span>
-                <ng-container *ngIf="flight.value.routes[0].segments.length === 1; else transfer">
-                  Прямой
-                </ng-container>
-                <ng-template #transfer>
-                  {{ flight.value.routes[0].segments.length - 1 }} пересадка(и)
-                </ng-template>
-              </span>
-
-              <span>{{ flight.value.routes[0].segments[flight.value.routes[0].segments.length - 1].arrival.airport }}</span>
+              <ng-container *ngIf="flight.value.routes[0].segments.length === 1; else transfer">
+                Прямой рейс
+              </ng-container>
+              <ng-template #transfer>
+                {{ flight.value.routes[0].segments.length - 1 }} пересадка(и)
+              </ng-template>
             </div>
           </div>
         </li>
@@ -155,7 +167,7 @@
           (click)="$event.stopPropagation()"
         >
           <div
-            class="d-flex justify-end pa-8 pb-0"
+            class="d-flex justify-end pa-5 pb-0"
             (click)="closeBookingInfoModal()"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
