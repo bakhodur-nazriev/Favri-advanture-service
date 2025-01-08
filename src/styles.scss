@@ -41,19 +41,14 @@ $Favri-advanture-service-theme: mat.define-theme((
   --bg-color: #ecf0f1;
 }
 
-body {
-  font-family: 'PT Sans', sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
 html, body {
   height: 100%;
 }
 
 body {
+  font-family: 'PT Sans', sans-serif;
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding: 0;
 }
 
 .d-flex {
@@ -162,6 +157,30 @@ body {
 
 .pt-6 {
   padding-top: 24px
+}
+
+.px-0 {
+  padding: 0 4px;
+}
+
+.px-1 {
+  padding: 0 8px;
+}
+
+.px-2 {
+  padding: 0 12px;
+}
+
+.px-3 {
+  padding: 0 16px;
+}
+
+.px-4 {
+  padding: 0 20px;
+}
+
+.px-5 {
+  padding: 0 24px;
 }
 
 .btn-primary {
@@ -321,4 +340,8 @@ body {
 
 .mr-8 {
   margin-right: 32px;
+}
+
+.no-wrap {
+  white-space: nowrap;
 }

@@ -65,7 +65,7 @@
 
           span {
             color: #666F8D;
-            font-size: 17px;
+            font-size: 16px;
           }
         }
 
@@ -76,7 +76,7 @@
 
           span {
             color: #666F8D;
-            font-size: 17px;
+            font-size: 16px;
           }
         }
       }
@@ -99,6 +99,7 @@
           .right-block {
             color: #666F8D;
             font-size: 12px;
+            line-height: 1;
           }
         }
 
@@ -133,6 +134,7 @@
             background-color: #CBD5E1;
             position: relative;
             top: 0;
+            margin: 3px 0;
 
 
             &::before,
@@ -194,6 +196,27 @@
 .preorder-main__block {
   overflow: scroll;
   height: calc(100vh - 290px);
+
+  .direction-return__title {
+    h4 {
+      font-size: 22px;
+    }
+
+    span {
+      color: #666F8D;
+      font-size: 16px;
+    }
+  }
+
+  .transfer-time__block {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #fff;
+    padding: 16px 14px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .buy-ticket__block {

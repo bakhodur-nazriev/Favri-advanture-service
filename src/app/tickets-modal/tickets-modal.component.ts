@@ -32,6 +32,7 @@ export class TicketsModalComponent {
   @Input() flights: any[] = ['flights'];
   @Input() fromCity!: string;
   @Input() toCity!: string;
+  @Input() backRouteCity!: string;
   @Input() isLoading!: boolean;
   @Output() flightSelected = new EventEmitter<any>();
   @Input() passengerCount: number = 0;
@@ -45,7 +46,6 @@ export class TicketsModalComponent {
   flightDuration: string = '';
   public isBookingInfoModal: boolean = false;
   public isModalBookingVisible: boolean = true;
-  public isAnimatingBookingInfo: boolean = false;
   currentFilter: string = 'all';
 
   constructor() {
@@ -67,6 +67,7 @@ export class TicketsModalComponent {
   ];
 
   selectFlight(flight: any) {
+    console.log(flight);
     this.flightSelected.emit(flight);
   }
 
@@ -140,13 +141,6 @@ export class TicketsModalComponent {
     }
 
     this.isModalBookingVisible = false;
-  }
-
-  onAnimationBookingInfoEvent(event: AnimationEvent) {
-    if (event.phaseName === 'done' && event.toState === 'void') {
-      this.isBookingInfoModal = false;
-      this.isAnimatingBookingInfo = false;
-    }
   }
 
   getFilteredFlights(): any[] {
