@@ -5,6 +5,10 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/m
 import {FormsModule} from "@angular/forms";
 import {PassengerDataService} from "../services/passenger-data.service";
 import {COUNTRIES} from '../../coutries';
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {ProfileService} from "../services/profile.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-detail-passenger-modal',
@@ -40,7 +44,7 @@ export class DetailPassengerModalComponent implements OnInit {
 
   public isValidationTriggered: boolean = false;
   public isValidationExpirationTriggered: boolean = false;
-  public isVisible: boolean = false;
+  public isVisible: boolean = true;
   public isAnimating: boolean = false;
   public dropdownOpen: boolean = false;
   public openDropdownPassport: boolean = false;
@@ -50,17 +54,28 @@ export class DetailPassengerModalComponent implements OnInit {
   selectedDate: string = '';
   selectedDocumentExpireDate: string = '';
   public selectedPassportType: string = '';
-  passports: any[] = [
-    {name: 'Загран паспорт', code: 'NP'},
-    {name: 'Паспорт РТ', code: 'NP'}
-  ];
   selectedPassportCode: string | null = null;
   passengerDataList: any[] = [];
   public countries = COUNTRIES;
-
+  public birthDate: string = "";
   selectedIndex: number = 0;
+  isGenderDropdownOpen: boolean = false;
+  public passports: any[] = [
+    {name: 'Загран паспорт', code: 'NP'},
+    {name: 'Паспорт РТ', code: 'NP'}
+  ];
+  public genders: any[] = [
+    {text: 'Мужчина', value: 'M',},
+    {text: 'Женщина', value: 'F'}
+  ];
+  walletPhone: string = '';
+  profileDataList: any[] = [];
 
-  constructor(public passengerDataService: PassengerDataService) {
+  constructor(
+    public passengerDataService: PassengerDataService,
+    private profileService: ProfileService,
+    private route: ActivatedRoute
+  ) {
   }
 
   isValidDate(dateString: string): boolean {
@@ -136,7 +151,7 @@ export class DetailPassengerModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.passengerDataService.event$.subscribe((passenger: any) => {
-     this.selectedPassenger =  passenger
+      this.selectedPassenger = passenger
       const index = this.passengerDataService.selectedPassengerIndex ?? 0;
       this.selectedIndex = index;
 
@@ -272,5 +287,54 @@ export class DetailPassengerModalComponent implements OnInit {
     if (this.isValidForm()) {
       this.validationStatusChanged.emit(true);
     }
+  }
+
+  getAge(birthDate: string): number | null {
+    if (!birthDate) return null;
+
+    const birthDateObj = new Date(birthDate);
+    if (isNaN(birthDateObj.getTime())) return null;
+
+    const today = new Date();
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDiff = today.getMonth() - birthDateObj.getMonth();
+    const dayDiff = today.getDate() - birthDateObj.getDate();
+
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      age--;
+    }
+
+    return age;
+  }
+
+  getPassengerTypeDisplay(): string {
+    const age = this.getAge(this.birthDate);
+    if (age === null) return "Пассажир";
+
+    if (age < 2) return "Младенец";
+    if (age >= 2 && age <= 12) return "Ребёнок";
+    if (age > 12) return "Взрослый";
+
+    return "Пассажир";
+  }
+
+  toggleGenderDropdown(): void {
+    this.isGenderDropdownOpen = !this.isGenderDropdownOpen;
+  }
+
+  getGenderText(genderValue: string): string {
+    const gender = this.genders.find(g => g.value === genderValue);
+    return gender ? gender.text : 'Не выбран';
+  }
+
+  selectPassenger(): void {
+    this.profileService.getPassengers(this.walletPhone).subscribe({
+      next: (data) => {
+        this.profileDataList = data.data;
+      },
+      error: (err) => {
+        console.error('Error loading profile:', err);
+      }
+    })
   }
 }

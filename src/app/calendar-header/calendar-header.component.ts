@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import {MatCalendar} from '@angular/material/datepicker';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {DatePipe} from "@angular/common";
 import {NativeDateAdapter} from "@angular/material/core";
-import { CapitalizePipe } from '../capitalize.pipe';
+import {CapitalizePipe} from '../capitalize.pipe';
 
 @Component({
   selector: 'app-calendar-header',
@@ -59,6 +59,7 @@ export class CalendarHeaderComponent {
   }
 }
 
+@Injectable()
 export class CustomDateAdapter extends NativeDateAdapter {
   override getDayOfWeekNames(): string[] {
     return ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];

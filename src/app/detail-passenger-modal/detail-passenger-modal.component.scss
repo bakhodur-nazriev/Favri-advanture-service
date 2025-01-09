@@ -1,38 +1,51 @@
 .modal-background {
-  z-index: 10;
-  width: 100%;
+  background-color: #EFF6FF;
+  height: 100vh;
+  width: -webkit-fill-available;
   position: absolute;
   top: 0;
   left: 0;
-  background: #fff;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  z-index: 200;
 
-  .modal-content {
+  .top-nav__block {
     display: flex;
-    flex-direction: column;
-    gap: 40px;
-    padding: 27px;
+    align-items: center;
+    height: 58px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+    background-color: #fff;
 
-    .main-passenger__title {
-      margin-bottom: 0;
+    .close-button {
+      display: flex;
+      justify-content: center;
+      margin-left: 20px;
     }
 
-    .top-section {
-      .arrow-left__button {
-        all: unset;
-        display: flex;
-      }
+    h3 {
+      width: 100%;
+      text-align: center;
+      font-weight: 400;
+      margin: 0 45px 0 0;
+      font-size: 17px;
+    }
+  }
 
-      .save-button {
-        all: unset;
-        color: #00B06C;
-        font-weight: 550;
-        font-size: 15px;
-      }
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 75px;
 
-      span {
-        margin-left: 50px;
-        font-size: 18px;
-      }
+    .main-passenger__title {
+      margin: 0;
+      font-size: 20px;
     }
 
     .birthday-block {
@@ -61,151 +74,94 @@
         }
       }
     }
-  }
-}
 
-.inputs-blocks {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  .card-block {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    .card {
-      border-radius: 10px;
-      background-color: #fff;
-      box-shadow: 0 4px 13px 0 #2B454E1A;
-      padding: 0;
+    .top-title__block {
       display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
 
-      .text-field {
-        width: 100%;
-        border: none;
-        font-size: 15px;
-        padding: 16px;
-
-        &:focus-visible {
-          outline: none;
-        }
-
-        &::placeholder {
-          color: #95A5A6;
-        }
-      }
-
-      .error {
-        border-radius: 10px;
-        border: 1px solid red;
+      .choose-button__block {
+        height: 34px;
+        border-radius: 28px;
+        background-color: #FFFFFF;
+        width: max-content;
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
       }
     }
 
-    .citizenship-block {
-      padding: 14px;
-      position: relative;
+    .save-button {
+      margin-top: 40px;
+      margin-bottom: 30px;
+    }
 
-      .selector-country__title,
-      .selected-country {
-        padding: 8px;
-        border-radius: 4px;
-        cursor: pointer;
-        text-align: left;
-        position: relative;
+    .inputs-list {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      &__item {
         display: flex;
-        color: #95A5A6;
-        outline: none;
-        border: none;
-        font-size: 15px;
+        align-items: center;
+        position: relative;
+
+        &-block {
+          background-color: #fff;
+          border-radius: 12px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 0 16px;
+          width: 100%;
+
+          .text-field {
+            border: none;
+            outline: none;
+            font-size: 16px;
+            color: #030712;
+            width: 100%;
+          }
+        }
+
+        .date-icon {
+          display: flex;
+        }
+      }
+
+      .selector-block {
+        background-color: #fff;
+        border-radius: 12px;
+        height: 48px;
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        flex-direction: column;
+        gap: 6px;
+        padding: 0 16px;
         width: 100%;
 
         &::after {
           content: url("/assets/svg/arrow-left.svg");
           position: absolute;
-          right: 10px;
-          top: 50%;
+          right: 16px;
+          top: 53%;
           transform: translateY(-50%);
           font-size: 12px;
           color: #666;
         }
-      }
 
-      .selected-country {
-        color: #1D2935;
-        padding: 6px;
-      }
-
-      .selector-passport__title,
-      .selected-passport {
-        padding: 8px;
-        border-radius: 4px;
-        cursor: pointer;
-        text-align: left;
-        position: relative;
-        display: flex;
-        color: #95A5A6;
-        outline: none;
-        border: none;
-        font-size: 15px;
-        width: 100%;
-
-        &::after {
-          content: url("/assets/svg/arrow-left.svg");
-          position: absolute;
-          right: 10px;
-          top: 50%;
-          transform: translateY(-50%);
-          font-size: 12px;
-          color: #666;
+        &__title {
+          color: #666F8D;
         }
       }
-
-      .selected-passport {
-        color: #1D2935;
-        padding: 6px;
-        width: 100%;
-      }
-    }
-
-    .invalid-field {
-      padding-left: 6px;
-      color: red;
-      font-size: 14px;
-    }
-
-    .error {
-      border-radius: 10px;
-      border: 1px solid red;
     }
   }
-}
-
-.genders-block {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  .gender-item {
-    display: flex;
-    align-items: center;
-    padding: 10px 16px;
-    border-radius: 10px;
-    box-shadow: 0 4px 13px 0 #2B454E1A;
-    font-size: 15px;
-    font-weight: 400;
-
-    &.active {
-      background-color: #00B06C;
-      color: #fff;
-    }
-  }
-}
-
-.gender-main__title {
-  font-size: 15px;
-  padding-left: 10px;
-  margin-bottom: 18px;
 }
 
 .dropdown {

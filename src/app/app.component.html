@@ -191,7 +191,6 @@
 
   <app-detail-passenger-modal
     #detailPassengerModal
-    *ngIf="selectedPassenger"
     [passenger]="selectedPassenger"
     (validationStatusChanged)="onValidationStatusChanged($event)"
   />

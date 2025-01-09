@@ -146,30 +146,4 @@ export class PreorderModalComponent {
     const airline = this.included.supplier[iataCode];
     return airline ? airline.name.ru : iataCode;
   }
-
-  // calculateLayoverTimes(flights: any[]): any[] {
-  //   return flights.map((flight, index) => {
-  //     if (index === 0) {
-  //       // Первый рейс не имеет пересадок
-  //       return {...flight, layoverTime: null};
-  //     }
-  //
-  //     // Время прилёта предыдущего рейса
-  //     const previousArrivalTime = new Date(flights[index - 1].arrival.time);
-  //     // Время вылета текущего рейса
-  //     const currentDepartureTime = new Date(flight.departure.time);
-  //
-  //     // Расчёт времени ожидания (в миллисекундах)
-  //     const layoverTimeMs = currentDepartureTime.getTime() - previousArrivalTime.getTime();
-  //
-  //     // Конвертация времени ожидания в часы и минуты
-  //     const layoverHours = Math.floor(layoverTimeMs / (1000 * 60 * 60));
-  //     const layoverMinutes = Math.floor((layoverTimeMs % (1000 * 60 * 60)) / (1000 * 60));
-  //
-  //     return {
-  //       ...flight,
-  //       layoverTime: layoverTimeMs > 0 ? `${layoverHours}ч ${layoverMinutes}мин` : 'Нет ожидания',
-  //     };
-  //   });
-  // }
 }
