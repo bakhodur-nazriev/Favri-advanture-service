@@ -67,7 +67,6 @@ export class TicketsModalComponent {
   ];
 
   selectFlight(flight: any) {
-    console.log(flight);
     this.flightSelected.emit(flight);
   }
 

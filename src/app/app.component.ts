@@ -92,10 +92,11 @@ export class AppComponent implements OnInit {
   public selectedDateText: string = '';
   public isLoading: boolean = false;
 
-  public fromCity = 'Душанбе';
-  public toCity = 'Москва';
-  public fromAirportCode = 'DYU';
-  public toAirportCode = 'MOW';
+  public fromCity: string = 'Душанбе';
+  public toCity: string = 'Москва';
+  public backRouteCity: string = '';
+  public fromAirportCode: string = 'DYU';
+  public toAirportCode: string = 'MOW';
   public flights: any[] = [];
   public included: Included | undefined;
   public selectedStartDate: Date | null = null;
@@ -233,6 +234,7 @@ export class AppComponent implements OnInit {
       : dayjs().format('YYYY-MM-DD');
 
     const companyReqId = sessionStorage.getItem('company_req_id') || '26';
+    const flightType = this.selectedEndDate ? 'RT' : 'OW';
 
     let params = new HttpParams()
       .set('passengers[adt]', this.passengers.adults.toString())
@@ -242,16 +244,20 @@ export class AppComponent implements OnInit {
       .set('routes[0][from]', this.fromAirportCode)
       .set('routes[0][to]', this.toAirportCode)
       .set('routes[0][date]', formattedDate)
-      .set('flight_type', this.selectedEndDate ? 'RT' : 'OW')
+      .set('flight_type', flightType)
       .set('cabin', this.passengers.travelClass.toLowerCase())
       .set('company_req_id', companyReqId)
       .set('language', 'ru');
 
     if (this.selectedEndDate) {
+      const formattedReturnDate = dayjs(this.selectedEndDate).format('YYYY-MM-DD');
+
       params = params
         .set('routes[1][from]', this.toAirportCode)
         .set('routes[1][to]', this.fromAirportCode)
-        .set('routes[1][date]', dayjs(this.selectedEndDate).format('YYYY-MM-DD'));
+        .set('routes[1][date]', formattedReturnDate);
+
+      this.backRouteCity = this.fromCity;
     }
 
     const token = sessionStorage.getItem('token');

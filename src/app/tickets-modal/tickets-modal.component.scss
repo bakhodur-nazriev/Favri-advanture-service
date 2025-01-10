@@ -5,7 +5,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  background: var(--bg-color);
+  background: #EFF6FF;
   overflow: auto;
 
   .tickets-modal__content {
@@ -67,7 +67,6 @@
         justify-content: space-between;
         flex-direction: column;
         padding: 18px 20px;
-        box-shadow: 0 4px 13px 0 #2B454E1A;
         background-color: #fff;
         border-radius: 16px;
 
@@ -139,7 +138,7 @@
                 display: flex;
                 justify-content: center;
                 gap: 3px;
-                padding: 0 5px;
+                padding: 0 8px;
                 width: 100%;
 
                 &__line {
@@ -178,7 +177,6 @@
       padding: 10px 16px;
       background-color: #fff;
       border-radius: 12px;
-      box-shadow: 0 4px 13px 0 rgba(43, 69, 78, 0.1019607843);
 
       .booking-info__top {
         display: flex;

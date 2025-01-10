@@ -1,126 +1,43 @@
-<div
-  *ngIf="isVisible"
-  class="modal-background"
->
-  <div
-    class="modal-content"
-    @slideInOut
-    (@slideInOut.done)="onAnimationEvent($event)"
-    (click)="$event.stopPropagation()"
-  >
-    <div>
-      <button class="arrow-left__button" (click)="closeModal()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M15 19.92L8.48 13.4C7.71 12.63 7.71 11.37 8.48 10.6L15 4.08" stroke="#1D2935" stroke-width="1.5"
-                stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-    </div>
+<div *ngIf="isVisible" class="modal-background">
+  <div class="top-nav__block">
+    <span class="close-button" (click)="closeModal()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M15 19.92L8.47997 13.4C7.70997 12.63 7.70997 11.37 8.47997 10.6L15 4.07999"
+          stroke="#292929"
+          stroke-width="1.5"
+          stroke-miterlimit="10"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </span>
 
+    <h3>Бронирование билета</h3>
+  </div>
+
+  <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="ticket-main__block">
-      <div class="ticket-item__top">
-        <img
-          ngSrc="assets/suppliers/{{ flight.value.validating_supplier }}.png"
-          alt=""
-          height="30"
-          width="90"
-        >
-
-        <div class="amount-money__block">
-          <span class="amount-title">{{ flight.value.total_price.TJS }} TJS</span>
-          <small>В одну сторону</small>
-        </div>
-      </div>
-
-      <div>
-        <div class="airplane-icon__block">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path
-              d="M4.07033 13.3827L4.93044 11.5441C5.06323 11.267 4.96316 10.8935 4.70958 10.7199L3.0454 9.55766C2.77836 9.25652 2.83835 8.78492 3.17733 8.55605L3.95786 8.04323C4.14495 7.91718 4.46659 7.90692 4.66255 8.02006L6.52243 9.08842C6.6548 9.17028 6.88329 9.19878 7.0314 9.1591L8.86666 8.66734C9.13712 8.59487 9.21242 8.36074 9.04209 8.1372L6.82972 5.3412C6.48435 4.9023 6.63967 4.42587 7.18059 4.28093L8.01128 4.05835C8.44273 3.94274 9.02485 4.13186 9.29925 4.48624L11.8157 7.67009C11.8884 7.76104 12.0478 7.81496 12.1637 7.7839L14.0955 7.26627C14.7009 7.10407 15.5347 7.35687 15.9565 7.8236C16.1049 7.9909 16.1653 8.21628 16.1204 8.43535C15.9885 9.05046 15.3863 9.68804 14.781 9.85023L12.8492 10.3679C12.7332 10.3989 12.6222 10.5253 12.6047 10.6404L12.0156 14.6495C11.9616 15.0919 11.552 15.5467 11.1206 15.6623L10.2899 15.8849C9.74895 16.0299 9.37623 15.6949 9.45587 15.1421L9.97384 11.6145C10.0177 11.3405 9.8273 11.1707 9.55684 11.2431L7.72158 11.7349C7.57348 11.7746 7.38984 11.9135 7.31442 12.0442L6.23789 13.8993C6.12475 14.0953 5.84752 14.2455 5.61603 14.2316L4.68366 14.1777C4.27911 14.1619 3.98492 13.7852 4.07033 13.3827Z"
-              stroke="#00B06C" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="times-block">
-          <span class="times-block__item">{{ extractHours(flight.value.routes[0].segments[0].departure.time) }}</span>
-          <span class="times-block__title">{{ convertDuration(flight.value.routes[0].duration) }}</span>
-          <span class="times-block__item">{{ extractHours(flight.value.routes[0].segments[0].arrival.time) }}</span>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="ticket-item__bottom">
-        <span>{{ flight.value.routes[0].segments[0].departure.airport }}</span>
-
-        <span>
-          <ng-container *ngIf="flight.value.routes[0].segments.length === 1; else transfer">
-            Прямой
-          </ng-container>
-          <ng-template #transfer>
-            {{ flight.value.routes[0].segments.length - 1 }} пересадка(и)
-          </ng-template>
-        </span>
-
-        <span>{{ flight.value.routes[0].segments[flight.value.routes[0].segments.length - 1].arrival.airport }}</span>
-      </div>
-    </div>
-
-    <div class="passengers-layout">
-      <p class="block-title">Данные пассажиров</p>
-      <div *ngFor="let passenger of passengersDataList; let i = index">
-        <div
-          class="passenger-block card d-flex align-center justify-between"
-          (click)="selectPassenger(passenger, i)"
-        >
-          <div class="d-flex align-center passenger-block__left">
-            <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M13.3583 15.8521C13.2125 15.8375 13.0375 15.8375 12.8771 15.8521C9.40624 15.7354 6.64999 12.8917 6.64999 9.39167C6.64999 5.81876 9.53749 2.91667 13.125 2.91667C16.6979 2.91667 19.6 5.81876 19.6 9.39167C19.5854 12.8917 16.8292 15.7354 13.3583 15.8521Z"
-                stroke="#00B06C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path
-                d="M23.9313 5.83333C26.7604 5.83333 29.0354 8.12291 29.0354 10.9375C29.0354 13.6937 26.8479 15.9396 24.1208 16.0417C24.0042 16.0271 23.8729 16.0271 23.7417 16.0417"
-                stroke="#00B06C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path
-                d="M6.06667 21.2333C2.53751 23.5958 2.53751 27.4458 6.06667 29.7937C10.0771 32.4771 16.6542 32.4771 20.6646 29.7937C24.1938 27.4312 24.1938 23.5812 20.6646 21.2333C16.6688 18.5646 10.0917 18.5646 6.06667 21.2333Z"
-                stroke="#00B06C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path
-                d="M26.7458 29.1667C27.7958 28.9479 28.7875 28.525 29.6042 27.8979C31.8792 26.1917 31.8792 23.3771 29.6042 21.6708C28.8021 21.0583 27.825 20.65 26.7896 20.4167"
-                stroke="#00B06C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-
-            <div>
-              <p class="ma-0">{{ passenger.count }}</p>
-              <small>{{ passenger.type }}</small>
-            </div>
-          </div>
-
-          <div class="d-flex align-center passenger-block__right">
-            <svg *ngIf="!passenger.isValidPassenger" width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                    stroke="#FF4B55" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12 8V13" stroke="#FF4B55" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M11.9945 16H12.0035" stroke="#FF4B55" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-            </svg>
-            <svg *ngIf="passenger.isValidPassenger" width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                    stroke="#00B06C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M7.75 12L10.58 14.83L16.25 9.17" stroke="#00B06C" stroke-width="1.5" stroke-linecap="round"
-                    stroke-linejoin="round"/>
-            </svg>
-
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M6.75 3.06L11.64 7.95C12.2175 8.5275 12.2175 9.4725 11.64 10.05L6.74999 14.94" stroke="#1D2935"
-                    stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-        </div>
+      <span class="cities-title">Душанбе - Москва</span>
+      <span class="to-payment__title mb-2">28 декабря, пассажиры: 1, эконом</span>
+      <span class="to-payment__title">К оплате</span>
+      <div class="ticket-main__block-bottom">
+        <span class="amount-title">{{ flight.value.total_price.TJS }} TJS</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M15 19.92L8.47997 13.4C7.70997 12.63 7.70997 11.37 8.47997 10.6L15 4.07999"
+            stroke="#fff"
+            stroke-width="1.5"
+            stroke-miterlimit="10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
       </div>
     </div>
 
     <div>
-      <p class="block-title">Данные покупателя</p>
+      <p class="block-title">Контакты покупателя</p>
 
       <div class="inputs-blocks">
         <div class="card-block">
@@ -158,18 +75,48 @@
       </div>
 
       <p class="desc-bottom__text">
-        На почту придет информация о бронировании билета в случае изменения расписания,
-        на номер телефона будет отправлено уведомление об изменениях.
+        Отправим Вам купленный билет и чек на электронную
+        почту. В случае экстренных ситуаций свяжемся по телефону.
       </p>
     </div>
 
-    <div>
-      <button
-        class="btn-primary"
-        (click)="createOrderRequest()"
-      >
-        Оформить
-      </button>
+    <div class="passengers-layout">
+      <p class="block-title">Пассажиры</p>
+      <div *ngFor="let passenger of passengersDataList; let i = index">
+        <div
+          class="passenger-block card d-flex align-center justify-between"
+          (click)="selectPassenger(passenger, i)"
+        >
+          <div class="d-flex align-center passenger-block__left">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M29.3333 16C29.3333 23.3638 23.3638 29.3333 16 29.3333C8.63616 29.3333 2.66663 23.3638 2.66663 16C2.66663 8.63616 8.63616 2.66663 16 2.66663C23.3638 2.66663 29.3333 8.63616 29.3333 16ZM20 12C20 14.2091 18.2091 16 16 16C13.7908 16 12 14.2091 12 12C12 9.79082 13.7908 7.99996 16 7.99996C18.2091 7.99996 20 9.79082 20 12ZM15.9999 27.3333C18.3787 27.3333 20.5862 26.6005 22.4092 25.3482C23.2143 24.7952 23.5584 23.7416 23.0903 22.8843C22.1199 21.107 20.1203 20 15.9999 20C11.8795 20 9.87992 21.1069 8.90948 22.8842C8.44135 23.7415 8.78543 24.7951 9.59057 25.3481C11.4135 26.6004 13.6212 27.3333 15.9999 27.3333Z"
+                fill="#CBD5E1"
+              />
+            </svg>
+
+            <div class="d-flex flex-column">
+              <div class="d-flex align-center gap-2">
+                <p class="ma-0">{{ passenger.count }}</p>
+                <small>({{ passenger.type }})</small>
+              </div>
+
+              <span class="validation-passenger__title" *ngIf="passenger.isValidPassenger">Заполните данные</span>
+              <span class="passenger__title">Пол: М - 16.22.1990</span>
+            </div>
+          </div>
+
+          <div class="d-flex align-center passenger-block__right">
+
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M6.75 3.06L11.64 7.95C12.2175 8.5275 12.2175 9.4725 11.64 10.05L6.74999 14.94" stroke="#1D2935"
+                    stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="loader-layout" *ngIf="isLoading">
@@ -187,5 +134,9 @@
         <button class="close-popup__button" (click)="closeValidationPopup()">OK</button>
       </div>
     </div>
+
+    <button class="btn-primary" (click)="createOrderRequest()">
+      Купить билет {{ flight.value.total_price.TJS }} TJS
+    </button>
   </div>
 </div>

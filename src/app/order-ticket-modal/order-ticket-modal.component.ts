@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {JsonPipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {ActivatedRoute} from '@angular/router';
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
 import {PassengerDataService} from "../services/passenger-data.service";
@@ -16,7 +16,8 @@ import {ModalOrderSucceedComponent} from "../modal-order-succeed/modal-order-suc
     NgOptimizedImage,
     FormsModule,
     NgForOf,
-    ModalOrderSucceedComponent
+    ModalOrderSucceedComponent,
+    JsonPipe
   ],
   templateUrl: './order-ticket-modal.component.html',
   styleUrl: './order-ticket-modal.component.scss',
@@ -57,19 +58,11 @@ export class OrderTicketModalComponent implements OnInit {
 
   public isLoading: boolean = false;
   public isValidationTriggered = false;
-  public isVisible: boolean = false;
-  public isAnimating: boolean = false;
+  public isVisible: boolean = true;
   public email: string = '';
   public phone: string = '';
   public walletPhone: string = "123456789";
   public validationPopup: boolean = false;
-
-  onAnimationEvent(event: AnimationEvent) {
-    if (event.phaseName === 'done' && event.toState === 'void') {
-      this.isAnimating = false;
-      this.isVisible = false;
-    }
-  }
 
   openModal() {
     this.isVisible = true;
@@ -125,8 +118,8 @@ export class OrderTicketModalComponent implements OnInit {
 
       for (let i = 1; i <= passengers.adults; i++) {
         this.passengersDataList.push({
-          count: `Пассажир ${i}`,
-          type: 'Взрослый, старше 12 лет',
+          count: `Пассажир №${i}`,
+          type: 'Взрослый',
           passengerType: 'adt',
           isValidPassenger: false,
         });
@@ -134,8 +127,8 @@ export class OrderTicketModalComponent implements OnInit {
 
       for (let i = 1; i <= passengers.children; i++) {
         this.passengersDataList.push({
-          count: `Пассажир ${i + passengers.adults}`,
-          type: 'Детей от 2 до 12 лет',
+          count: `Пассажир №${i + passengers.adults}`,
+          type: 'Ребёнок',
           passengerType: 'chd',
           isValidPassenger: false,
         });
@@ -143,8 +136,8 @@ export class OrderTicketModalComponent implements OnInit {
 
       for (let i = 1; i <= passengers.infantsWithSeat; i++) {
         this.passengersDataList.push({
-          count: `Пассажир ${i + passengers.adults + passengers.children}`,
-          type: 'Младенец с местом',
+          count: `Пассажир №${i + passengers.adults + passengers.children}`,
+          type: 'Младенец',
           passengerType: 'inf',
           isValidPassenger: false,
         });

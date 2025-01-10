@@ -543,8 +543,8 @@
     </button>
   </div>
 
-  <div class="passengers-modal">
-    <div *ngIf="profileDataList">
+  <div class="passengers-modal__background" *ngIf="profileDataList.length">
+    <div class="passengers-modal">
       <ul class="passengers-list">
         <li
           *ngFor="let passenger of profileDataList"

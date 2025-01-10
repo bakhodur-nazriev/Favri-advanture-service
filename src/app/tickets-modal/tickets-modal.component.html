@@ -1,6 +1,6 @@
 <div *ngIf="isVisible" class="tickets-modal__block">
   <div class="top-nav__block">
-    <div (click)="closeModal()">
+    <div class="d-flex" (click)="closeModal()">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path d="M15 19.92L8.48 13.4C7.71 12.63 7.71 11.37 8.48 10.6L15 4.08" stroke="#1D2935" stroke-width="1.5"
               stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -11,7 +11,7 @@
       <span>{{ fromCity }}</span> - <span>{{ toCity }}</span>
     </div>
 
-    <div (click)="openFilterModal()">
+    <div class="d-flex" (click)="openFilterModal()">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path fill-rule="evenodd" clip-rule="evenodd"
               d="M18.25 7C18.25 9.07107 16.5711 10.75 14.5 10.75C12.4289 10.75 10.75 9.07107 10.75 7C10.75 4.92893 12.4289 3.25 14.5 3.25C16.5711 3.25 18.25 4.92893 18.25 7ZM14.5 9.25C15.7426 9.25 16.75 8.24264 16.75 7C16.75 5.75736 15.7426 4.75 14.5 4.75C13.2574 4.75 12.25 5.75736 12.25 7C12.25 8.24264 13.2574 9.25 14.5 9.25Z"
@@ -43,7 +43,7 @@
           <span class="dash-block"></span>
           <span class="directions-title">{{ toCity }}</span>
           <span class="dash-block"></span>
-          <span class="directions-title">{{ fromCity }}</span>
+          <span class="directions-title" *ngIf="backRouteCity">{{ backRouteCity }}</span>
         </div>
 
         <div class="booking-info__title-passengers">

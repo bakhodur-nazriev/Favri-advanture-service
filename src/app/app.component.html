@@ -1,7 +1,7 @@
 <main class="main-page-content">
-  <div>
+  <div class="mt-20">
     <div class="main-top__navigation">
-      <span>
+      <span class="d-flex">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
           <path d="M15 19.9201L8.47997 13.4001C7.70997 12.6301 7.70997 11.3701 8.47997 10.6001L15 4.08008"
                 stroke="#030712" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
@@ -9,7 +9,7 @@
         </svg>
       </span>
       <h1 class="main-title">Авиабилеты</h1>
-      <span (click)="openProfileModal()">
+      <span class="d-flex" (click)="openProfileModal()">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
           <path
             d="M14 11C14 10.4477 14.4477 10 15 10C15.5523 10 16 10.4477 16 11V13C16 13.5523 15.5523 14 15 14C14.4477 14 14 13.5523 14 13V11Z"
@@ -167,6 +167,7 @@
     [flights]="flights"
     [fromCity]="fromCity"
     [toCity]="toCity"
+    [backRouteCity]="backRouteCity"
     [isLoading]="isLoading"
     (flightSelected)="onFlightSelected($event)"
   />

@@ -1,98 +1,85 @@
 .modal-background {
-  z-index: 10;
-  width: 100%;
+  background-color: #EFF6FF;
   height: 100vh;
+  width: -webkit-fill-available;
   position: absolute;
   top: 0;
   left: 0;
-  background: #fff;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  z-index: 100;
+
+  .top-nav__block {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: -webkit-fill-available;
+    z-index: 3;
+    background-color: #fff;
+    padding: 20px;
+
+    .close-button {
+      display: flex;
+      justify-content: center;
+    }
+
+    h3 {
+      width: 100%;
+      text-align: center;
+      font-weight: 400;
+      margin: 0;
+      font-size: 17px;
+    }
+  }
 
   .modal-content {
     display: flex;
     flex-direction: column;
-    gap: 25px;
-    padding: 27px;
-
-    .arrow-left__button {
-      all: unset;
-    }
+    align-items: center;
+    margin-top: 80px;
+    width: 100%;
+    gap: 24px;
 
     .ticket-main__block {
       display: flex;
       justify-content: space-between;
       flex-direction: column;
-      padding: 18px 20px;
-      box-shadow: 0 4px 13px 0 #2B454E1A;
-      border-radius: 16px;
+      gap: 6px;
+      padding: 16px 20px;
+      border-radius: 12px;
+      width: -webkit-fill-available;
+      background: linear-gradient(90deg, #00B06C 0%, #34D399 100%);
+      color: #fff;
+      line-height: 1;
 
-      .ticket-item__top {
+      .cities-title {
+        font-size: 18px;
+      }
+
+      &-bottom {
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
-        .ticket-block__item {
-          font-weight: 500;
-          font-size: 14px;
+        .amount-title {
+          font-size: 22px;
+          font-weight: 700;
         }
 
-        .amount-money__block {
-          display: flex;
-          flex-direction: column;
-          align-items: end;
-
-          .amount-title {
-            font-size: 18px;
-            font-weight: 500;
-            color: #00B06C;
-          }
-
-          small {
-            font-size: 10px;
-            color: #95A5A6;
-          }
+        svg {
+          transform: rotate(-90deg);
         }
       }
 
-      .airplane-icon__block {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        margin-bottom: 8px;
-      }
-
-      .times-block {
-        display: flex;
-        justify-content: space-between;
-        align-items: end;
-
-        &__item {
-          font-weight: 500;
-          font-size: 14px;
-        }
-
-        &__title {
-          font-weight: 400;
-          font-size: 14px;
-        }
-      }
-
-      .ticket-item__bottom {
-        display: flex;
-        justify-content: space-between;
-
-        span {
-          color: #95A5A6;
-          font-size: 14px;
-        }
+      .to-payment__title {
+        font-size: 14px;
       }
     }
   }
-}
-
-.divider {
-  height: 2px;
-  background: linear-gradient(to right, #00B06C 20%, transparent 20%, transparent 40%, #00B06C 40%, #00B06C 40%, transparent 40%, transparent 60%, #00B06C 60%);
-  background-size: 25px 1px;
-  margin: 12px 0;
 }
 
 .card-block {
@@ -101,17 +88,16 @@
   gap: 6px;
 
   .card {
-    border-radius: 10px;
     background-color: #fff;
-    box-shadow: 0 4px 13px 0 #2B454E1A;
     padding: 0;
     display: flex;
 
     .text-field {
       width: 100%;
       border: none;
-      font-size: 14px;
+      font-size: 16px;
       padding: 16px;
+      border-radius: 12px;
 
       &:focus-visible {
         outline: none;
@@ -145,20 +131,21 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
 }
 
 .block-title {
-  font-size: 14px;
-  color: #1D2935;
-  margin-bottom: 5px;
+  font-size: 20px;
+  color: #030712;
+  font-weight: 700;
+  margin: 0 0 12px;
 }
-
 
 .passenger-block {
   padding: 20px;
 
   &__left {
-    gap: 14px;
+    gap: 8px;
 
     p {
       font-size: 14px;
@@ -166,13 +153,13 @@
     }
 
     small {
-      color: #95A5A6;
-      font-size: 12px;
+      color: #666F8D;
+      font-size: 15px;
     }
   }
 
   &__right {
-    gap: 14px;
+    gap: 8px;
   }
 }
 
@@ -260,4 +247,14 @@
       box-shadow: 0 4px 12px 0 rgba(0, 176, 108, 0.2509803922);
     }
   }
+}
+
+.validation-passenger__title {
+  font-size: 12px;
+  color: #FF1216;
+}
+
+.passenger__title {
+  color: #666F8D;
+  font-size: 12px;
 }

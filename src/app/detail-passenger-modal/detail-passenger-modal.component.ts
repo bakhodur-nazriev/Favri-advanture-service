@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {NgForOf, NgIf} from "@angular/common";
+import {JsonPipe, NgForOf, NgIf} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {FormsModule} from "@angular/forms";
@@ -20,6 +20,7 @@ import {ActivatedRoute} from "@angular/router";
     MatDatepicker,
     MatDatepickerInput,
     FormsModule,
+    JsonPipe,
   ],
   templateUrl: './detail-passenger-modal.component.html',
   styleUrl: './detail-passenger-modal.component.scss',
@@ -44,7 +45,7 @@ export class DetailPassengerModalComponent implements OnInit {
 
   public isValidationTriggered: boolean = false;
   public isValidationExpirationTriggered: boolean = false;
-  public isVisible: boolean = true;
+  public isVisible: boolean = false;
   public isAnimating: boolean = false;
   public dropdownOpen: boolean = false;
   public openDropdownPassport: boolean = false;
@@ -173,7 +174,6 @@ export class DetailPassengerModalComponent implements OnInit {
       }
     })
 
-
     if (this.passports.length > 0) {
       this.selectedPassportType = this.passports[0].name;
       this.selectedPassportCode = this.passports[0].code;
@@ -184,6 +184,10 @@ export class DetailPassengerModalComponent implements OnInit {
       this.selectedCountry = tajikistan.name;
       this.selectedCountryCode = tajikistan.code;
     }
+
+    this.route.queryParams.subscribe(params => {
+      this.walletPhone = params['walletPhone'] || '';
+    });
   }
 
   get name(): string {
@@ -337,4 +341,6 @@ export class DetailPassengerModalComponent implements OnInit {
       }
     })
   }
+
+  protected readonly length = length;
 }
