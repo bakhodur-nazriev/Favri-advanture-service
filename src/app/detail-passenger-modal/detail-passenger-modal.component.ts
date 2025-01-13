@@ -135,13 +135,6 @@ export class DetailPassengerModalComponent implements OnInit {
     this.openDropdownPassport = !this.openDropdownPassport;
   }
 
-  onAnimationEvent(event: AnimationEvent) {
-    if (event.phaseName === 'done' && event.toState === 'void') {
-      this.isVisible = false;
-      this.isAnimating = false;
-    }
-  }
-
   closeModal() {
     this.isVisible = false;
   }
@@ -293,35 +286,6 @@ export class DetailPassengerModalComponent implements OnInit {
     }
   }
 
-  getAge(birthDate: string): number | null {
-    if (!birthDate) return null;
-
-    const birthDateObj = new Date(birthDate);
-    if (isNaN(birthDateObj.getTime())) return null;
-
-    const today = new Date();
-    let age = today.getFullYear() - birthDateObj.getFullYear();
-    const monthDiff = today.getMonth() - birthDateObj.getMonth();
-    const dayDiff = today.getDate() - birthDateObj.getDate();
-
-    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-      age--;
-    }
-
-    return age;
-  }
-
-  getPassengerTypeDisplay(): string {
-    const age = this.getAge(this.birthDate);
-    if (age === null) return "Пассажир";
-
-    if (age < 2) return "Младенец";
-    if (age >= 2 && age <= 12) return "Ребёнок";
-    if (age > 12) return "Взрослый";
-
-    return "Пассажир";
-  }
-
   toggleGenderDropdown(): void {
     this.isGenderDropdownOpen = !this.isGenderDropdownOpen;
   }
@@ -341,6 +305,4 @@ export class DetailPassengerModalComponent implements OnInit {
       }
     })
   }
-
-  protected readonly length = length;
 }

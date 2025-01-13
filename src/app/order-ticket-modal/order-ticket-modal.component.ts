@@ -42,6 +42,9 @@ export class OrderTicketModalComponent implements OnInit {
   } = {adults: 0, children: 0, infantsWithSeat: 0}
   @Output() detailPassengerSelected = new EventEmitter<any>;
   @Input() isPassengerFormValid: boolean = false;
+  @Input() fromCity!: string;
+  @Input() toCity!: string;
+  @Input() backRouteCity!: string;
 
   private apiUrl = 'https://integration.cbt.tj/api/flytj/book';
   //private apiUrl = 'http://192.168.40.238:9800/api/flytj/book';
@@ -58,7 +61,7 @@ export class OrderTicketModalComponent implements OnInit {
 
   public isLoading: boolean = false;
   public isValidationTriggered = false;
-  public isVisible: boolean = true;
+  public isVisible: boolean = false;
   public email: string = '';
   public phone: string = '';
   public walletPhone: string = "123456789";

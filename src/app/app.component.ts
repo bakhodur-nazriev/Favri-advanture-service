@@ -172,14 +172,19 @@ export class AppComponent implements OnInit {
     return format(new Date(), 'yyyyMMdd');
   }
 
-  private formatDate(date: Date): string {
-    return date.toLocaleDateString('ru-RU', {month: 'short', day: 'numeric'});
-  }
-
   handlePassengersAndClass(event: Passengers) {
     this.tempPassengers = {...event};
     this.calculatePassengerCount();
     this.travelClassText = this.getTravelClassText(event.travelClass);
+  }
+
+  private formatDate(date: Date): string {
+    const day = date.toLocaleDateString('ru-RU', {day: 'numeric'});
+    const month = date.toLocaleDateString('ru-RU', {month: 'short'}).replace('.', '');
+    const weekday = date.toLocaleDateString('ru-RU', {weekday: 'short'});
+    let result = weekday.charAt(0).toUpperCase() + weekday.slice(1);
+
+    return `${day} ${month}., ${result}.`;
   }
 
   handleSelectedDates(dates: { startDate: Date, endDate: Date | null }) {
@@ -198,19 +203,6 @@ export class AppComponent implements OnInit {
     this.selectedDateText = this.generateSelectedDateText(dates);
   }
 
-  private getTravelClassText(travelClass: string): string {
-    switch (travelClass.toLowerCase()) {
-      case 'economy':
-        return 'Эконом';
-      case 'business':
-        return 'Бизнес';
-      case 'first':
-        return 'Первый класс';
-      default:
-        return 'Эконом';
-    }
-  }
-
   private generateSelectedDateText(dates: { startDate: Date, endDate: Date | null }): string {
     if (dates.startDate && dates.endDate) {
       return `${this.formatDate(dates.startDate)} - ${this.formatDate(dates.endDate)}`;
@@ -218,6 +210,19 @@ export class AppComponent implements OnInit {
       return this.formatDate(dates.startDate);
     } else {
       return this.formatDate(new Date());
+    }
+  }
+
+  private getTravelClassText(travelClass: string): string {
+    switch (travelClass.toLowerCase()) {
+      case 'economy':
+        return 'эконом';
+      case 'business':
+        return 'бизнес';
+      case 'first':
+        return 'первый класс';
+      default:
+        return 'Эконом';
     }
   }
 

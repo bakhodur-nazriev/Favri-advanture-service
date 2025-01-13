@@ -1,5 +1,5 @@
 .modal-background {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: 100%;
@@ -14,7 +14,7 @@
   display: flex;
   flex-direction: column;
   background-color: white;
-  padding: 15px 28px 28px;
+  padding: 15px 20px 28px;
   margin-top: 100px;
   border-radius: 20px 20px 0 0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -22,7 +22,7 @@
 
   h2 {
     margin-top: 0;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     font-size: 18px;
     font-weight: 700;
     color: var(--seconday-text-color);
@@ -33,26 +33,26 @@
     width: 100%;
     justify-content: center;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     cursor: pointer;
   }
 
   .filter-block {
     display: flex;
     flex-direction: column;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 
     .divider {
       height: 1px;
       background: linear-gradient(to right, #CBD5E1 20%, transparent 20%, transparent 40%, #CBD5E1 40%, #CBD5E1 40%, transparent 40%, transparent 60%, #CBD5E1 60%);
       background-size: 25px 1px;
-      margin: 20px 0;
+      margin: 17px 0;
     }
 
     .filter-details__block {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 8px;
 
       .filter-block__inputs {
         display: flex;
@@ -65,7 +65,7 @@
           border-radius: 12px;
           border: 1px solid #CBD5E1;
           outline: none;
-          max-width: 150px;
+          width: 100%;
         }
       }
 

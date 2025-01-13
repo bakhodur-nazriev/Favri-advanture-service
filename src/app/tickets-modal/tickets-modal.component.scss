@@ -46,6 +46,7 @@
       .booking-info__title-passengers {
         display: flex;
         gap: 6px;
+        flex-wrap: wrap;
         color: #fff;
 
         span {
@@ -174,7 +175,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      padding: 10px 16px;
+      padding: 14px 16px;
       background-color: #fff;
       border-radius: 12px;
 

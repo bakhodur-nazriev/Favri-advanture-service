@@ -290,15 +290,12 @@
         />
       </svg>
     </span>
-
-    <h3 class="top-nav__block-title">Пассажир 1</h3>
-    <!--    <h3 class="top-nav__block-title">{{ passenger.count }}</h3>-->
+    <h3 class="top-nav__block-title">{{ passenger.count }}</h3>
   </div>
 
   <div class="main-content">
     <div class="top-title__block ">
-      <h1 class="main-passenger__title">Пассажир</h1>
-      <!--      <h1 class="main-passenger__title">{{ getPassengerTypeDisplay() }}</h1>-->
+      <h1 class="main-passenger__title">{{ passenger.type }}</h1>
       <div class="choose-button__block" (click)="selectPassenger()">
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <rect width="32" height="32" rx="16" fill="none"/>

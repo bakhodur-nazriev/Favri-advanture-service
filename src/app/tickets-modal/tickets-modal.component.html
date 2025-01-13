@@ -42,14 +42,14 @@
           <span class="directions-title">{{ fromCity }}</span>
           <span class="dash-block"></span>
           <span class="directions-title">{{ toCity }}</span>
-          <span class="dash-block"></span>
+          <span class="dash-block" *ngIf="backRouteCity"></span>
           <span class="directions-title" *ngIf="backRouteCity">{{ backRouteCity }}</span>
         </div>
 
         <div class="booking-info__title-passengers">
-          <span> {{ selectedDateText }}</span>
-          <span>{{ passengerCount }} {{ passengerCount === 1 ? 'пассажир' : 'пассажира' }},</span>
-          <span>{{ travelClassText }}</span>
+          <span>{{ selectedDateText }}</span>
+          <span>{{ passengerCount === 1 ? 'Пассажир' : 'Пассажиры' }}: {{ passengerCount }}
+            , {{ travelClassText }}</span>
         </div>
       </div>
 
@@ -87,7 +87,7 @@
         <span>Ищем<br>билеты</span>
       </div>
 
-      <ul class="tickets-list">
+      <ul class="tickets-list" *ngIf="!isLoading">
         <li class="tickets-list__item" *ngFor="let flight of getFilteredFlights() | keyvalue">
           <div class="d-flex flex-column gap-3" (click)="selectFlight(flight)">
             <div class="tickets-list__item-top">
