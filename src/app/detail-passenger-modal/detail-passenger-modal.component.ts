@@ -27,14 +27,14 @@ import {ActivatedRoute} from "@angular/router";
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
-        style({transform: 'translateY(100%)', opacity: 0}),
-        animate('0.15s ease-in', style({transform: 'translateY(0)', opacity: 1}))
+        style({bottom: '-100%'}),
+        animate('400ms ease-in-out', style({bottom: '0'})),
       ]),
       transition(':leave', [
-        animate('0.15s ease-out', style({transform: 'translateY(100%)', opacity: 0}))
-      ])
-    ])
-  ]
+        animate('400ms ease-in-out', style({bottom: '-100%'})),
+      ]),
+    ]),
+  ],
 })
 export class DetailPassengerModalComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
@@ -47,9 +47,8 @@ export class DetailPassengerModalComponent implements OnInit {
   public isValidationExpirationTriggered: boolean = false;
   public isVisible: boolean = false;
   public isAnimating: boolean = false;
-  public dropdownOpen: boolean = false;
   public openDropdownPassport: boolean = false;
-  public selectedGender: string = 'M';
+  public selectedGender: string = '';
   public selectedCountry: string = '';
   public selectedCountryCode: string = '';
   selectedDate: string = '';
@@ -71,6 +70,8 @@ export class DetailPassengerModalComponent implements OnInit {
   ];
   walletPhone: string = '';
   profileDataList: any[] = [];
+  public isPassengersModal: boolean = false;
+  public isCitizenshipDropdownOpen: boolean = false;
 
   constructor(
     public passengerDataService: PassengerDataService,
@@ -110,14 +111,16 @@ export class DetailPassengerModalComponent implements OnInit {
     this.selectedDocumentExpireDate = value;
   }
 
-  selectGender(gender: string) {
-    this.passengerDataList[this.selectedIndex].gender = gender;
+  selectGender(gender: { text: string, value: string }): void {
+    this.selectedGender = gender.value;
+    this.passengerDataList[this.selectedIndex].gender = gender.value;
+    this.isGenderDropdownOpen = false;
   }
 
   selectCountry(country: { name: string, code: string }): void {
     this.selectedCountry = country.name;
     this.passengerDataList[this.selectedIndex].citizenship = country.code;
-    this.dropdownOpen = false;
+    this.isCitizenshipDropdownOpen = false;
   }
 
   selectPassport(passportName: string, code: string): void {
@@ -127,8 +130,8 @@ export class DetailPassengerModalComponent implements OnInit {
     this.passengerDataList[this.selectedIndex].document_type = code;
   }
 
-  toggleDropdown(): void {
-    this.dropdownOpen = !this.dropdownOpen;
+  toggleCitizenship(): void {
+    this.isCitizenshipDropdownOpen = !this.isCitizenshipDropdownOpen;
   }
 
   togglePassportDropdown(): void {
@@ -295,14 +298,37 @@ export class DetailPassengerModalComponent implements OnInit {
     return gender ? gender.text : 'Не выбран';
   }
 
-  selectPassenger(): void {
+  openPassengersModal(): void {
     this.profileService.getPassengers(this.walletPhone).subscribe({
       next: (data) => {
         this.profileDataList = data.data;
+        this.isPassengersModal = true;
       },
       error: (err) => {
         console.error('Error loading profile:', err);
       }
     })
+  }
+
+  closePassengerModal() {
+    this.isPassengersModal = false;
+  }
+
+  choosePassenger(passenger: any) {
+    console.log(passenger);
+    this.passengerDataList[this.selectedIndex].name = passenger.firstName;
+    this.passengerDataList[this.selectedIndex].surname = passenger.surName;
+    this.passengerDataList[this.selectedIndex].middle_name = passenger.middleName;
+    this.passengerDataList[this.selectedIndex].date_of_birth = passenger.birthDate;
+    this.passengerDataList[this.selectedIndex].phone = passenger.phone;
+    this.passengerDataList[this.selectedIndex].email = passenger.email;
+    this.passengerDataList[this.selectedIndex].gender = passenger.gender;
+    this.passengerDataList[this.selectedIndex].document_type = passenger.documentType;
+    this.passengerDataList[this.selectedIndex].document_number = passenger.documentNumber;
+    this.passengerDataList[this.selectedIndex].expiration_date = passenger.expirationDate;
+    this.passengerDataList[this.selectedIndex].citizenship = passenger.citizenShip;
+    this.passengerDataList[this.selectedIndex].walletPhone = passenger.walletPhone;
+
+    this.isPassengersModal = false;
   }
 }

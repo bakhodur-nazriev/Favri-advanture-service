@@ -45,6 +45,9 @@ export class OrderTicketModalComponent implements OnInit {
   @Input() fromCity!: string;
   @Input() toCity!: string;
   @Input() backRouteCity!: string;
+  @Input() passengerCount: number = 0;
+  @Input() travelClassText!: string;
+  @Input() selectedDateText!: string;
 
   private apiUrl = 'https://integration.cbt.tj/api/flytj/book';
   //private apiUrl = 'http://192.168.40.238:9800/api/flytj/book';

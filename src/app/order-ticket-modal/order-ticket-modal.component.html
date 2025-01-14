@@ -24,11 +24,10 @@
         <span class="cities-title">{{ toCity }}</span>
         <span class="dash-block" *ngIf="backRouteCity"></span>
         <span class="cities-title" *ngIf="backRouteCity">{{ backRouteCity }}</span>
-
-        {{ flight | json }}
       </div>
 
-      <span class="to-payment__title mb-2">28 декабря, пассажиры: 1, эконом</span>
+      <span class="to-payment__title mb-2">{{ selectedDateText }} пассажиры: {{ passengerCount }}
+        , {{ travelClassText }}</span>
       <span class="to-payment__title">К оплате</span>
       <div class="ticket-main__block-bottom">
         <span class="amount-title">{{ flight.value.total_price.TJS }} TJS</span>
@@ -113,8 +112,12 @@
               </div>
 
               <span class="validation-passenger__title" *ngIf="!passenger.isValidPassenger">Заполните данные</span>
-              <span class="passenger__title" *ngIf="passenger.isValidPassenger">Пол: {{ passenger.gender }}
-                - 16.22.1990</span>
+              <span
+                class="passenger__title"
+                *ngIf="passenger.isValidPassenger"
+              >
+                Пол: {{ passenger.gender }} - 16.22.1990
+              </span>
             </div>
           </div>
 
