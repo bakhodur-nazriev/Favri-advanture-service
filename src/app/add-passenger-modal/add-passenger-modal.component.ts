@@ -22,9 +22,9 @@ export class AddPassengerModalComponent implements OnInit {
   @Output() passengerAddedEvent = new EventEmitter<void>();
 
   public walletPhone: string = "";
-  public firstName: string = "";
-  public surName: string = "";
-  public middleName: string = "";
+  private _firstName: string = "";
+  public _surName: string = "";
+  public _middleName: string = "";
   public citizenShip: string = "";
   public gender: string = "";
   public type: string = "";
@@ -97,7 +97,6 @@ export class AddPassengerModalComponent implements OnInit {
     this.isPassportDropdownOpen = false;
   }
 
-
   addPassenger() {
     if (!this.phone.startsWith('+992')) {
       this.phone = `+992${this.phone}`;
@@ -130,6 +129,15 @@ export class AddPassengerModalComponent implements OnInit {
         console.error('Ошибка при добавлении пассажира', err);
       }
     })
+  }
+
+  isValidDate(dateString: string): boolean {
+    const regex = /^([0-2]\d|3[0-1])\.(0\d|1[0-2])\.\d{4}$/;
+    if (!regex.test(dateString)) return false;
+
+    const [day, month, year] = dateString.split('.').map(Number);
+    const date = new Date(year, month - 1, day);
+    return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
   }
 
   resetForm() {
@@ -196,5 +204,46 @@ export class AddPassengerModalComponent implements OnInit {
     if (age > 12) return "adt";
 
     return "";
+  }
+
+  isLatin(value: string): boolean {
+    const latinRegex = /^[a-zA-Z]+$/
+    return latinRegex.test(value);
+  }
+
+  get firstName(): string {
+    return this._firstName;
+  }
+
+  set firstName(value: string) {
+    if (this.isLatin(value)) {
+      this._firstName = value.toUpperCase();
+    } else {
+      this._firstName = '';
+    }
+  }
+
+  get surName(): string {
+    return this._surName || '';
+  }
+
+  set surName(value: string) {
+    if (this.isLatin(value)) {
+      this._surName = value.toUpperCase();
+    } else {
+      this._surName = '';
+    }
+  }
+
+  get middleName(): string {
+    return this._middleName || '';
+  }
+
+  set middleName(value: string) {
+    if (this.isLatin(value)) {
+      this._middleName = value.toUpperCase();
+    } else {
+      this._middleName = '';
+    }
   }
 }

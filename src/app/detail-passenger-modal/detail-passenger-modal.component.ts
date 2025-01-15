@@ -40,6 +40,7 @@ export class DetailPassengerModalComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Input() passenger: any = {};
   @Output() validationStatusChanged = new EventEmitter<boolean>();
+  @Output() passengerDataUpdated = new EventEmitter<{ birthDate: string; gender: string }>();
 
   selectedPassenger: any;
 
@@ -72,6 +73,8 @@ export class DetailPassengerModalComponent implements OnInit {
   profileDataList: any[] = [];
   public isPassengersModal: boolean = false;
   public isCitizenshipDropdownOpen: boolean = false;
+  public isPassengerLoading: boolean = false;
+  public isMiddleNameValidated: boolean = false;
 
   constructor(
     public passengerDataService: PassengerDataService,
@@ -215,19 +218,22 @@ export class DetailPassengerModalComponent implements OnInit {
   }
 
   set middleName(value: string) {
-    if (this.isLatin(value)) {
-      this.passengerDataList[this.selectedIndex].middle_name = value.toUpperCase();
+    if (value && !this.isLatin(value)) {
+      this.isMiddleNameValidated = false;
     } else {
-      this.passengerDataList[this.selectedIndex].middle_name = '';
+      this.isMiddleNameValidated = true;
+      this.passengerDataList[this.selectedIndex].middle_name = value ? value.toUpperCase() : '';
     }
   }
 
   savePassengerData() {
+    this.isValidationTriggered = true;
+    this.isValidationExpirationTriggered = true;
+
     if (!this.isValidDate(this.passengerDataList[this.selectedIndex].date_of_birth) ||
       !this.isValidDate(this.passengerDataList[this.selectedIndex].expiration_date) ||
-      !this.isValidForm()) {
-      this.isValidationTriggered = true;
-      this.isValidationExpirationTriggered = true;
+      !this.isValidForm() ||
+      (!this.isMiddleNameValidated && this.middleName)) {
       return;
     }
 
@@ -244,7 +250,6 @@ export class DetailPassengerModalComponent implements OnInit {
         citizenship: this.selectedCountryCode,
       }
     }
-    //this.passengerDataService.selectedPassenger.isValidPassenger = true;
     this.selectedPassenger.isValidPassenger = true
     this.passengerDataService.setPassengersDataList(this.passengerDataList);
     this.closeModal();
@@ -299,10 +304,12 @@ export class DetailPassengerModalComponent implements OnInit {
   }
 
   openPassengersModal(): void {
+    this.isPassengerLoading = true;
     this.profileService.getPassengers(this.walletPhone).subscribe({
       next: (data) => {
         this.profileDataList = data.data;
         this.isPassengersModal = true;
+        this.isPassengerLoading = false;
       },
       error: (err) => {
         console.error('Error loading profile:', err);
@@ -315,7 +322,6 @@ export class DetailPassengerModalComponent implements OnInit {
   }
 
   choosePassenger(passenger: any) {
-    console.log(passenger);
     this.passengerDataList[this.selectedIndex].name = passenger.firstName;
     this.passengerDataList[this.selectedIndex].surname = passenger.surName;
     this.passengerDataList[this.selectedIndex].middle_name = passenger.middleName;
@@ -329,6 +335,14 @@ export class DetailPassengerModalComponent implements OnInit {
     this.passengerDataList[this.selectedIndex].citizenship = passenger.citizenShip;
     this.passengerDataList[this.selectedIndex].walletPhone = passenger.walletPhone;
 
+    this.updatePassengerData();
     this.isPassengersModal = false;
+  }
+
+  updatePassengerData() {
+    this.passengerDataUpdated.emit({
+      birthDate: this.passengerDataList[this.selectedIndex].date_of_birth,
+      gender: this.passengerDataList[this.selectedIndex].gender,
+    });
   }
 }

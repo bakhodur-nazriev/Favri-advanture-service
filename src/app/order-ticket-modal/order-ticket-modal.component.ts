@@ -48,6 +48,8 @@ export class OrderTicketModalComponent implements OnInit {
   @Input() passengerCount: number = 0;
   @Input() travelClassText!: string;
   @Input() selectedDateText!: string;
+  @Input() updatedPassengerData: { birthDate: string; gender: string } = {birthDate: '', gender: ''};
+
 
   private apiUrl = 'https://integration.cbt.tj/api/flytj/book';
   //private apiUrl = 'http://192.168.40.238:9800/api/flytj/book';

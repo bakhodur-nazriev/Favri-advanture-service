@@ -30,6 +30,9 @@
             name="firstName"
           >
         </div>
+        <div class="invalid-field" *ngIf="isValidationTriggered && !isLatin(firstName)">
+          Поле должно быть заполнено и содержать только латинские буквы*
+        </div>
       </li>
       <li class="inputs-list__item">
         <div class="inputs-list__item-block">

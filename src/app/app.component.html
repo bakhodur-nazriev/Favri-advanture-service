@@ -193,12 +193,14 @@
     [passengers]="passengers"
     [flight]="selectedFlight"
     [isPassengerFormValid]="isPassengerFormValid"
+    [updatedPassengerData]="updatedPassengerData"
     (detailPassengerSelected)="openDetailPassengerModal($event)"
   />
 
   <app-detail-passenger-modal
     #detailPassengerModal
     [passenger]="selectedPassenger"
+    (passengerDataUpdated)="onPassengerDataUpdated($event)"
     (validationStatusChanged)="onValidationStatusChanged($event)"
   />
 
