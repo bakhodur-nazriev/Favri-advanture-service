@@ -40,28 +40,30 @@
   .filter-block {
     display: flex;
     flex-direction: column;
-    margin-bottom: 30px;
+    margin: 0 0 30px;
+    padding: 0;
+    list-style: none;
 
     .divider {
       height: 1px;
       background: linear-gradient(to right, #CBD5E1 20%, transparent 20%, transparent 40%, #CBD5E1 40%, #CBD5E1 40%, transparent 40%, transparent 60%, #CBD5E1 60%);
       background-size: 25px 1px;
-      margin: 17px 0;
+      margin: 17px 0 12px;
     }
 
     .filter-details__block {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 5px;
 
       .filter-block__inputs {
         display: flex;
-        gap: 6px;
+        gap: 10px;
         justify-content: space-between;
         width: 100%;
 
         input {
-          padding: 14px;
+          padding: 12px;
           border-radius: 12px;
           border: 1px solid #CBD5E1;
           outline: none;

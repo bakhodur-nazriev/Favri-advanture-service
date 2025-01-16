@@ -55,8 +55,8 @@
             [(ngModel)]="surname"
             placeholder="Фамилия"
             class="text-field"
-            type="text"
             name="surName"
+            type="text"
           >
         </div>
         <div class="invalid-field" *ngIf="isValidationTriggered && !isLatin(surname)">
@@ -65,7 +65,7 @@
       </li>
       <li class="inputs-list__item">
         <div
-          [class.error]="!isMiddleNameValidated && middleName"
+          [class.error]="isValidationTriggered && middleName.trim().length > 0 && !isLatin(middleName)"
           class="inputs-list__item-block"
         >
           <input
@@ -76,7 +76,8 @@
             type="text"
           >
         </div>
-        <div class="invalid-field" *ngIf="!isMiddleNameValidated && middleName">
+        <div class="invalid-field"
+             *ngIf="isValidationTriggered && middleName.trim().length > 0 && !isLatin(middleName)">
           Поле должно быть содержать только латинские буквы*
         </div>
       </li>
@@ -135,9 +136,7 @@
           <span class="selected-passport" *ngIf="selectedGender">
             {{ getGenderText(selectedGender) }}
           </span>
-          <span *ngIf="!selectedGender" class="selected-passport">
-            Выберите пол
-          </span>
+          <span *ngIf="!selectedGender" class="selected-passport">Выберите пол</span>
 
           <div
             class="dropdown"

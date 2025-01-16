@@ -108,12 +108,17 @@ export class AppComponent implements OnInit {
   public passengerCount: number = 0;
   public travelClassText: string = '';
   isPassengerFormValid: boolean = false;
-  updatedPassengerData: { birthDate: string; gender: string } = { birthDate: '', gender: '' };
+  updatedPassengerData: { name: string, surname: string, birthDate: string; gender: string } = {
+    name: '',
+    surname: '',
+    birthDate: '',
+    gender: ''
+  };
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private passengerDataService: PassengerDataService) {
   }
 
-  onPassengerDataUpdated(data: { birthDate: string; gender: string }) {
+  onPassengerDataUpdated(data: { name: string, surname: string, birthDate: string; gender: string }) {
     this.updatedPassengerData = data;
   }
 

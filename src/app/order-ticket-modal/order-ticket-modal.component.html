@@ -107,8 +107,9 @@
 
             <div class="d-flex flex-column">
               <div class="d-flex align-center gap-2">
-                <p class="ma-0">{{ passenger.count }}</p>
-                <small>({{ passenger.type }})</small>
+                <p class="ma-0" *ngIf="!formatName(updatedPassengerData)">{{ passenger.count }}</p>
+                <small *ngIf="!formatName(updatedPassengerData)">({{ passenger.type }})</small>
+                <span *ngIf="formatName(updatedPassengerData)">{{ formatName(updatedPassengerData) }}</span>
               </div>
 
               <span class="validation-passenger__title" *ngIf="!passenger.isValidPassenger">Заполните данные</span>
@@ -116,7 +117,7 @@
                 class="passenger__title"
                 *ngIf="passenger.isValidPassenger"
               >
-                Пол: {{ updatedPassengerData.gender }} - {{ updatedPassengerData.birthDate }}
+                Пол: {{ transformGender(updatedPassengerData) }} - {{ updatedPassengerData.birthDate }}
               </span>
             </div>
           </div>

@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, Output, OnInit, HostListener, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnInit, HostListener} from '@angular/core';
 import {JsonPipe, KeyValuePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
-import {FilterTicketsComponent} from "../filter-tickets/filter-tickets.component";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-tickets-modal',
@@ -12,7 +12,7 @@ import {FilterTicketsComponent} from "../filter-tickets/filter-tickets.component
     NgForOf,
     KeyValuePipe,
     JsonPipe,
-    FilterTicketsComponent,
+    FormsModule,
   ],
   templateUrl: './tickets-modal.component.html',
   styleUrl: './tickets-modal.component.scss',
@@ -38,7 +38,6 @@ export class TicketsModalComponent {
   @Input() passengerCount: number = 0;
   @Input() travelClassText: string = '';
   @Input() selectedDateText: string = '';
-  @ViewChild('filterTickets') filterTickets!: FilterTicketsComponent
 
   isVisible: boolean = false;
   departureAirport: any;
@@ -46,13 +45,22 @@ export class TicketsModalComponent {
   flightDuration: string = '';
   public isBookingInfoModal: boolean = false;
   public isModalBookingVisible: boolean = true;
-  currentFilter: string = 'all';
 
-  constructor() {
-    this.initializeFlightData();
-  }
+  public isFilterVisible: boolean = false;
+  public isFilterAnimating = false;
 
-  routes: any[] = [
+  public minPrice: number | null = null;
+  public maxPrice: number | null = null;
+  public selectedBaggage: string = 'С багажом';
+  public selectedRefund: string = 'С возвратом';
+  public selectedTransfer: string = 'Прямой рейс';
+  public selectedTimeFrom: string = '00:00';
+  public selectedTimeTo: string = '23:00';
+
+  private originalFlights: any[] = [];
+  filteredFlights = [...this.flights];
+
+  public routes: any[] = [
     {
       index: 0,
       duration: 16800,
@@ -65,6 +73,27 @@ export class TicketsModalComponent {
       ],
     },
   ];
+
+  constructor() {
+    this.originalFlights = [...this.flights];
+    this.initializeFlightData();
+  }
+
+  closeFilterModal() {
+    if (!this.isFilterAnimating) {
+      this.isFilterVisible = false;
+      this.isFilterAnimating = true;
+    }
+  }
+
+  onAnimationFilterModal(event: AnimationEvent) {
+    if (event.phaseName === 'done') {
+      this.isFilterAnimating = false;
+      if (event.toState === 'void') {
+        this.isFilterVisible = false;
+      }
+    }
+  }
 
   selectFlight(flight: any) {
     this.flightSelected.emit(flight);
@@ -132,32 +161,57 @@ export class TicketsModalComponent {
     this.isBookingInfoModal = false;
   }
 
-  closeModalBooking() {
-    const ticketModalBlock = document.querySelector('.tickets-modal__block');
-    if (ticketModalBlock) {
-      ticketModalBlock.classList.add('overflow-hidden');
-      ticketModalBlock.classList.add('h-100');
-    }
-
-    this.isModalBookingVisible = false;
-  }
-
-  getFilteredFlights(): any[] {
-    if (this.currentFilter === 'direct') {
-      return this.flights.filter(flight => flight.routes[0].segments.length === 1);
-    } else if (this.currentFilter === 'oneStop') {
-      return this.flights.filter(flight => flight.routes[0].segments.length === 2);
-    } else if (this.currentFilter === 'multipleStops') {
-      return this.flights.filter(flight => flight.routes[0].segments.length > 2);
-    }
-    return this.flights;
-  }
-
   openFilterModal() {
-    if (this.filterTickets) {
-      this.filterTickets.openModal();
-    } else {
-      console.error('FilterTicketsComponent не найден');
+    this.isFilterVisible = true;
+  }
+
+  applyFilters() {
+    if (!this.minPrice && !this.maxPrice) {
+      this.filteredFlights = [...this.originalFlights];
+      this.closeFilterModal();
+      return;
     }
+
+
+    this.filteredFlights = this.flights.filter(flight => {
+      console.log(flight);
+      const flightPrice = flight.total_price.TJS;
+      // const flightBaggage = flight.baggage;
+      // const flightRefund = flight.refund;
+      // const flightTransfers = flight.transfers;
+      // const flightTime = flight.departureTime;
+
+      // Фильтрация по стоимости
+      // const isPriceInRange = (this.minPrice ? flightPrice >= this.minPrice : true) ||
+      //   (this.maxPrice ? flightPrice <= this.maxPrice : true);
+
+      let isPriceInRange = true;
+
+      if (this.minPrice && this.maxPrice) {
+        isPriceInRange = flightPrice >= this.minPrice && flightPrice <= this.maxPrice;
+      } else if (this.minPrice) {
+        isPriceInRange = flightPrice >= this.minPrice;
+      } else if (this.maxPrice) {
+        isPriceInRange = flightPrice <= this.maxPrice;
+      }
+
+      // Фильтрация по багажу
+      // const isBaggageMatching = this.selectedBaggage === 'С багажом' ? flightBaggage !== 'Без багажа' : flightBaggage === 'Без багажа';
+
+      // Фильтрация по возврату
+      // const isRefundMatching = this.selectedRefund === 'С возвратом' ? flightRefund !== 'Без возврата' : flightRefund === 'Без возврата';
+
+      // Фильтрация по пересадкам
+      // const isTransferMatching = flightTransfers === this.selectedTransfer;
+
+      // Фильтрация по времени
+      // const flightHour = flightTime.split(':')[0];
+      // const isTimeMatching = flightHour >= this.selectedTimeFrom.split(':')[0] && flightHour <= this.selectedTimeTo.split(':')[0];
+
+      // return isPriceInRange && isBaggageMatching && isRefundMatching && isTransferMatching;
+      return isPriceInRange;
+    });
+
+    this.closeFilterModal();
   }
 }

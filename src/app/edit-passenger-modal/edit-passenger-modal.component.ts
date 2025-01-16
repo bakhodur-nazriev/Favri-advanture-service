@@ -1,8 +1,9 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {COUNTRIES} from "../../coutries";
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {ProfileService} from "../services/profile.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-edit-passenger-modal',
@@ -15,13 +16,13 @@ import {ProfileService} from "../services/profile.service";
   templateUrl: './edit-passenger-modal.component.html',
   styleUrl: './edit-passenger-modal.component.scss'
 })
-export class EditPassengerModalComponent implements OnChanges {
+export class EditPassengerModalComponent implements OnChanges, OnInit {
   @Output() closeModalEvent = new EventEmitter<void>();
   @Output() passengerDeletedEvent = new EventEmitter<void>();
   @Output() passengerUpdateEvent = new EventEmitter<void>();
   @Input() passenger: any = {};
 
-  constructor(private profileService: ProfileService) {
+  constructor(private profileService: ProfileService, private route: ActivatedRoute) {
   }
 
   protected readonly countries = COUNTRIES;
@@ -37,6 +38,13 @@ export class EditPassengerModalComponent implements OnChanges {
     {text: 'Загран паспорт', value: 'NP'},
     {text: 'Паспорт РТ', value: 'NP'}
   ];
+  public walletPhone: string = "";
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.walletPhone = params['walletPhone'] || '';
+    });
+  }
 
   closeModal() {
     this.closeModalEvent.emit();
@@ -128,15 +136,27 @@ export class EditPassengerModalComponent implements OnChanges {
   }
 
   saveChanges() {
-    this.profileService.updatePassenger(this.passenger).subscribe({
+    if (!this.walletPhone) {
+      console.error('WalletPhone отсутствует');
+      return;
+    }
+
+    const updatedPassenger = {
+      ...this.passenger,
+      walletPhone: this.walletPhone
+    };
+
+    this.profileService.updatePassenger(updatedPassenger).subscribe({
       next: (res) => {
         console.log('Passenger updated successfully:', res);
         this.passengerUpdateEvent.emit();
-        this.closeModal();
+        if (res.statusCode === 200) {
+          this.closeModal();
+        }
       },
       error: (err) => {
         console.error('Error updating passenger:', err);
       }
-    })
+    });
   }
 }

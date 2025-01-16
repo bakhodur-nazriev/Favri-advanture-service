@@ -1,12 +1,14 @@
 import {Component} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-filter-tickets',
   standalone: true,
   imports: [
-    NgIf
+    NgIf,
+    FormsModule
   ],
   templateUrl: './filter-tickets.component.html',
   styleUrl: './filter-tickets.component.scss',
@@ -26,6 +28,8 @@ export class FilterTicketsComponent {
 
   public isFilterVisible: boolean = false;
   public isFilterAnimating = false;
+  public minPrice: number | null = null;
+  public maxPrice: number | null = null;
 
   closeModal() {
     if (!this.isFilterAnimating) {

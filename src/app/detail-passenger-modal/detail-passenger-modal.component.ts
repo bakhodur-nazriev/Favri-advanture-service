@@ -40,7 +40,12 @@ export class DetailPassengerModalComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Input() passenger: any = {};
   @Output() validationStatusChanged = new EventEmitter<boolean>();
-  @Output() passengerDataUpdated = new EventEmitter<{ birthDate: string; gender: string }>();
+  @Output() passengerDataUpdated = new EventEmitter<{
+    name: string,
+    surname: string,
+    birthDate: string;
+    gender: string
+  }>();
 
   selectedPassenger: any;
 
@@ -218,11 +223,10 @@ export class DetailPassengerModalComponent implements OnInit {
   }
 
   set middleName(value: string) {
-    if (value && !this.isLatin(value)) {
-      this.isMiddleNameValidated = false;
+    if (this.isLatin(value)) {
+      this.passengerDataList[this.selectedIndex].middle_name = value.toUpperCase();
     } else {
-      this.isMiddleNameValidated = true;
-      this.passengerDataList[this.selectedIndex].middle_name = value ? value.toUpperCase() : '';
+      this.passengerDataList[this.selectedIndex].middle_name = '';
     }
   }
 
@@ -232,8 +236,7 @@ export class DetailPassengerModalComponent implements OnInit {
 
     if (!this.isValidDate(this.passengerDataList[this.selectedIndex].date_of_birth) ||
       !this.isValidDate(this.passengerDataList[this.selectedIndex].expiration_date) ||
-      !this.isValidForm() ||
-      (!this.isMiddleNameValidated && this.middleName)) {
+      !this.isValidForm()) {
       return;
     }
 
@@ -343,6 +346,8 @@ export class DetailPassengerModalComponent implements OnInit {
     this.passengerDataUpdated.emit({
       birthDate: this.passengerDataList[this.selectedIndex].date_of_birth,
       gender: this.passengerDataList[this.selectedIndex].gender,
+      name: this.passengerDataList[this.selectedIndex].name,
+      surname: this.passengerDataList[this.selectedIndex].surname
     });
   }
 }

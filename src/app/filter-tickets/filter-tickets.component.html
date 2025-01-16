@@ -17,32 +17,36 @@
 
     <h2>Фильтры</h2>
 
-    <div class="filter-block">
-      <div class="filter-details__block">
-        <div>
-          <span class="title">Стоимость</span>
-        </div>
+    <ul class="filter-block">
+      <li class="filter-details__block">
+        <span class="title">Стоимость</span>
         <div class="filter-block__inputs">
-          <input type="number" placeholder="От">
-          <input type="number" placeholder="До">
+          <input
+            [(ngModel)]="minPrice"
+            placeholder="От"
+            type="number"
+          >
+          <input
+            [(ngModel)]="minPrice"
+            placeholder="До"
+            type="number"
+          >
         </div>
-      </div>
+      </li>
 
-      <div class="divider"></div>
+      <li class="divider"></li>
 
-      <div class="filter-details__block">
-        <div>
-          <span>Багаж</span>
-        </div>
+      <li class="filter-details__block">
+        <span>Багаж</span>
         <ul class="baggage-list">
           <li class="baggage-list__item active">С багажом</li>
           <li class="baggage-list__item">Без багажа</li>
         </ul>
-      </div>
+      </li>
 
-      <div class="divider"></div>
+      <li class="divider"></li>
 
-      <div class="filter-details__block">
+      <li class="filter-details__block">
         <div>
           <span>Возврат</span>
         </div>
@@ -50,11 +54,11 @@
           <li class="refund-list__item active">С возвратом</li>
           <li class="refund-list__item">Без возврата</li>
         </ul>
-      </div>
+      </li>
 
-      <div class="divider"></div>
+      <li class="divider"></li>
 
-      <div class="filter-details__block">
+      <li class="filter-details__block">
         <div>
           <span>Пересадки</span>
         </div>
@@ -63,11 +67,11 @@
           <li class="transfer-list__item">1 пересадка</li>
           <li class="transfer-list__item">2 пересадки</li>
         </ul>
-      </div>
+      </li>
 
-      <div class="divider"></div>
+      <li class="divider"></li>
 
-      <div class="filter-details__block">
+      <li class="filter-details__block">
         <div>
           <span>Время</span>
         </div>
@@ -75,8 +79,8 @@
           <input type="text" placeholder="00:00">
           <input type="text" placeholder="23:00">
         </div>
-      </div>
-    </div>
+      </li>
+    </ul>
 
     <button class="btn-primary">Показать результаты</button>
   </div>

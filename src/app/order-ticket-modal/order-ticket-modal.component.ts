@@ -48,7 +48,12 @@ export class OrderTicketModalComponent implements OnInit {
   @Input() passengerCount: number = 0;
   @Input() travelClassText!: string;
   @Input() selectedDateText!: string;
-  @Input() updatedPassengerData: { birthDate: string; gender: string } = {birthDate: '', gender: ''};
+  @Input() updatedPassengerData: { name: string, surname: string, birthDate: string; gender: string } = {
+    name: '',
+    surname: '',
+    birthDate: '',
+    gender: ''
+  };
 
 
   private apiUrl = 'https://integration.cbt.tj/api/flytj/book';
@@ -255,5 +260,23 @@ export class OrderTicketModalComponent implements OnInit {
 
   closeValidationPopup() {
     this.validationPopup = false;
+  }
+
+  transformGender(passenger: { gender: string }) {
+    if (passenger.gender === 'F') {
+      passenger.gender = 'Ж';
+    } else if (passenger.gender === 'M') {
+      passenger.gender = 'М';
+    }
+
+    return passenger.gender;
+  }
+
+  formatName(passenger: { name: string, surname: string }) {
+    if (passenger.name && passenger.surname) {
+      return `${passenger.name} ${passenger.surname.charAt(0)}.`;
+    }
+
+    return passenger.name || passenger.surname || '';
   }
 }
