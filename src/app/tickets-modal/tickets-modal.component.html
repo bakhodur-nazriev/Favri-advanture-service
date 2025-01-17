@@ -87,7 +87,7 @@
       </div>
 
       <ul class="tickets-list" *ngIf="!isLoading">
-        <li class="tickets-list__item" *ngFor="let flight of flights | keyvalue">
+        <li class="tickets-list__item" *ngFor="let flight of filteredFlights | keyvalue">
           <div class="d-flex flex-column gap-3" (click)="selectFlight(flight)">
             <div class="tickets-list__item-top">
               <img
@@ -248,21 +248,17 @@
         <li class="divider"></li>
 
         <li class="filter-details__block">
-          <span>Багаж</span>
-          <ul class="baggage-list">
-            <li
-              class="baggage-list__item active"
-              [class.active]="selectedBaggage === 'С багажом'"
-              (click)="selectedBaggage  = 'С багажом'"
-            >
-              С багажом
+          <span>Возврат</span>
+          <ul class="refund-list">
+            <li class="baggage-list__item"
+                [class.active]="selectedRefund === 'С возвратом'"
+                (click)="toggleRefund('С возвратом')">
+              С возвратом
             </li>
-            <li
-              class="baggage-list__item"
-              [class.active]="selectedBaggage === 'Без багажа'"
-              (click)="selectedBaggage = 'Без багажа'"
-            >
-              Без багажа
+            <li class="baggage-list__item"
+                [class.active]="selectedRefund === 'Без возврата'"
+                (click)="toggleRefund('Без возврата')">
+              Без возврата
             </li>
           </ul>
         </li>
@@ -270,17 +266,21 @@
         <li class="divider"></li>
 
         <li class="filter-details__block">
-          <span>Возврат</span>
+          <span>Обмен</span>
           <ul class="refund-list">
-            <li class="baggage-list__item"
-                [class.active]="selectedRefund === 'С возвратом'"
-                (click)="selectedRefund = 'С возврата'">
-              С возвратом
+            <li
+              class="baggage-list__item"
+              [class.active]="selectedChange === 'С обменом'"
+              (click)="toggleChange('С обменом')"
+            >
+              С обменом
             </li>
-            <li class="baggage-list__item"
-                [class.active]="selectedRefund === 'Без возврата'"
-                (click)="selectedRefund = 'Без возврата'">
-              Без возврата
+            <li
+              class="baggage-list__item"
+              [class.active]="selectedChange === 'Без обмена'"
+              (click)="toggleChange('Без обмена')"
+            >
+              Без обмена
             </li>
           </ul>
         </li>
@@ -291,25 +291,32 @@
           <span>Пересадки</span>
           <ul class="transfer-list">
             <li
+              class="transfer-list__item"
               [class.active]="selectedTransfer === 'Прямой рейс'"
-              (click)="selectedTransfer = 'Прямой рейс'"
-              class="active transfer-list__item"
+              (click)="toggleTransfer('Прямой рейс')"
             >
               Прямой рейс
             </li>
             <li
-              [class.active]="selectedTransfer === '1 пересадка'"
-              (click)="selectedTransfer = '1 пересадка'"
               class="transfer-list__item"
+              [class.active]="selectedTransfer === '1 пересадка'"
+              (click)="toggleTransfer('1 пересадка')"
             >
               1 пересадка
             </li>
             <li
-              [class.active]="selectedTransfer === '2 пересадка'"
-              (click)="selectedTransfer = '2 пересадка'"
               class="transfer-list__item"
+              [class.active]="selectedTransfer === '2 пересадка'"
+              (click)="toggleTransfer('2 пересадка')"
             >
               2 пересадки
+            </li>
+            <li
+              class="transfer-list__item"
+              [class.active]="selectedTransfer === '3 пересадка'"
+              (click)="toggleTransfer('3 пересадка')"
+            >
+              3 пересадки
             </li>
           </ul>
         </li>

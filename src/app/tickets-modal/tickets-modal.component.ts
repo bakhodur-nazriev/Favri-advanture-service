@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, OnInit, HostListener} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnInit, HostListener, SimpleChanges, OnChanges} from '@angular/core';
 import {JsonPipe, KeyValuePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
 import {FormsModule} from "@angular/forms";
@@ -28,7 +28,7 @@ import {FormsModule} from "@angular/forms";
     ])
   ]
 })
-export class TicketsModalComponent {
+export class TicketsModalComponent implements OnChanges {
   @Input() flights: any[] = ['flights'];
   @Input() fromCity!: string;
   @Input() toCity!: string;
@@ -51,9 +51,9 @@ export class TicketsModalComponent {
 
   public minPrice: number | null = null;
   public maxPrice: number | null = null;
-  public selectedBaggage: string = 'С багажом';
-  public selectedRefund: string = 'С возвратом';
-  public selectedTransfer: string = 'Прямой рейс';
+  public selectedRefund: string = '';
+  public selectedChange: string = '';
+  public selectedTransfer: string = '';
   public selectedTimeFrom: string = '00:00';
   public selectedTimeTo: string = '23:00';
 
@@ -77,6 +77,13 @@ export class TicketsModalComponent {
   constructor() {
     this.originalFlights = [...this.flights];
     this.initializeFlightData();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['flights']) {
+      this.originalFlights = [...this.flights];
+      this.filteredFlights = [...this.flights];
+    }
   }
 
   closeFilterModal() {
@@ -165,6 +172,10 @@ export class TicketsModalComponent {
     this.isFilterVisible = true;
   }
 
+  getTransferCount(segments: any[]): number {
+    return segments.length - 1;
+  }
+
   applyFilters() {
     if (!this.minPrice && !this.maxPrice) {
       this.filteredFlights = [...this.originalFlights];
@@ -173,20 +184,18 @@ export class TicketsModalComponent {
     }
 
 
-    this.filteredFlights = this.flights.filter(flight => {
-      console.log(flight);
-      const flightPrice = flight.total_price.TJS;
-      // const flightBaggage = flight.baggage;
-      // const flightRefund = flight.refund;
-      // const flightTransfers = flight.transfers;
-      // const flightTime = flight.departureTime;
+    this.filteredFlights = this.originalFlights.filter(flight => {
+      const flightPrice = flight?.total_price?.TJS;
+      const flightRefund = flight?.routes?.[0]?.segments?.[0]?.is_refund;
+      const flightExchange = flight?.routes?.[0]?.segments?.[0]?.is_change;
+      const flightTransfers = flight?.routes?.[0]?.segments || [];
+      const transferCount = this.getTransferCount(flightTransfers);
 
-      // Фильтрация по стоимости
-      // const isPriceInRange = (this.minPrice ? flightPrice >= this.minPrice : true) ||
-      //   (this.maxPrice ? flightPrice <= this.maxPrice : true);
+      if (flightPrice === undefined) {
+        return false;
+      }
 
       let isPriceInRange = true;
-
       if (this.minPrice && this.maxPrice) {
         isPriceInRange = flightPrice >= this.minPrice && flightPrice <= this.maxPrice;
       } else if (this.minPrice) {
@@ -195,23 +204,47 @@ export class TicketsModalComponent {
         isPriceInRange = flightPrice <= this.maxPrice;
       }
 
-      // Фильтрация по багажу
-      // const isBaggageMatching = this.selectedBaggage === 'С багажом' ? flightBaggage !== 'Без багажа' : flightBaggage === 'Без багажа';
+      let isRefundMatch = true;
+      if (this.selectedRefund === 'С возвратом') {
+        isRefundMatch = flightRefund === true;
+      } else if (this.selectedRefund === 'Без возврата') {
+        isRefundMatch = flightRefund === false;
+      }
 
-      // Фильтрация по возврату
-      // const isRefundMatching = this.selectedRefund === 'С возвратом' ? flightRefund !== 'Без возврата' : flightRefund === 'Без возврата';
+      let isChangeMatch = true;
+      if (this.selectedChange === 'С обменом') {
+        isChangeMatch = flightExchange === true;
+      } else if (this.selectedChange === 'Без обмена') {
+        isChangeMatch = flightExchange === false;
+      }
 
-      // Фильтрация по пересадкам
-      // const isTransferMatching = flightTransfers === this.selectedTransfer;
+      let isTransferMatch = true;
+      if (this.selectedTransfer === '1 пересадка') {
+        isTransferMatch = transferCount === 1;
+      } else if (this.selectedTransfer === '2 пересадки') {
+        isTransferMatch = transferCount === 2;
+      } else if (this.selectedTransfer === '3 пересадки') {
+        isTransferMatch = transferCount === 3;
+      }
+      console.log(transferCount);
 
-      // Фильтрация по времени
       // const flightHour = flightTime.split(':')[0];
       // const isTimeMatching = flightHour >= this.selectedTimeFrom.split(':')[0] && flightHour <= this.selectedTimeTo.split(':')[0];
 
-      // return isPriceInRange && isBaggageMatching && isRefundMatching && isTransferMatching;
-      return isPriceInRange;
+      return isPriceInRange && isRefundMatch && isChangeMatch && isTransferMatch;
     });
-
     this.closeFilterModal();
+  }
+
+  toggleChange(changeType: string): void {
+    this.selectedChange = this.selectedChange === changeType ? '' : changeType;
+  }
+
+  toggleRefund(changeType: string): void {
+    this.selectedRefund = this.selectedRefund === changeType ? '' : changeType;
+  }
+
+  toggleTransfer(changeType: string): void {
+    this.selectedTransfer = this.selectedTransfer === changeType ? '' : changeType;
   }
 }
