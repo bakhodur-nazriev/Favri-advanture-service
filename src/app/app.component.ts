@@ -49,6 +49,7 @@ registerLocaleData(localeRu);
     DetailPassengerModalComponent,
     ModalOrderSucceedComponent,
     ProfileComponent,
+    TicketsModalComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -166,12 +167,12 @@ export class AppComponent implements OnInit {
 
   onDirectionFromSelected(direction: any) {
     this.fromCity = direction.city;
-    this.fromAirportCode = direction.airportCode;
+    this.fromAirportCode = direction.airport_code;
   }
 
   onDirectionToSelected(direction: any) {
     this.toCity = direction.city;
-    this.toAirportCode = direction.airportCode;
+    this.toAirportCode = direction.airport_code;
   }
 
   openModalPassengers() {

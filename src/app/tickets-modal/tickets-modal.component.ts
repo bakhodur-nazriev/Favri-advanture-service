@@ -54,8 +54,8 @@ export class TicketsModalComponent implements OnChanges {
   public selectedRefund: string = '';
   public selectedChange: string = '';
   public selectedTransfer: string = '';
-  public selectedTimeFrom: string = '00:00';
-  public selectedTimeTo: string = '23:00';
+  public selectedTimeFrom: string = '';
+  public selectedTimeTo: string = '';
 
   private originalFlights: any[] = [];
   filteredFlights = [...this.flights];
@@ -247,4 +247,10 @@ export class TicketsModalComponent implements OnChanges {
   toggleTransfer(changeType: string): void {
     this.selectedTransfer = this.selectedTransfer === changeType ? '' : changeType;
   }
+
+  // onTimeChange(event: Event): void {
+  //   const input = event.target as HTMLInputElement;
+  //   this.time = input.value;
+  //   this.timeChange.emit(this.time);
+  // }
 }

@@ -84,7 +84,7 @@ export class DirectionFromModalComponent {
       country: 'Объединенные Арабские Эмираты',
       airport_code: 'DXB',
     },
-  ]
+  ];
   public filteredDirections = [...this.flightRoutes];
   public searchTerm = '';
   public isVisible = false;

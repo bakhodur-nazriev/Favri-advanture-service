@@ -438,6 +438,12 @@
           outline: none;
           width: 100%;
         }
+
+        input[type="time"] {
+          font-family: Arial, sans-serif;
+          font-size: 14px;
+          padding: 10px 14px;
+        }
       }
 
       .baggage-list,
