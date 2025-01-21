@@ -116,7 +116,10 @@ export class AppComponent implements OnInit {
     gender: ''
   };
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private passengerDataService: PassengerDataService) {
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private passengerDataService: PassengerDataService) {
   }
 
   onPassengerDataUpdated(data: { name: string, surname: string, birthDate: string; gender: string }) {
@@ -203,7 +206,7 @@ export class AppComponent implements OnInit {
     this.selectedEndDate = dates.endDate;
 
     if (dates.startDate && dates.endDate) {
-      this.selectedDateText = `${this.formatDate(dates.startDate)} - ${this.formatDate(dates.endDate)}`;
+      this.selectedDateText = `${this.formatDate(dates.startDate)} ${this.formatDate(dates.endDate)}`;
     } else if (dates.startDate) {
       this.selectedDateText = this.formatDate(dates.startDate);
     } else {
@@ -216,7 +219,7 @@ export class AppComponent implements OnInit {
 
   private generateSelectedDateText(dates: { startDate: Date, endDate: Date | null }): string {
     if (dates.startDate && dates.endDate) {
-      return `${this.formatDate(dates.startDate)} - ${this.formatDate(dates.endDate)}`;
+      return `${this.formatDate(dates.startDate)} ${this.formatDate(dates.endDate)}`;
     } else if (dates.startDate) {
       return this.formatDate(dates.startDate);
     } else {
