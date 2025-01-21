@@ -69,7 +69,7 @@ export class AppComponent implements OnInit {
   @ViewChild('detailPassengerModal') detailPassengerModal!: DetailPassengerModalComponent
   @ViewChild('modalOrderSucceed') modalOrderSucceed!: ModalOrderSucceedComponent
 
-  private readonly companyReqId = 26;
+  private readonly companyReqId = 4;
   private readonly secretKey = '98357c92347b70b6bc0ea97f0acf84040sa2dof5ba7411218c3f1087316fd3663fc6f99';
   private readonly apiUrl = 'https://bft-alpha.55fly.ru/api';
 
@@ -335,7 +335,7 @@ export class AppComponent implements OnInit {
     this.selectedStartDate = tomorrow;
     this.selectedDateText = this.formatDate(tomorrow);
 
-    sessionStorage.setItem('company_req_id', '4');
+    sessionStorage.setItem('company_req_id', String(this.companyReqId));
 
     this.route.queryParams.subscribe(params => {
       const walletPhone = params['walletPhone'];

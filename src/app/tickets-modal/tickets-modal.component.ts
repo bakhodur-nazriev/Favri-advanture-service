@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output, OnInit, HostListener, SimpleChanges, OnChanges} from '@angular/core';
-import {JsonPipe, KeyValuePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {JsonPipe, KeyValuePipe, NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
 import {FormsModule} from "@angular/forms";
 
@@ -13,6 +13,7 @@ import {FormsModule} from "@angular/forms";
     KeyValuePipe,
     JsonPipe,
     FormsModule,
+    NgClass,
   ],
   templateUrl: './tickets-modal.component.html',
   styleUrl: './tickets-modal.component.scss',

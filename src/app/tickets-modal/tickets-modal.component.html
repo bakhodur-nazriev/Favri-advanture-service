@@ -36,7 +36,7 @@
   </div>
 
   <div class="tickets-modal__content">
-    <div class="main-tickets__block">
+    <div class="main-tickets__block" [ngClass]="{'overflow-hidden': isFilterVisible}">
       <div class="directions-title__block">
         <div class="directions-info__title">
           <span class="directions-title">{{ fromCity }}</span>
