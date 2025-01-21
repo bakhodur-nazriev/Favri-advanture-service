@@ -6,7 +6,7 @@
   top: 0;
   left: 0;
   background: #EFF6FF;
-  overflow: auto;
+  overflow: hidden;
 
   .tickets-modal__content {
     gap: 20px;
@@ -14,6 +14,7 @@
     display: flex;
     flex-direction: column;
     margin-top: 72px;
+    height: 100%;
 
     .directions-title__block {
       display: flex;

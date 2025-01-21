@@ -1,4 +1,8 @@
-<div *ngIf="isVisible" class="tickets-modal__block" [ngClass]="{'overflow-hidden': isFilterVisible}">
+<div
+  *ngIf="isVisible"
+  class="tickets-modal__block"
+  [ngClass]="{'overflow-hidden': isFilterVisible}"
+>
   <div class="top-nav__block">
     <div class="d-flex ml-5" (click)="closeModal()">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
