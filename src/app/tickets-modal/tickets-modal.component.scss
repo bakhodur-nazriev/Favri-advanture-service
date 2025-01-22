@@ -9,11 +9,8 @@
   overflow: hidden;
 
   .tickets-modal__content {
-    gap: 20px;
-    padding: 0 20px;
+    padding: 75px 20px 20px;
     display: flex;
-    flex-direction: column;
-    margin-top: 72px;
     height: 100%;
 
     .directions-title__block {
@@ -168,6 +165,7 @@
       flex-direction: column;
       gap: 15px;
       height: 100%;
+      width: 100%;
       overflow: scroll;
     }
 
@@ -267,6 +265,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10;
 
   .booking-info__modal {
     background-color: #fff;
@@ -434,11 +433,19 @@
             outline: none;
             width: 100%;
           }
+        }
 
-          input[type="time"] {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            padding: 10px 14px;
+        .filter-time {
+          display: flex;
+          flex-direction: row !important;
+          gap: 15px;
+
+          select {
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #CBD5E1;
+            outline: none;
+            width: 100%;
           }
         }
 

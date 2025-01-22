@@ -1,14 +1,7 @@
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 .main-page-content {
-  padding: 0 28px;
+  padding: 75px 20px 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   background-color: #EFF6FF;
   height: 100vh;
 }
@@ -39,6 +32,7 @@ body {
   z-index: 3;
   padding: 20px;
   width: -webkit-fill-available;
+  height: 58px;
 }
 
 .main-title {
@@ -122,15 +116,11 @@ body {
 }
 
 .search-ticket__block {
-  position: absolute;
+  position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 80px;
-  width: 85%;
-
-  button {
-    padding: 0;
-  }
+  bottom: 60px;
+  width: 90%;
 }
 
 .input-from__block,

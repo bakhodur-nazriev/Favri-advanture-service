@@ -178,13 +178,6 @@ export class TicketsModalComponent implements OnChanges {
   }
 
   applyFilters() {
-    if (!this.minPrice && !this.maxPrice) {
-      this.filteredFlights = [...this.originalFlights];
-      this.closeFilterModal();
-      return;
-    }
-
-
     this.filteredFlights = this.originalFlights.filter(flight => {
       const flightPrice = flight?.total_price?.TJS;
       const flightRefund = flight?.routes?.[0]?.segments?.[0]?.is_refund;
@@ -192,49 +185,54 @@ export class TicketsModalComponent implements OnChanges {
       const flightTransfers = flight?.routes?.[0]?.segments || [];
       const transferCount = this.getTransferCount(flightTransfers);
 
-      if (flightPrice === undefined) {
-        return false;
-      }
+      const isPriceInRange =
+        (!this.minPrice || flightPrice >= this.minPrice) &&
+        (!this.maxPrice || flightPrice <= this.maxPrice);
 
-      let isPriceInRange = true;
-      if (this.minPrice && this.maxPrice) {
-        isPriceInRange = flightPrice >= this.minPrice && flightPrice <= this.maxPrice;
-      } else if (this.minPrice) {
-        isPriceInRange = flightPrice >= this.minPrice;
-      } else if (this.maxPrice) {
-        isPriceInRange = flightPrice <= this.maxPrice;
-      }
+      const isRefundMatch =
+        this.selectedRefund === '' ||
+        (this.selectedRefund === 'С возвратом' && flightRefund === true) ||
+        (this.selectedRefund === 'Без возврата' && flightRefund === false);
 
-      let isRefundMatch = true;
-      if (this.selectedRefund === 'С возвратом') {
-        isRefundMatch = flightRefund === true;
-      } else if (this.selectedRefund === 'Без возврата') {
-        isRefundMatch = flightRefund === false;
-      }
+      const isChangeMatch =
+        this.selectedChange === '' ||
+        (this.selectedChange === 'С обменом' && flightExchange === true) ||
+        (this.selectedChange === 'Без обмена' && flightExchange === false);
 
-      let isChangeMatch = true;
-      if (this.selectedChange === 'С обменом') {
-        isChangeMatch = flightExchange === true;
-      } else if (this.selectedChange === 'Без обмена') {
-        isChangeMatch = flightExchange === false;
-      }
+      const isTransferMatch =
+        this.selectedTransfer === '' ||
+        (this.selectedTransfer === '1 пересадка' && transferCount === 1) ||
+        (this.selectedTransfer === '2 пересадки' && transferCount === 2) ||
+        (this.selectedTransfer === '3 пересадки' && transferCount === 3);
 
-      let isTransferMatch = true;
-      if (this.selectedTransfer === '1 пересадка') {
-        isTransferMatch = transferCount === 1;
-      } else if (this.selectedTransfer === '2 пересадки') {
-        isTransferMatch = transferCount === 2;
-      } else if (this.selectedTransfer === '3 пересадки') {
-        isTransferMatch = transferCount === 3;
-      }
-      console.log(transferCount);
+      const firstRoute = flight.routes?.[0];
+      const firstSegment = firstRoute?.segments?.[0];
 
-      // const flightHour = flightTime.split(':')[0];
-      // const isTimeMatching = flightHour >= this.selectedTimeFrom.split(':')[0] && flightHour <= this.selectedTimeTo.split(':')[0];
+      if (!firstSegment || !firstSegment.departure) return false;
 
-      return isPriceInRange && isRefundMatch && isChangeMatch && isTransferMatch;
+      const arrivalTimeRaw = firstSegment.departure.time;
+      const arrivalTimeParts = this.extractHours(arrivalTimeRaw);
+
+      const [arrivalHour, arrivalMinute] = arrivalTimeParts.split(':').map(num => parseInt(num, 10));
+
+      const timeFrom = this.selectedTimeFrom ? parseInt(this.selectedTimeFrom, 10) : 0;
+      const timeTo = this.selectedTimeTo ? parseInt(this.selectedTimeTo, 10) : 24;
+
+      const isTimeInRange = this.isTimeInRange(arrivalHour, arrivalMinute, timeFrom, timeTo);
+
+      return isPriceInRange && isRefundMatch && isChangeMatch && isTransferMatch && isTimeInRange;
     });
+
     this.closeFilterModal();
+  }
+
+  isTimeInRange(arrivalHour: number, arrivalMinute: number, timeFrom: number, timeTo: number): boolean {
+    const timeFromInMinutes = timeFrom * 60;
+    const timeToInMinutes = timeTo * 60;
+
+    const arrivalTimeInMinutes = arrivalHour * 60 + arrivalMinute;
+
+    return arrivalTimeInMinutes >= timeFromInMinutes && arrivalTimeInMinutes <= timeToInMinutes;
   }
 
   toggleChange(changeType: string): void {
@@ -248,10 +246,4 @@ export class TicketsModalComponent implements OnChanges {
   toggleTransfer(changeType: string): void {
     this.selectedTransfer = this.selectedTransfer === changeType ? '' : changeType;
   }
-
-  // onTimeChange(event: Event): void {
-  //   const input = event.target as HTMLInputElement;
-  //   this.time = input.value;
-  //   this.timeChange.emit(this.time);
-  // }
 }

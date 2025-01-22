@@ -5,10 +5,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  padding: 0 20px;
+  padding: 75px 20px 20px;
   display: flex;
-  flex-direction: column;
-  gap: 25px;
   z-index: 100;
 
   .top-nav__block {
@@ -21,6 +19,7 @@
     z-index: 3;
     background-color: #fff;
     padding: 20px;
+    height: 58px;
 
     .close-button {
       display: flex;
@@ -40,7 +39,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 80px;
     width: 100%;
     gap: 24px;
 
@@ -271,4 +269,12 @@
   height: 2px;
   border-radius: 8px;
   background-color: #fff;
+}
+
+.byu-ticket__button {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 40px;
+  width: 90%;
 }

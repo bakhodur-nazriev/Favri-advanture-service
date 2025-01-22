@@ -139,8 +139,10 @@
       </div>
     </div>
 
-    <button class="btn-primary" (click)="createOrderRequest()">
-      Купить билет {{ flight.value.total_price.TJS }} TJS
-    </button>
+    <div class="byu-ticket__button">
+      <button class="btn-primary" (click)="createOrderRequest()">
+        Купить билет {{ flight.value.total_price.TJS }} TJS
+      </button>
+    </div>
   </div>
 </div>
