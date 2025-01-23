@@ -482,3 +482,39 @@
 .overflow-hidden {
   overflow: hidden !important;
 }
+
+.custom-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+  background: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #CBD5E1;
+}
+
+.dropdown-menu {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #CBD5E1;
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+.dropdown-item {
+  padding: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+  background: #f0f0f0;
+}

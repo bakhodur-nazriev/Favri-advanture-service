@@ -1,4 +1,11 @@
-import {Component, EventEmitter, Input, Output, OnInit, HostListener, SimpleChanges, OnChanges} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  SimpleChanges,
+  OnChanges
+} from '@angular/core';
 import {JsonPipe, KeyValuePipe, NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
 import {FormsModule} from "@angular/forms";
@@ -74,6 +81,8 @@ export class TicketsModalComponent implements OnChanges {
       ],
     },
   ];
+  public hours: number[] = Array.from({length: 24}, (_, i) => i);
+  public isDropdownTimeOpen = {from: false, to: false};
 
   constructor() {
     this.originalFlights = [...this.flights];
@@ -212,11 +221,11 @@ export class TicketsModalComponent implements OnChanges {
 
       const arrivalTimeRaw = firstSegment.departure.time;
       const arrivalTimeParts = this.extractHours(arrivalTimeRaw);
-
       const [arrivalHour, arrivalMinute] = arrivalTimeParts.split(':').map(num => parseInt(num, 10));
 
-      const timeFrom = this.selectedTimeFrom ? parseInt(this.selectedTimeFrom, 10) : 0;
-      const timeTo = this.selectedTimeTo ? parseInt(this.selectedTimeTo, 10) : 24;
+      const timeFrom = this.selectedTimeFrom ? (this.selectedTimeFrom !== '' ? parseInt(this.selectedTimeFrom, 10) : 0) : 0;
+      const timeTo = this.selectedTimeTo ? (this.selectedTimeTo !== '' ? parseInt(this.selectedTimeTo, 10) : 24) : 24;
+
 
       const isTimeInRange = this.isTimeInRange(arrivalHour, arrivalMinute, timeFrom, timeTo);
 
@@ -245,5 +254,18 @@ export class TicketsModalComponent implements OnChanges {
 
   toggleTransfer(changeType: string): void {
     this.selectedTransfer = this.selectedTransfer === changeType ? '' : changeType;
+  }
+
+  toggleTimeDropdown(type: 'from' | 'to') {
+    this.isDropdownTimeOpen[type] = !this.isDropdownTimeOpen[type];
+  }
+
+  selectTime(type: 'from' | 'to', hour: any): void {
+    if (type === 'from') {
+      this.selectedTimeFrom = hour.toString();
+    } else {
+      this.selectedTimeTo = hour.toString();
+    }
+    this.isDropdownTimeOpen[type] = false;
   }
 }

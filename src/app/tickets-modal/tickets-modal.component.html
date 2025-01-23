@@ -330,29 +330,47 @@
           <span>Время</span>
           <div class="filter-time">
             <div class="d-flex align-center gap-2">
-              <label for="timeFrom">От:</label>
-              <select id="timeFrom" [(ngModel)]="selectedTimeFrom">
-                <option value="">Любое</option>
-                <option
-                  *ngFor="let hour of [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]"
-                  [value]="hour"
-                >
-                  {{ hour }}:00
-                </option>
-              </select>
+              <label>От:</label>
+              <div class="custom-dropdown">
+                <div class="dropdown-toggle" (click)="toggleTimeDropdown('from')">
+                  {{ selectedTimeFrom !== '' ? selectedTimeFrom + ':00' : 'Любое' }}
+                </div>
+                <div *ngIf="isDropdownTimeOpen.from" class="dropdown-menu">
+                  <div
+                    class="dropdown-item"
+                    (click)="selectTime('from', '')">
+                    Любое
+                  </div>
+                  <div
+                    *ngFor="let hour of hours"
+                    class="dropdown-item"
+                    (click)="selectTime('from', hour)">
+                    {{ hour }}:00
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="d-flex align-center gap-2">
-              <label for="timeTo">До:</label>
-              <select id="timeTo" [(ngModel)]="selectedTimeTo">
-                <option value="">Любое</option>
-                <option
-                  *ngFor="let hour of [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]"
-                  [value]="hour"
-                >
-                  {{ hour }}:00
-                </option>
-              </select>
+              <label>До:</label>
+              <div class="custom-dropdown">
+                <div class="dropdown-toggle" (click)="toggleTimeDropdown('to')">
+                  {{ selectedTimeTo !== '' ? selectedTimeTo + ':00' : 'Любое' }}
+                </div>
+                <div *ngIf="isDropdownTimeOpen.to" class="dropdown-menu">
+                  <div
+                    class="dropdown-item"
+                    (click)="selectTime('to', '')">
+                    Любое
+                  </div>
+                  <div
+                    *ngFor="let hour of hours"
+                    class="dropdown-item"
+                    (click)="selectTime('to', hour)">
+                    {{ hour }}:00
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </li>
