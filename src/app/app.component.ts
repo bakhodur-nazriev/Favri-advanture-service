@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit, LOCALE_ID} from '@angular/core';
+import {Component, ViewChild, OnInit, LOCALE_ID, Input} from '@angular/core';
 import {RouterOutlet, ActivatedRoute, Router} from '@angular/router';
 import {CustomInputComponent} from "./custom-input/custom-input.component";
 import {NgIf, NgOptimizedImage, registerLocaleData} from "@angular/common";
@@ -24,6 +24,7 @@ import {ModalOrderSucceedComponent} from "./modal-order-succeed/modal-order-succ
 import {PassengerDataService} from "./services/passenger-data.service";
 import localeRu from '@angular/common/locales/ru';
 import {ProfileComponent} from "./profile/profile.component";
+import {ModalStateService} from "./services/modal-state.service";
 
 registerLocaleData(localeRu);
 
@@ -66,8 +67,8 @@ export class AppComponent implements OnInit {
   @ViewChild('ticketsModal') ticketsModal!: TicketsModalComponent;
   @ViewChild('preorderModal') preorderModal!: PreorderModalComponent;
   @ViewChild('orderTicketModal') orderTicketModal!: OrderTicketModalComponent;
-  @ViewChild('detailPassengerModal') detailPassengerModal!: DetailPassengerModalComponent
-  @ViewChild('modalOrderSucceed') modalOrderSucceed!: ModalOrderSucceedComponent
+  @ViewChild('detailPassengerModal') detailPassengerModal!: DetailPassengerModalComponent;
+  @ViewChild('modalOrderSucceed') modalOrderSucceed!: ModalOrderSucceedComponent;
 
   private readonly companyReqId = 26;
   private readonly secretKey = '98357c92347b70b6bc0ea97f0acf84040sa2dof5ba7411218c3f1087316fd3663fc6f99';
@@ -120,7 +121,8 @@ export class AppComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private passengerDataService: PassengerDataService) {
+    private passengerDataService: PassengerDataService,
+  ) {
   }
 
   onPassengerDataUpdated(data: { name: string, surname: string, birthDate: string; gender: string }) {
@@ -337,8 +339,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isSearchButtonVisible = true;
-
     const tomorrow = dayjs().add(1, 'day').toDate();
     this.selectedStartDate = tomorrow;
     this.selectedDateText = this.formatDate(tomorrow);
@@ -356,6 +356,8 @@ export class AppComponent implements OnInit {
 
     this.calculatePassengerCount();
     this.travelClassText = this.getTravelClassText(this.passengers.travelClass);
+
+    this.isSearchButtonVisible = true;
   };
 
   private calculatePassengerCount() {

@@ -7,6 +7,7 @@ import {finalize, Observable, tap} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {ModalOrderSucceedComponent} from "../modal-order-succeed/modal-order-succeed.component";
+import {ModalStateService} from "../services/modal-state.service";
 
 @Component({
   selector: 'app-order-ticket-modal',
@@ -55,7 +56,6 @@ export class OrderTicketModalComponent implements OnInit {
     gender: ''
   };
 
-
   private apiUrl = 'https://integration.cbt.tj/api/flytj/book';
   //private apiUrl = 'http://192.168.40.238:9800/api/flytj/book';
   // private apiUrl = 'http://localhost:5273/api/flytj/book';
@@ -65,7 +65,8 @@ export class OrderTicketModalComponent implements OnInit {
   constructor(
     public passengerDataService: PassengerDataService,
     private http: HttpClient,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalStateService: ModalStateService
   ) {
   }
 
@@ -76,6 +77,7 @@ export class OrderTicketModalComponent implements OnInit {
   public phone: string = '';
   public walletPhone: string = "123456789";
   public validationPopup: boolean = false;
+  isDetailModalOpen = true;
 
   openModal() {
     this.isVisible = true;
@@ -89,31 +91,12 @@ export class OrderTicketModalComponent implements OnInit {
     this.isVisible = false;
   }
 
-  convertDuration(duration: number): string {
-    const hours = Math.floor(duration / 3600)
-    const minutes = Math.floor(duration % 3600) / 60;
-
-    let result = 'В пути ';
-
-    if (hours > 0) {
-      result += `${hours} ч `;
-    }
-
-    if (minutes > 0) {
-      result += `${minutes} мин`
-    }
-
-    return result.trim();
-  }
-
-  extractHours(time: string): string {
-    return time.split(' ')[1]
-  }
-
   selectPassenger(passenger: any, index: number) {
     this.passengerDataService.selectedPassengerIndex = index;
     this.passengerDataService.sendEvent(passenger);
     this.detailPassengerSelected.emit(passenger);
+
+    this.modalStateService.setModalState(false);
   }
 
   ngOnInit() {
@@ -156,6 +139,10 @@ export class OrderTicketModalComponent implements OnInit {
         });
       }
     })
+
+    this.modalStateService.isModalDetailOpen$.subscribe(state => {
+      this.isDetailModalOpen = state;
+    });
   }
 
   createOrderRequest() {

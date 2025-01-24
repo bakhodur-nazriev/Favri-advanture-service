@@ -212,6 +212,7 @@ export class TicketsModalComponent implements OnChanges {
 
       const isTransferMatch =
         this.selectedTransfer === '' ||
+        (this.selectedTransfer === 'Прямой рейс' && transferCount === 0) ||
         (this.selectedTransfer === '1 пересадка' && transferCount === 1) ||
         (this.selectedTransfer === '2 пересадки' && transferCount === 2) ||
         (this.selectedTransfer === '3 пересадки' && transferCount === 3);

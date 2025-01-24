@@ -139,7 +139,7 @@
       </div>
     </div>
 
-    <div class="byu-ticket__button">
+    <div class="byu-ticket__button" *ngIf="isDetailModalOpen">
       <button class="btn-primary" (click)="createOrderRequest()">
         Купить билет {{ flight.value.total_price.TJS }} TJS
       </button>

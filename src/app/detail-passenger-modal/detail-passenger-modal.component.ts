@@ -9,6 +9,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ProfileService} from "../services/profile.service";
 import {ActivatedRoute} from "@angular/router";
+import {ModalStateService} from "../services/modal-state.service";
 
 @Component({
   selector: 'app-detail-passenger-modal',
@@ -52,7 +53,6 @@ export class DetailPassengerModalComponent implements OnInit {
   public isValidationTriggered: boolean = false;
   public isValidationExpirationTriggered: boolean = false;
   public isVisible: boolean = false;
-  public isAnimating: boolean = false;
   public openDropdownPassport: boolean = false;
   public selectedGender: string = '';
   public selectedCountry: string = '';
@@ -84,7 +84,8 @@ export class DetailPassengerModalComponent implements OnInit {
   constructor(
     public passengerDataService: PassengerDataService,
     private profileService: ProfileService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalStateService: ModalStateService
   ) {
   }
 
@@ -148,6 +149,7 @@ export class DetailPassengerModalComponent implements OnInit {
 
   closeModal() {
     this.isVisible = false;
+    this.modalStateService.setModalState(true);
   }
 
   openModal() {
