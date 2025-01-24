@@ -39,6 +39,10 @@ $Favri-advanture-service-theme: mat.define-theme((
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 :root {
   --primary-color: #00B06C;
   --seconday-text-color: #1D2935;

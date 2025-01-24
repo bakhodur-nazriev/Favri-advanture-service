@@ -46,6 +46,7 @@ export class TicketsModalComponent implements OnChanges {
   @Input() passengerCount: number = 0;
   @Input() travelClassText: string = '';
   @Input() selectedDateText: string = '';
+  @Output() modalClosed = new EventEmitter<void>();
 
   isVisible: boolean = false;
   departureAirport: any;
@@ -122,6 +123,7 @@ export class TicketsModalComponent implements OnChanges {
 
   closeModal() {
     this.isVisible = false;
+    this.modalClosed.emit();
   }
 
   initializeFlightData() {

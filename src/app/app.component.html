@@ -133,7 +133,7 @@
     </div>
   </div>
 
-  <div class="search-ticket__block">
+  <div class="search-ticket__block" *ngIf="isSearchButtonVisible">
     <button class="btn-primary" (click)="searchTickets()">Найти билеты</button>
   </div>
 
@@ -168,6 +168,7 @@
     [backRouteCity]="backRouteCity"
     [isLoading]="isLoading"
     (flightSelected)="onFlightSelected($event)"
+    (modalClosed)="onTicketsModalClosed()"
   />
 
   <app-preorder-modal

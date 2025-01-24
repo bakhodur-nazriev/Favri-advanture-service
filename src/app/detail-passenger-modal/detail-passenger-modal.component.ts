@@ -234,8 +234,12 @@ export class DetailPassengerModalComponent implements OnInit {
     this.isValidationTriggered = true;
     this.isValidationExpirationTriggered = true;
 
-    if (!this.isValidDate(this.passengerDataList[this.selectedIndex].date_of_birth) ||
-      !this.isValidDate(this.passengerDataList[this.selectedIndex].expiration_date) ||
+    const passenger = this.passengerDataList[this.selectedIndex];
+    passenger.date_of_birth = this.formatDateToDDMMYYYY(passenger.date_of_birth);
+    passenger.expiration_date = this.formatDateToDDMMYYYY(passenger.expiration_date);
+
+    if (!this.isValidDate(passenger.date_of_birth) ||
+      !this.isValidDate(passenger.expiration_date) ||
       !this.isValidForm()) {
       return;
     }
@@ -324,17 +328,31 @@ export class DetailPassengerModalComponent implements OnInit {
     this.isPassengersModal = false;
   }
 
+  formatDateToDDMMYYYY(dateString: string): string {
+    if (!dateString) return '';
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '';
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+
+    return `${day}.${month}.${year}`;
+  }
+
+
   choosePassenger(passenger: any) {
     this.passengerDataList[this.selectedIndex].name = passenger.firstName;
     this.passengerDataList[this.selectedIndex].surname = passenger.surName;
     this.passengerDataList[this.selectedIndex].middle_name = passenger.middleName;
-    this.passengerDataList[this.selectedIndex].date_of_birth = passenger.birthDate;
+    this.passengerDataList[this.selectedIndex].date_of_birth = this.formatDateToDDMMYYYY(passenger.birthDate);
     this.passengerDataList[this.selectedIndex].phone = passenger.phone;
     this.passengerDataList[this.selectedIndex].email = passenger.email;
     this.passengerDataList[this.selectedIndex].gender = passenger.gender;
     this.passengerDataList[this.selectedIndex].document_type = passenger.documentType;
     this.passengerDataList[this.selectedIndex].document_number = passenger.documentNumber;
-    this.passengerDataList[this.selectedIndex].expiration_date = passenger.expirationDate;
+    this.passengerDataList[this.selectedIndex].expiration_date = this.formatDateToDDMMYYYY(passenger.expirationDate);
     this.passengerDataList[this.selectedIndex].citizenship = passenger.citizenShip;
     this.passengerDataList[this.selectedIndex].walletPhone = passenger.walletPhone;
 

@@ -105,6 +105,7 @@ export class AppComponent implements OnInit {
   selectedFlight: any;
   public selectedPassenger: any;
   public isProfileModalOpen: boolean = false;
+  public isSearchButtonVisible: boolean = true;
 
   public passengerCount: number = 0;
   public travelClassText: string = '';
@@ -241,6 +242,7 @@ export class AppComponent implements OnInit {
   }
 
   searchTickets() {
+    this.isSearchButtonVisible = false;
     this.passengerDataService.sendPassengersEvent(this.tempPassengers);
 
     this.passengers = {...this.tempPassengers};
@@ -330,7 +332,13 @@ export class AppComponent implements OnInit {
     );
   }
 
+  onTicketsModalClosed() {
+    this.isSearchButtonVisible = true;
+  }
+
   ngOnInit() {
+    this.isSearchButtonVisible = true;
+
     const tomorrow = dayjs().add(1, 'day').toDate();
     this.selectedStartDate = tomorrow;
     this.selectedDateText = this.formatDate(tomorrow);
