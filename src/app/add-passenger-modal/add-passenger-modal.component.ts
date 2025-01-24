@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {COUNTRIES} from "../../coutries";
 import {ProfileService} from "../services/profile.service";
@@ -12,7 +12,8 @@ import {ActivatedRoute} from "@angular/router";
     NgIf,
     ReactiveFormsModule,
     FormsModule,
-    NgForOf
+    NgForOf,
+    NgOptimizedImage
   ],
   templateUrl: './add-passenger-modal.component.html',
   styleUrl: './add-passenger-modal.component.scss'
@@ -52,8 +53,9 @@ export class AddPassengerModalComponent implements OnInit {
     {text: 'Мужчина', value: 'M',},
     {text: 'Женщина', value: 'F'}
   ]
-
   protected readonly countries = COUNTRIES;
+
+  isPassengerAddingLoading: boolean = false;
 
   constructor(
     private profileService: ProfileService,
@@ -98,6 +100,20 @@ export class AddPassengerModalComponent implements OnInit {
   }
 
   addPassenger() {
+    this.isValidationTriggered = true;
+
+    if (
+      !this.firstName ||
+      !this.surName ||
+      !this.documentNumber ||
+      !this.phone ||
+      !this.gender ||
+      !this.citizenShip ||
+      !this.birthDate
+    ) {
+      return;
+    }
+
     if (!this.phone.startsWith('+992')) {
       this.phone = `+992${this.phone}`;
     }
@@ -119,25 +135,22 @@ export class AddPassengerModalComponent implements OnInit {
       walletPhone: this.walletPhone
     }
 
+    this.isPassengerAddingLoading = true;
+
     this.profileService.addPassenger(passenger).subscribe({
       next: (res) => {
+        this.isPassengerAddingLoading = false;
         this.passengerAddedEvent.emit();
         this.closeModal();
         this.resetForm();
+        this.isValidationTriggered = false;
       },
       error: (err) => {
+        this.isPassengerAddingLoading = false;
         console.error('Ошибка при добавлении пассажира', err);
+        alert(`Ошибка: ${err.message || 'Что-то пошло не так'}`);
       }
     })
-  }
-
-  isValidDate(dateString: string): boolean {
-    const regex = /^([0-2]\d|3[0-1])\.(0\d|1[0-2])\.\d{4}$/;
-    if (!regex.test(dateString)) return false;
-
-    const [day, month, year] = dateString.split('.').map(Number);
-    const date = new Date(year, month - 1, day);
-    return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
   }
 
   resetForm() {
@@ -169,7 +182,15 @@ export class AddPassengerModalComponent implements OnInit {
   getAge(birthDate: string): number | null {
     if (!birthDate) return null;
 
-    const birthDateObj = new Date(birthDate);
+    // Парсим дату в формате дд.мм.гггг
+    const dateParts = birthDate.split('.');
+    if (dateParts.length !== 3) return null;
+
+    const day = parseInt(dateParts[0], 10);
+    const month = parseInt(dateParts[1], 10) - 1; // Месяцы в объекте Date начинаются с 0
+    const year = parseInt(dateParts[2], 10);
+
+    const birthDateObj = new Date(year, month, day);
     if (isNaN(birthDateObj.getTime())) return null;
 
     const today = new Date();
@@ -183,6 +204,7 @@ export class AddPassengerModalComponent implements OnInit {
 
     return age;
   }
+
 
   getPassengerTypeDisplay(): string {
     const age = this.getAge(this.birthDate);
@@ -245,5 +267,17 @@ export class AddPassengerModalComponent implements OnInit {
     } else {
       this._middleName = '';
     }
+  }
+
+  onDateInput(event: Event, field: 'birthDate' | 'expirationDate' | 'issueDate'): void {
+    const inputElement = event.target as HTMLInputElement;
+    let value = inputElement.value.replace(/[^\d]/g, '');
+
+    if (value.length >= 2) value = value.slice(0, 2) + '.' + value.slice(2);
+    if (value.length >= 5) value = value.slice(0, 5) + '.' + value.slice(5, 9);
+
+    if (value.length > 10) value = value.slice(0, 10);
+
+    this[field] = value;
   }
 }

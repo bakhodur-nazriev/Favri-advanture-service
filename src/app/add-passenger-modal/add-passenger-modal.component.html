@@ -21,7 +21,10 @@
 
     <ul class="inputs-list">
       <li class="inputs-list__item">
-        <div class="inputs-list__item-block">
+        <div
+          class="inputs-list__item-block"
+          [class.invalid]="isValidationTriggered && !firstName"
+        >
           <input
             [(ngModel)]="firstName"
             placeholder="Имя"
@@ -35,7 +38,10 @@
         </div>
       </li>
       <li class="inputs-list__item">
-        <div class="inputs-list__item-block">
+        <div
+          class="inputs-list__item-block"
+          [class.invalid]="isValidationTriggered && !surName"
+        >
           <input
             [(ngModel)]="surName"
             placeholder="Фамилия"
@@ -43,6 +49,9 @@
             type="text"
             name="surName"
           >
+        </div>
+        <div class="invalid-field" *ngIf="isValidationTriggered && !isLatin(surName)">
+          Поле должно быть заполнено и содержать только латинские буквы*
         </div>
       </li>
       <li class="inputs-list__item">
@@ -57,7 +66,10 @@
         </div>
       </li>
       <li class="inputs-list__item">
-        <div class="inputs-list__item-block">
+        <div
+          class="inputs-list__item-block"
+          [class.invalid]="isValidationTriggered && !birthDate"
+        >
           <span class="date-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M7.99994 2V5" stroke="#666F8D" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
@@ -87,6 +99,7 @@
           </span>
           <input
             [(ngModel)]="birthDate"
+            (input)="onDateInput($event, 'birthDate')"
             placeholder="Дата рождения"
             type="text"
             name="birthDate"
@@ -95,14 +108,25 @@
             pattern="[0-9]*"
           >
         </div>
+        <div class="invalid-field" *ngIf="isValidationTriggered && !birthDate">
+          Поле "Дата рождения" обязательно
+        </div>
       </li>
       <li class="inputs-list__item">
-        <div class="selector-block" (click)="toggleGenderDropdown()">
+        <div
+          class="selector-block"
+          (click)="toggleGenderDropdown()"
+          [class.invalid]="isValidationTriggered && !selectedGender"
+        >
           <span class="selected-passport" *ngIf="selectedGender">
             {{ getGenderText(selectedGender) }}
           </span>
           <span *ngIf="!selectedGender" class="selected-passport">
             Выберите пол
+          </span>
+
+          <span class="selected-passport__arrow">
+            <img ngSrc="assets/svg/arrow-left.svg" alt="" height="18" width="18">
           </span>
 
           <div class="dropdown" *ngIf="isGenderDropdownOpen" (click)="$event.stopPropagation()">
@@ -117,9 +141,16 @@
             </ul>
           </div>
         </div>
+
+        <div class="invalid-field" *ngIf="isValidationTriggered && !selectedGender">
+          Поле "Пол" обязательно
+        </div>
       </li>
       <li class="inputs-list__item">
-        <div class="inputs-list__item-block">
+        <div
+          class="inputs-list__item-block"
+          [class.invalid]="isValidationTriggered && !phone"
+        >
           <input
             [(ngModel)]="phone"
             placeholder="Телефон"
@@ -128,9 +159,15 @@
             type="text"
           >
         </div>
+        <div class="invalid-field" *ngIf="isValidationTriggered && !selectedGender">
+          Поле "Телефон" обязательно
+        </div>
       </li>
       <li class="inputs-list__item">
-        <div class="inputs-list__item-block">
+        <div
+          class="inputs-list__item-block"
+          [class.invalid]="isValidationTriggered && !email"
+        >
           <input
             [(ngModel)]="email"
             placeholder="Email"
@@ -139,6 +176,9 @@
             type="email"
           >
         </div>
+        <div class="invalid-field" *ngIf="isValidationTriggered && !email">
+          Поле "Телефон" обязательно
+        </div>
       </li>
     </ul>
 
@@ -146,12 +186,21 @@
 
     <ul class="inputs-list">
       <li class="inputs-list__item">
-        <div class="selector-block" (click)="toggleCitizenship()">
+        <div
+          class="selector-block"
+          (click)="toggleCitizenship()"
+          [class.invalid]="isValidationTriggered && !selectedCountry"
+        >
           <span class="selected-passport" *ngIf="selectedCountry">
             {{ selectedCountry }}
           </span>
+
           <span *ngIf="!selectedCountry" class="selected-passport">
             Выберите гражданство
+          </span>
+
+          <span class="selected-passport__arrow">
+            <img ngSrc="assets/svg/arrow-left.svg" alt="" height="18" width="18">
           </span>
 
           <div class="dropdown" *ngIf="isCitizenshipDropdownOpen" (click)="$event.stopPropagation()">
@@ -166,14 +215,25 @@
             </ul>
           </div>
         </div>
+        <div class="invalid-field" *ngIf="isValidationTriggered && !selectedCountry">
+          Поле "Гражданство" обязательно
+        </div>
       </li>
       <li class="inputs-list__item">
-        <div class="selector-block" (click)="togglePassportDropdown()">
+        <div
+          class="selector-block"
+          (click)="togglePassportDropdown()"
+          [class.invalid]="isValidationTriggered && !selectedPassportType"
+        >
           <span class="selected-passport" *ngIf="selectedPassportType">
             {{ selectedPassportType }}
           </span>
           <span *ngIf="!selectedPassportType" class="selected-passport">
             Выберите тип документа
+          </span>
+
+          <span class="selected-passport__arrow">
+            <img ngSrc="assets/svg/arrow-left.svg" alt="" height="18" width="18">
           </span>
 
           <div class="dropdown" *ngIf="isPassportDropdownOpen" (click)="$event.stopPropagation()">
@@ -188,9 +248,15 @@
             </ul>
           </div>
         </div>
+        <div class="invalid-field" *ngIf="isValidationTriggered && !selectedPassportType">
+          Поле "Тип документа" обязательно
+        </div>
       </li>
       <li class="inputs-list__item">
-        <div class="inputs-list__item-block">
+        <div
+          class="inputs-list__item-block"
+          [class.invalid]="isValidationTriggered && !issueDate"
+        >
           <span class="date-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M7.99994 2V5" stroke="#666F8D" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
@@ -220,6 +286,7 @@
         </span>
           <input
             [(ngModel)]="issueDate"
+            (input)="onDateInput($event, 'issueDate')"
             placeholder="Дата выдачи паспорта"
             name="PassportIssueDate"
             class="text-field"
@@ -228,9 +295,15 @@
             type="text"
           >
         </div>
+        <div class="invalid-field" *ngIf="isValidationTriggered && !issueDate">
+          Поле "Дата выдачи паспорта" обязательно
+        </div>
       </li>
       <li class="inputs-list__item">
-        <div class="inputs-list__item-block">
+        <div
+          class="inputs-list__item-block"
+          [class.invalid]="isValidationTriggered && !documentNumber"
+        >
           <input
             [(ngModel)]="documentNumber"
             placeholder="Серия и номер документа"
@@ -239,9 +312,15 @@
             type="text"
           >
         </div>
+        <div class="invalid-field" *ngIf="isValidationTriggered && !documentNumber">
+          Поле "Номер документа" обязательно
+        </div>
       </li>
       <li class="inputs-list__item">
-        <div class="inputs-list__item-block">
+        <div
+          class="inputs-list__item-block"
+          [class.invalid]="isValidationTriggered && !expirationDate"
+        >
           <span class="date-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M7.99994 2V5" stroke="#666F8D" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
@@ -271,6 +350,7 @@
         </span>
           <input
             [(ngModel)]="expirationDate"
+            (input)="onDateInput($event, 'expirationDate')"
             placeholder="Срок действия"
             class="text-field"
             inputmode="numeric"
@@ -279,11 +359,18 @@
             type="text"
           >
         </div>
+        <div class="invalid-field" *ngIf="isValidationTriggered && !expirationDate">
+          Поле "Номер документа" обязательно
+        </div>
       </li>
     </ul>
 
     <button class="save-button btn-primary" (click)="addPassenger()">
       Сохранить
     </button>
+  </div>
+
+  <div class="loader-overlay" *ngIf="isPassengerAddingLoading">
+    <div class="loader"></div>
   </div>
 </div>
