@@ -39,6 +39,7 @@ export class EditPassengerModalComponent implements OnChanges, OnInit {
     {text: 'Паспорт РТ', value: 'NP'}
   ];
   public walletPhone: string = "";
+  isPassengerEditingLoading: boolean = false;
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -123,8 +124,11 @@ export class EditPassengerModalComponent implements OnChanges, OnInit {
   deletePassenger(passengerId: number): void {
     if (!passengerId) return;
 
+    this.isPassengerEditingLoading = true;
+
     this.profileService.deletePassenger(passengerId).subscribe(
       () => {
+        this.isPassengerEditingLoading = false;
         this.passengerDeletedEvent.emit();
         this.closeModal();
       },
@@ -146,8 +150,11 @@ export class EditPassengerModalComponent implements OnChanges, OnInit {
       walletPhone: this.walletPhone
     };
 
+    this.isPassengerEditingLoading = true;
+
     this.profileService.updatePassenger(updatedPassenger).subscribe({
       next: (res) => {
+        this.isPassengerEditingLoading = false
         console.log('Passenger updated successfully:', res);
         this.passengerUpdateEvent.emit();
         if (res.statusCode === 200) {

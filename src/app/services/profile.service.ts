@@ -7,6 +7,7 @@ import {Observable} from "rxjs";
 })
 export class ProfileService {
   private apiUrl = 'https://integration.cbt.tj/api/flytj/passenger';
+  private apiTicketsUrl = 'https://integration.cbt.tj/api/flytj/ticket';
 
   constructor(private http: HttpClient) {
   }
@@ -14,6 +15,11 @@ export class ProfileService {
   getPassengers(walletPhone: string): Observable<any> {
     const params = new HttpParams().set('walletPhone', walletPhone);
     return this.http.get<any>(`${this.apiUrl}/list`, {params});
+  }
+
+  getTickets(walletPhone: string): Observable<any> {
+    const params = new HttpParams().set('walletPhone', walletPhone);
+    return this.http.get<any>(`${this.apiTicketsUrl}/list`, {params});
   }
 
   addPassenger(passenger: {

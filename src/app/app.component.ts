@@ -105,7 +105,7 @@ export class AppComponent implements OnInit {
   public selectedEndDate: Date | null = null;
   selectedFlight: any;
   public selectedPassenger: any;
-  public isProfileModalOpen: boolean = false;
+  public isProfileModalOpen: boolean = true;
   public isSearchButtonVisible: boolean = true;
 
   public passengerCount: number = 0;

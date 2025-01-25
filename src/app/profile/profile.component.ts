@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {NgForOf, NgIf} from "@angular/common";
+import {JsonPipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {AddPassengerModalComponent} from "../add-passenger-modal/add-passenger-modal.component";
 import {ProfileService} from "../services/profile.service";
 import {EditPassengerModalComponent} from "../edit-passenger-modal/edit-passenger-modal.component";
@@ -12,7 +12,9 @@ import {ActivatedRoute} from "@angular/router";
     NgIf,
     AddPassengerModalComponent,
     NgForOf,
-    EditPassengerModalComponent
+    EditPassengerModalComponent,
+    NgOptimizedImage,
+    JsonPipe
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -23,6 +25,8 @@ export class ProfileComponent implements OnInit {
   public selectedTab: string = 'my-tickets';
   public isVisible: boolean = false;
   profileDataList: any[] = [];
+  ticketsDataList: any[] = [];
+  parsedBookDataList: any[] = [];
   walletPhone: string = '';
   showEditPassengerModal: boolean = false;
   showAddPassengerModal: boolean = false;
@@ -42,6 +46,7 @@ export class ProfileComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.walletPhone = params['walletPhone'] || '';
       this.loadProfile();
+      this.loadTickets();
     });
   }
 
@@ -54,6 +59,21 @@ export class ProfileComponent implements OnInit {
         console.error('Error loading profile:', err);
       }
     })
+  }
+
+  loadTickets(): void {
+    this.profileService.getTickets(this.walletPhone).subscribe({
+      next: (data) => {
+        this.ticketsDataList = data.data;
+        this.parsedBookDataList = this.ticketsDataList.map((ticket) => {
+          return JSON.parse(ticket.bookData);
+        });
+        console.log(this.parsedBookDataList);
+      },
+      error: (err) => {
+        console.error('Error loading profile:', err);
+      }
+    });
   }
 
   selectItem(item: string) {

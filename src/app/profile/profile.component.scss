@@ -43,7 +43,8 @@
     margin-top: 75px;
 
     .my-tickets-tab {
-      margin-top: 82px;
+      margin-top: 20px;
+      width: 100%;
     }
 
     .ticket-icon {
@@ -198,4 +199,92 @@
   z-index: 12;
   background-color: #EFF6FF;
   width: -webkit-fill-available;
+}
+
+.tickets-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+
+  &__item {
+    border: 2px solid #CBD5E1;
+    border-radius: 12px;
+
+    .top-titles__block {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 18.12px;
+      padding: 12px 12px 0;
+
+      .order-title {
+        color: #030712;
+      }
+
+      .date-title {
+        color: #666F8D;
+      }
+    }
+
+    .directions-titles__block,
+    .prices-titles__block {
+      span {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 20.7px;
+        color: #030712;
+      }
+
+      small {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 15.53px;
+        color: #666F8D;
+      }
+    }
+
+    .airport-title__block {
+      line-height: 1;
+
+      strong {
+        font-size: 17px;
+        font-weight: 700;
+        color: #030712;
+      }
+
+      span {
+        font-size: 14px;
+        font-weight: 400;
+        color: #030712;
+      }
+
+      small {
+        font-size: 12px;
+        font-weight: 400;
+        color: #666F8D;
+      }
+    }
+
+    .time-title__block {
+      font-size: 12px;
+      font-weight: 400;
+      color: #030712;
+    }
+  }
+
+  .horizontal-line {
+    height: 1px;
+    background-color: #CBD5E1;
+    width: 100%;
+    margin: 12px 0;
+    border: 1px solid #CBD5E1;
+  }
+}
+
+.text-green {
+  color: #00B06C !important;
+}
+
+.error {
+  color: #FF1216;
 }
