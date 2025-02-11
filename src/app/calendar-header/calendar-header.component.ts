@@ -61,8 +61,12 @@ export class CalendarHeaderComponent {
 
 @Injectable()
 export class CustomDateAdapter extends NativeDateAdapter {
+  override getFirstDayOfWeek(): number {
+    return 1;
+  }
+
   override getDayOfWeekNames(): string[] {
-    return ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+    return ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
   }
 
   override getMonthNames(): string[] {

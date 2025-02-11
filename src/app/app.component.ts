@@ -6,7 +6,7 @@ import {ModalPassengersComponent} from "./modal-passengers/modal-passengers.comp
 import {DatepickerModalComponent} from "./datepicker-modal/datepicker-modal.component";
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
-import {MatNativeDateModule} from '@angular/material/core';
+import {DateAdapter, MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 import {DirectionFromModalComponent} from './direction-from-modal/direction-from-modal.component'
 import {DirectionToModalComponent} from "./direction-to-modal/direction-to-modal.component";
 import {FormsModule} from "@angular/forms";
@@ -25,6 +25,7 @@ import {PassengerDataService} from "./services/passenger-data.service";
 import localeRu from '@angular/common/locales/ru';
 import {ProfileComponent} from "./profile/profile.component";
 import {ModalStateService} from "./services/modal-state.service";
+import {CustomDateAdapter} from "./calendar-header/calendar-header.component";
 
 registerLocaleData(localeRu);
 
@@ -55,7 +56,9 @@ registerLocaleData(localeRu);
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [
-    {provide: LOCALE_ID, useValue: 'ru-RU'}
+    {provide: LOCALE_ID, useValue: 'ru-RU'},
+    {provide: MAT_DATE_LOCALE, useValue: 'ru-RU'},
+    {provide: DateAdapter, useClass: CustomDateAdapter},
   ],
 })
 
@@ -105,7 +108,7 @@ export class AppComponent implements OnInit {
   public selectedEndDate: Date | null = null;
   selectedFlight: any;
   public selectedPassenger: any;
-  public isProfileModalOpen: boolean = true;
+  public isProfileModalOpen: boolean = false;
   public isSearchButtonVisible: boolean = true;
 
   public passengerCount: number = 0;
