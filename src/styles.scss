@@ -1,11 +1,6 @@
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
 // Plus imports for other components in your app.
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
 @include mat.core();
 
 // Define the theme object.
@@ -20,43 +15,36 @@ $Favri-advanture-service-theme: mat.define-theme((
   )
 ));
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
 :root {
   @include mat.all-component-themes($Favri-advanture-service-theme);
+  --primary-color: #00B06C;
+  --seconday-text-color: #1D2935;
+  --bg-color: #ecf0f1;
 }
 
-// Comment out the line below if you want to use the pre-defined typography utility classes.
-// For more information: https://material.angular.io/guide/typography#using-typography-styles-in-your-application.
-// @include mat.typography-hierarchy($Favri-advanture-service-theme);
-
-// Comment out the line below if you want to use the deprecated `color` inputs.
-// @include mat.color-variants-backwards-compatibility($Favri-advanture-service-theme);
-/* You can add global styles to this file, and also import other style files */
 
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+  font-family: 'PT Sans', sans-serif;
 }
 
 ::-webkit-scrollbar {
   display: none;
 }
 
-:root {
-  --primary-color: #00B06C;
-  --seconday-text-color: #1D2935;
-  --bg-color: #ecf0f1;
-}
-
-html, body {
-  height: 100%;
+html {
+  height: -webkit-fill-available;
 }
 
 body {
-  font-family: 'PT Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
-  padding: 0;
+  height: 100vh;
+  height: -webkit-fill-available;
+  background-color: #EFF6FF;
 }
 
 .d-flex {
@@ -204,7 +192,7 @@ body {
   color: #fff;
   border-radius: 12px;
   text-align: center;
-  height: 45px;
+  height: 48px;
   font-size: 16px;
   font-weight: 700;
   border: none;

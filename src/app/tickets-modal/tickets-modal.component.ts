@@ -9,6 +9,7 @@ import {
 import {JsonPipe, KeyValuePipe, NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
 import {FormsModule} from "@angular/forms";
+import {IconComponent} from "../shared/icon/icon.component";
 
 @Component({
   selector: 'app-tickets-modal',
@@ -21,6 +22,7 @@ import {FormsModule} from "@angular/forms";
     JsonPipe,
     FormsModule,
     NgClass,
+    IconComponent,
   ],
   templateUrl: './tickets-modal.component.html',
   styleUrl: './tickets-modal.component.scss',

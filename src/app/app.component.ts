@@ -26,6 +26,7 @@ import localeRu from '@angular/common/locales/ru';
 import {ProfileComponent} from "./profile/profile.component";
 import {ModalStateService} from "./services/modal-state.service";
 import {CustomDateAdapter} from "./calendar-header/calendar-header.component";
+import {IconComponent} from "./shared/icon/icon.component";
 
 registerLocaleData(localeRu);
 
@@ -52,6 +53,7 @@ registerLocaleData(localeRu);
     ModalOrderSucceedComponent,
     ProfileComponent,
     TicketsModalComponent,
+    IconComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -73,7 +75,7 @@ export class AppComponent implements OnInit {
   @ViewChild('detailPassengerModal') detailPassengerModal!: DetailPassengerModalComponent;
   @ViewChild('modalOrderSucceed') modalOrderSucceed!: ModalOrderSucceedComponent;
 
-  private readonly companyReqId = 26;
+  private readonly companyReqId = 4;
   private readonly secretKey = '98357c92347b70b6bc0ea97f0acf84040sa2dof5ba7411218c3f1087316fd3663fc6f99';
   private readonly apiUrl = 'https://bft-alpha.55fly.ru/api';
 

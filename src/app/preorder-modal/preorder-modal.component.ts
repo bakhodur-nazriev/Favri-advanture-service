@@ -2,16 +2,18 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {JsonPipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {animate, style, transition, trigger} from "@angular/animations";
 import {Included} from "../models/flights-included.interface";
+import {IconComponent} from "../shared/icon/icon.component";
 
 @Component({
   selector: 'app-preorder-modal',
   standalone: true,
-  imports: [
-    NgOptimizedImage,
-    NgIf,
-    NgForOf,
-    JsonPipe
-  ],
+    imports: [
+        NgOptimizedImage,
+        NgIf,
+        NgForOf,
+        JsonPipe,
+        IconComponent
+    ],
   templateUrl: './preorder-modal.component.html',
   styleUrl: './preorder-modal.component.scss',
   animations: [

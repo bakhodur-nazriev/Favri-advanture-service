@@ -64,6 +64,7 @@ export class ProfileComponent implements OnInit {
   loadTickets(): void {
     this.profileService.getTickets(this.walletPhone).subscribe({
       next: (data) => {
+        console.log(data.data);
         this.ticketsDataList = data.data;
         this.parsedBookDataList = this.ticketsDataList.map((ticket) => {
           return JSON.parse(ticket.bookData);

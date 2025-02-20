@@ -10,6 +10,7 @@ import {Observable} from "rxjs";
 import {ProfileService} from "../services/profile.service";
 import {ActivatedRoute} from "@angular/router";
 import {ModalStateService} from "../services/modal-state.service";
+import {IconComponent} from "../shared/icon/icon.component";
 
 @Component({
   selector: 'app-detail-passenger-modal',
@@ -22,6 +23,7 @@ import {ModalStateService} from "../services/modal-state.service";
     MatDatepickerInput,
     FormsModule,
     JsonPipe,
+    IconComponent,
   ],
   templateUrl: './detail-passenger-modal.component.html',
   styleUrl: './detail-passenger-modal.component.scss',

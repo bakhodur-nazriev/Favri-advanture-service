@@ -1,16 +1,7 @@
 <div class="modal-background" *ngIf="isVisible">
   <div class="top-nav__block">
     <span class="close-button" (click)="closeModal()">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path
-          d="M15 19.92L8.47997 13.4C7.70997 12.63 7.70997 11.37 8.47997 10.6L15 4.07999"
-          stroke="#292929"
-          stroke-width="1.5"
-          stroke-miterlimit="10"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
+      <app-icon icon="arrow-left-icon" color="none"/>
     </span>
     <h3 class="top-nav__block-title">{{ passenger.count }}</h3>
   </div>

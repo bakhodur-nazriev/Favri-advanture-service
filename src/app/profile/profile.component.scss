@@ -1,37 +1,36 @@
 .main-block {
   background-color: #fff;
-  height: 100vh;
+  height: 100%;
   width: -webkit-fill-available;
   position: absolute;
   top: 0;
   left: 0;
-  padding: 0 20px;
+  padding: 75px 20px 20px;
   display: flex;
-  flex-direction: column;
-  gap: 25px;
+  z-index: 100;
 
   .top-nav__block {
     display: flex;
     align-items: center;
-    height: 58px;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: -webkit-fill-available;
     z-index: 3;
     background-color: #fff;
+    padding: 20px;
+    height: 58px;
 
     .close-button {
       display: flex;
       justify-content: center;
-      margin-left: 20px;
     }
 
     h3 {
       width: 100%;
       text-align: center;
       font-weight: 400;
-      margin: 0 45px 0 0;
+      margin: 0;
       font-size: 17px;
     }
   }
@@ -40,11 +39,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 75px;
+    width: 100%;
+    gap: 24px;
 
     .my-tickets-tab {
-      margin-top: 20px;
       width: 100%;
+      height: 100vh;
+      overflow-y: auto;
     }
 
     .ticket-icon {
@@ -60,10 +61,11 @@
 
     .passengers-tab {
       width: 100%;
-      margin: 40px 0;
+      height: 100vh;
+      overflow-y: auto;
 
       .add-passenger__button {
-        margin-top: 40px;
+        margin-top: 30px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -93,7 +95,7 @@
           gap: 5px;
           padding: 16px;
           border-radius: 12px;
-          border: 2px solid #CBD5E1;
+          border: 1px solid #CBD5E1;
           position: relative;
 
           &::after {
@@ -206,9 +208,12 @@
   margin: 0;
   padding: 0;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 
   &__item {
-    border: 2px solid #CBD5E1;
+    border: 1px solid #CBD5E1;
     border-radius: 12px;
 
     .top-titles__block {
@@ -277,7 +282,6 @@
     background-color: #CBD5E1;
     width: 100%;
     margin: 12px 0;
-    border: 1px solid #CBD5E1;
   }
 }
 
