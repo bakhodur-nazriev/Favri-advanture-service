@@ -2,12 +2,14 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {animate, style, transition, trigger, AnimationEvent} from "@angular/animations";
 import {Passengers} from "../models/passengers-type.interface";
+import {IconComponent} from "../shared/icon/icon.component";
 
 @Component({
   selector: 'app-modal-passengers',
   standalone: true,
   imports: [
-    NgIf
+    NgIf,
+    IconComponent
   ],
   templateUrl: './modal-passengers.component.html',
   styleUrl: './modal-passengers.component.scss',

@@ -5,6 +5,7 @@ import {AnimationEvent} from "@angular/animations";
 import {CityService} from "../services/city-service.service";
 import {debounceTime, switchMap, catchError} from 'rxjs/operators';
 import {of, Subject} from "rxjs";
+import {IconComponent} from "../shared/icon/icon.component";
 
 @Component({
   selector: 'app-direction-from-modal',
@@ -13,7 +14,8 @@ import {of, Subject} from "rxjs";
     FormsModule,
     NgForOf,
     NgIf,
-    NgClass
+    NgClass,
+    IconComponent
   ],
   templateUrl: './direction-from-modal.component.html',
   styleUrl: './direction-from-modal.component.scss'

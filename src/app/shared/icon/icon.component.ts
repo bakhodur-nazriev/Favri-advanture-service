@@ -17,8 +17,9 @@ import {NgIf} from "@angular/common";
   `,
   styles: [`
     .icon {
-      display: inline-block;
-      vertical-align: middle;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   `],
   imports: [

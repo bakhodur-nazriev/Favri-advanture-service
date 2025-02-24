@@ -5,6 +5,7 @@
   width: 100%;
   height: 100%;
   overflow-y: hidden;
+  z-index: 5;
   background: rgba(29, 41, 53, 0.1882352941);
 }
 
@@ -80,6 +81,7 @@
 
   .title-list__directions {
     color: #666F8D;
+    margin: 16px 0;
   }
 
   .directions-list {

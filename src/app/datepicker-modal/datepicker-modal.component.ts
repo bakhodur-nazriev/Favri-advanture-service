@@ -13,6 +13,7 @@ import {MatIcon} from "@angular/material/icon";
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatIconButton} from "@angular/material/button";
 import {DateAdapter} from "@angular/material/core";
+import {IconComponent} from "../shared/icon/icon.component";
 
 @Component({
   selector: 'app-datepicker-modal',
@@ -29,7 +30,8 @@ import {DateAdapter} from "@angular/material/core";
     MatIcon,
     MatToolbar,
     MatIconButton,
-    CalendarHeaderComponent
+    CalendarHeaderComponent,
+    IconComponent
   ],
   templateUrl: './datepicker-modal.component.html',
   styleUrl: './datepicker-modal.component.scss',

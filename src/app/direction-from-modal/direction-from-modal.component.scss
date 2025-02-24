@@ -6,6 +6,7 @@
   height: 100%;
   overflow-y: hidden;
   background: #1D293530;
+  z-index: 5;
 }
 
 .direction-modal__content {
@@ -81,6 +82,7 @@
 
   .title-list__directions {
     color: #666F8D;
+    margin: 16px 0;
   }
 
   .directions-list {

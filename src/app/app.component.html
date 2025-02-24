@@ -9,7 +9,7 @@
 
   <div class="card">
     <div class="input-from__block">
-      <app-icon icon="location-from-icon" color="none"/>
+      <app-icon icon="location-from-icon" color="#00B06C"/>
 
       <div class="input-directions__inside-block">
         <span class="directions-input__title">Откуда</span>
@@ -55,15 +55,20 @@
         <div class="button-dates" (click)="datepickerModalComponent.openModal()">
           <app-icon icon="calendar-icon" color="none"/>
 
-          <span>{{ selectedDateText }}</span>
+          <span [ngClass]="{'inactive-selected-date': !selectedDateText, 'active-selected-date': selectedDateText}">
+            {{ selectedDateText || 'Когда' }}
+          </span>
         </div>
       </div>
 
       <div class="right-block">
         <div class="button-dates" (click)="datepickerModalComponent.openModal()">
           <app-icon icon="calendar-icon" color="none"/>
+          <!--          <app-icon icon="calendar-icon" [color]="selectedDateText ? '&#45;&#45;primary-color' : ''"/>-->
 
-          <span>{{ selectedDateText }}</span>
+          <span [ngClass]="{'inactive-selected-date': !selectedDateText, 'active-selected-date': selectedDateText}">
+            {{ selectedDateText || 'Обратно' }}
+          </span>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import {Component, ViewChild, OnInit, LOCALE_ID, Input} from '@angular/core';
 import {RouterOutlet, ActivatedRoute, Router} from '@angular/router';
 import {CustomInputComponent} from "./custom-input/custom-input.component";
-import {NgIf, NgOptimizedImage, registerLocaleData} from "@angular/common";
+import {NgClass, NgIf, NgOptimizedImage, registerLocaleData} from "@angular/common";
 import {ModalPassengersComponent} from "./modal-passengers/modal-passengers.component";
 import {DatepickerModalComponent} from "./datepicker-modal/datepicker-modal.component";
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -54,6 +54,7 @@ registerLocaleData(localeRu);
     ProfileComponent,
     TicketsModalComponent,
     IconComponent,
+    NgClass,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -202,11 +203,9 @@ export class AppComponent implements OnInit {
 
   private formatDate(date: Date): string {
     const day = date.toLocaleDateString('ru-RU', {day: 'numeric'});
-    const month = date.toLocaleDateString('ru-RU', {month: 'short'}).replace('.', '');
-    const weekday = date.toLocaleDateString('ru-RU', {weekday: 'short'});
-    let result = weekday.charAt(0).toUpperCase() + weekday.slice(1);
+    const month = date.toLocaleDateString('ru-RU', {month: 'long'}).replace('.', '');
 
-    return `${day} ${month}., ${result}.`;
+    return `${day} ${month}`;
   }
 
   handleSelectedDates(dates: { startDate: Date, endDate: Date | null }) {
@@ -344,10 +343,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    const tomorrow = dayjs().add(1, 'day').toDate();
-    this.selectedStartDate = tomorrow;
-    this.selectedDateText = this.formatDate(tomorrow);
-
     sessionStorage.setItem('company_req_id', String(this.companyReqId));
 
     this.route.queryParams.subscribe(params => {

@@ -5,6 +5,7 @@ import {CityService} from "../services/city-service.service";
 import {AnimationEvent} from "@angular/animations";
 import {debounceTime} from "rxjs/operators";
 import {Subject} from "rxjs";
+import {IconComponent} from "../shared/icon/icon.component";
 
 @Component({
   selector: 'app-direction-to-modal',
@@ -13,7 +14,8 @@ import {Subject} from "rxjs";
     FormsModule,
     NgForOf,
     NgClass,
-    NgIf
+    NgIf,
+    IconComponent
   ],
   templateUrl: './direction-to-modal.component.html',
   styleUrl: './direction-to-modal.component.scss'
