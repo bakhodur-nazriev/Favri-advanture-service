@@ -26,8 +26,12 @@ import {CapitalizePipe} from '../capitalize.pipe';
     }
 
     .month-display {
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    ::ng-deep mat-calendar .mat-calendar-table thead {
+      display: none;
     }
   `]
 })
@@ -41,10 +45,6 @@ export class CalendarHeaderComponent {
 export class CustomDateAdapter extends NativeDateAdapter {
   override getFirstDayOfWeek(): number {
     return 1;
-  }
-
-  override getDayOfWeekNames(): string[] {
-    return ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
   }
 
   override getMonthNames(): string[] {

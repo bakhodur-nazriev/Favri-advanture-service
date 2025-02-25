@@ -67,6 +67,7 @@ export class DatepickerModalComponent {
   public minDate: Date = new Date();
   calendarHeader = CalendarHeaderComponent;
   public months: Date[] = [];
+  public weeks: string[] = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
   constructor(private cdr: ChangeDetectorRef) {
     this.generateMonths();
@@ -122,7 +123,7 @@ export class DatepickerModalComponent {
 
   onDateSelected(date: Date | null) {
     this.selectedDate = date;
-    this.datesSelected.emit({ startDate: date as Date, endDate: null });
+    this.datesSelected.emit({startDate: date as Date, endDate: null});
     this.cdr.detectChanges();
   }
 

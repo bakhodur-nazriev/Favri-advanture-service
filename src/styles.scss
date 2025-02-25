@@ -451,6 +451,40 @@ body {
   animation: spin 1s linear infinite;
 }
 
+.list-group {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.text-1 {
+  font-size: 8px;
+}
+
+.text-2 {
+  font-size: 10px;
+}
+
+.text-3 {
+  font-size: 12px;
+}
+
+.text-4 {
+  font-size: 14px;
+}
+
+.text-5 {
+  font-size: 16px;
+}
+
+.text-6 {
+  font-size: 18px;
+}
+
+.w-100 {
+  width: 100%;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
