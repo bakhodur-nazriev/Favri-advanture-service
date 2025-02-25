@@ -82,6 +82,23 @@
           stroke-linejoin="round"/>
   </symbol>
 
+  <symbol id="calendar-inactive-icon" viewBox="0 0 24 24">
+    <path d="M7.99997 2V5" stroke="#666F8D" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M16 2V5" stroke="#666F8D" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M3.49997 9.09009H20.5" stroke="#666F8D" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
+          stroke="#666F8D" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M15.6945 13.7H15.7035" stroke="#666F8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M15.6945 16.7H15.7035" stroke="#666F8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M11.9954 13.7H12.0043" stroke="#666F8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M11.9954 16.7H12.0043" stroke="#666F8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8.29443 13.7H8.30342" stroke="#666F8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8.29443 16.7H8.30342" stroke="#666F8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
   <symbol id="person-icon" viewBox="0 0 24 24">
     <path
       d="M10 10C12.3012 10 14.1667 8.13452 14.1667 5.83334C14.1667 3.53215 12.3012 1.66667 10 1.66667C7.69885 1.66667 5.83337 3.53215 5.83337 5.83334C5.83337 8.13452 7.69885 10 10 10Z"
@@ -144,8 +161,8 @@
     <circle cx="1.33333" cy="1.33333" r="1.33333" transform="matrix(1 0 0 -1 27.1667 24)" fill="#00B06C"/>
   </symbol>
 
-  <symbol id="holder-icon" viewBox="0 0 35 4">
-    <rect width="35" height="4" rx="2" fill="#95A5A6" fill-opacity="0.5"/>
+  <symbol id="holder-icon" viewBox="0 0 50 8">
+    <rect width="50" height="8" rx="4" fill="#E9E9E9"/>
   </symbol>
 
   <symbol id="airplane-icon" viewBox="0 0 24 24">

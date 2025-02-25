@@ -12,15 +12,9 @@ import {CapitalizePipe} from '../capitalize.pipe';
   imports: [MatButtonModule, MatIconModule, DatePipe, CapitalizePipe],
   template: `
     <div class="custom-header">
-      <button mat-icon-button (click)="previousClicked()">
-        <mat-icon>chevron_left</mat-icon>
-      </button>
       <div class="month-display">
         {{ calendar.activeDate | date: 'MMMM yyyy' | capitalize }}
       </div>
-      <button mat-icon-button (click)="nextClicked()">
-        <mat-icon>chevron_right</mat-icon>
-      </button>
     </div>
   `,
   styles: [`
@@ -40,22 +34,6 @@ import {CapitalizePipe} from '../capitalize.pipe';
 
 export class CalendarHeaderComponent {
   constructor(public calendar: MatCalendar<Date>) {
-  }
-
-  previousClicked(): void {
-    this.calendar.activeDate = new Date(
-      this.calendar.activeDate.getFullYear(),
-      this.calendar.activeDate.getMonth() - 1,
-      1
-    );
-  }
-
-  nextClicked(): void {
-    this.calendar.activeDate = new Date(
-      this.calendar.activeDate.getFullYear(),
-      this.calendar.activeDate.getMonth() + 1,
-      1
-    );
   }
 }
 

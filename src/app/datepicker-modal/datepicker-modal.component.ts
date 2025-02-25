@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, EventEmitter, model, Output, ViewChild} from '@angular/core';
 import {animate, style, transition, trigger, AnimationEvent} from "@angular/animations";
-import {DatePipe, NgIf} from "@angular/common";
+import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {CustomDatePickerComponent} from "../custom-date-picker/custom-date-picker.component";
 import {CalendarHeaderComponent, CustomDateAdapter} from '../calendar-header/calendar-header.component';
 
@@ -31,7 +31,8 @@ import {IconComponent} from "../shared/icon/icon.component";
     MatToolbar,
     MatIconButton,
     CalendarHeaderComponent,
-    IconComponent
+    IconComponent,
+    NgForOf
   ],
   templateUrl: './datepicker-modal.component.html',
   styleUrl: './datepicker-modal.component.scss',
@@ -57,7 +58,7 @@ export class DatepickerModalComponent {
   @Output() datesSelected = new EventEmitter<{ startDate: Date, endDate: Date | null }>();
   @ViewChild(MatCalendar) calendar: MatCalendar<Date> | undefined;
 
-  public isVisible = false;
+  public isVisible = true;
   public isAnimating = false;
   selected = model<Date | null>(null);
   public startDate: Date | null = null;
@@ -65,27 +66,18 @@ export class DatepickerModalComponent {
   public selectedDate: Date | null = null;
   public minDate: Date = new Date();
   calendarHeader = CalendarHeaderComponent;
+  public months: Date[] = [];
 
   constructor(private cdr: ChangeDetectorRef) {
+    this.generateMonths();
   }
 
-  clearStartDate() {
-    this.startDate = null;
-    this.endDate = null;
-    this.selectedDate = null;
-    if (this.calendar) {
-      this.calendar.updateTodaysDate();
+  generateMonths() {
+    const now = new Date();
+    for (let i = 0; i < 12; i++) {
+      const month = new Date(now.getFullYear(), now.getMonth() + i, 1);
+      this.months.push(month);
     }
-    this.cdr.detectChanges();
-  }
-
-  clearEndDate() {
-    this.endDate = null;
-    this.selectedDate = null;
-    if (this.calendar) {
-      this.calendar.updateTodaysDate();
-    }
-    this.cdr.detectChanges();
   }
 
   openModal() {
@@ -129,25 +121,30 @@ export class DatepickerModalComponent {
   };
 
   onDateSelected(date: Date | null) {
-    if (!this.startDate || (this.startDate && this.endDate)) {
-      this.startDate = date;
-      this.endDate = null;
-    } else if (date && this.startDate && date >= this.startDate) {
-      this.endDate = date;
-    }
-
-    this.datesSelected.emit({
-      startDate: this.startDate as Date,
-      endDate: this.endDate,
-    });
-
-    if (this.calendar) {
-      this.calendar.updateTodaysDate();
-    }
-
+    this.selectedDate = date;
+    this.datesSelected.emit({ startDate: date as Date, endDate: null });
     this.cdr.detectChanges();
   }
 
+  // onDateSelected(date: Date | null) {
+  //   if (!this.startDate || (this.startDate && this.endDate)) {
+  //     this.startDate = date;
+  //     this.endDate = null;
+  //   } else if (date && this.startDate && date >= this.startDate) {
+  //     this.endDate = date;
+  //   }
+  //
+  //   this.datesSelected.emit({
+  //     startDate: this.startDate as Date,
+  //     endDate: this.endDate,
+  //   });
+  //
+  //   if (this.calendar) {
+  //     this.calendar.updateTodaysDate();
+  //   }
+  //
+  //   this.cdr.detectChanges();
+  // }
 
   confirmDates() {
     if (this.startDate) {

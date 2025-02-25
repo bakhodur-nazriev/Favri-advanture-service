@@ -6,45 +6,16 @@
     (click)="$event.stopPropagation()"
   >
     <div class="holder-button">
-      <app-icon icon="holder-icon"/>
+      <app-icon icon="holder-icon" width="50" height="8"/>
     </div>
 
     <div class="datepicker-content__block">
-      <h2>Даты поездки</h2>
-
       <div class="booking-form">
-        <div class="date-input-fields">
-          <div class="form-fields">
-            <div class="input-block">
-              <input
-                readonly
-                placeholder="Туда"
-                [value]="startDate | date: 'dd.MM.yy'"
-              >
-            </div>
-            <div *ngIf="startDate" (click)="clearStartDate()" class="clear-button">
-              <app-icon icon="clear-date-icon" color="none"/>
-            </div>
-          </div>
-
-          <div class="form-fields">
-            <div class="input-block">
-              <input
-                readonly
-                placeholder="Обратно"
-                [value]="endDate | date: 'dd.MM.yy'"
-              >
-            </div>
-            <div *ngIf="endDate" (click)="clearEndDate()" class="clear-button">
-              <app-icon icon="clear-date-icon" color="none"/>
-            </div>
-          </div>
-        </div>
-
-        <mat-card class="calendar-card">
+        <mat-card class="calendar-card" *ngFor="let month of months">
           <mat-calendar
             [headerComponent]="calendarHeader"
             [(selected)]="selectedDate"
+            [startAt]="month"
             [minDate]="minDate"
             [dateClass]="dateClass"
             (selectedChange)="onDateSelected($event)">

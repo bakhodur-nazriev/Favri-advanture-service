@@ -19,25 +19,11 @@
   border-radius: 20px 20px 0 0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
+  height: 80%;
 
   .datepicker-content__block {
     overflow-y: auto;
     padding-right: 10px;
-
-    h2 {
-      margin-top: 0;
-      margin-bottom: 24px;
-      font-size: 18px;
-      font-weight: 400;
-      color: var(--seconday-text-color);
-      text-align: center;
-    }
-
-    h4 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 25px;
-    }
   }
 }
 
@@ -58,90 +44,10 @@
   flex-direction: column;
   width: 100%;
 
-  .date-input-fields {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 20px;
-    font-family: "PT Sans", serif;
-
-    mat-form-field {
-      width: 45%;
-
-      input {
-        font-size: 16px;
-        color: #333;
-      }
-
-      .mat-form-field-outline {
-        border-color: #2ECC71;
-      }
-
-      .mat-form-field-label {
-        color: #16A085;
-      }
-    }
-
-    .form-fields {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      position: relative;
-
-      .input-block {
-        display: flex;
-        align-items: center;
-        height: 44px;
-        justify-content: center;
-        left: 5px;
-
-        input {
-          all: unset;
-          width: 100%;
-          border-radius: 8px;
-          border: 0.7px solid #ECF0F1;
-          box-shadow: 0 4px 13px 0 rgba(43, 69, 78, 0.1019607843);
-          font-size: 16px;
-          height: 100%;
-          padding: 0 15px;
-        }
-
-        input:focus + label,
-        label.active {
-          top: 2px;
-          left: 6px;
-          font-size: 12px;
-        }
-
-        label {
-          position: absolute;
-          top: 10px;
-          left: 5px;
-          font-size: 16px;
-          color: #999;
-          pointer-events: none;
-          transition: all 0.3s ease;
-        }
-      }
-
-      .clear-button {
-        all: unset;
-        cursor: pointer;
-        width: 24px;
-        height: 24px;
-        position: absolute;
-        right: 8px;
-      }
-    }
-  }
-
   .calendar-card {
     background-color: #fff;
-    box-shadow: 0 4px 13px 0 rgba(43, 69, 78, 0.1019607843);
-    border: 0.7px solid #ecf0f1;
     border-bottom: none;
     width: 100%;
-    padding: 18px 10px 10px;
   }
 }
 
@@ -207,3 +113,15 @@
   height: 100% !important;
   font-size: 16px !important;
 }
+
+.calendars-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.calendar-card {
+  width: 300px;
+}
+
