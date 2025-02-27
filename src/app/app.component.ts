@@ -3,7 +3,6 @@ import {RouterOutlet, ActivatedRoute, Router} from '@angular/router';
 import {CustomInputComponent} from "./custom-input/custom-input.component";
 import {NgClass, NgIf, NgOptimizedImage, registerLocaleData} from "@angular/common";
 import {ModalPassengersComponent} from "./modal-passengers/modal-passengers.component";
-import {DatepickerModalComponent} from "./datepicker-modal/datepicker-modal.component";
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import {DateAdapter, MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
@@ -24,9 +23,10 @@ import {ModalOrderSucceedComponent} from "./modal-order-succeed/modal-order-succ
 import {PassengerDataService} from "./services/passenger-data.service";
 import localeRu from '@angular/common/locales/ru';
 import {ProfileComponent} from "./profile/profile.component";
-import {ModalStateService} from "./services/modal-state.service";
 import {CustomDateAdapter} from "./calendar-header/calendar-header.component";
 import {IconComponent} from "./shared/icon/icon.component";
+import {DatepickerModalComponent} from "./datepicker-modal/datepicker-modal.component";
+import {DatepickerReturnModalComponent} from "./datepicker-return-modal/datepicker-return-modal.component";
 
 registerLocaleData(localeRu);
 
@@ -55,6 +55,8 @@ registerLocaleData(localeRu);
     TicketsModalComponent,
     IconComponent,
     NgClass,
+    DatepickerModalComponent,
+    DatepickerReturnModalComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -76,46 +78,48 @@ export class AppComponent implements OnInit {
   @ViewChild('detailPassengerModal') detailPassengerModal!: DetailPassengerModalComponent;
   @ViewChild('modalOrderSucceed') modalOrderSucceed!: ModalOrderSucceedComponent;
 
-  private readonly companyReqId = 4;
+  private readonly companyReqId = 26;
   private readonly secretKey = '98357c92347b70b6bc0ea97f0acf84040sa2dof5ba7411218c3f1087316fd3663fc6f99';
   private readonly apiUrl = 'https://bft-alpha.55fly.ru/api';
 
-  public fromPlaceholder: string = 'Откуда';
-  public toPlaceholder: string = 'Куда';
-  public passengers: Passengers = {
+  fromPlaceholder: string = 'Откуда';
+  toPlaceholder: string = 'Куда';
+  passengers: Passengers = {
     adults: 1,
     children: 0,
     infantsWithSeat: 0,
     travelClass: 'economy'
   }
 
-  public tempPassengers: Passengers = {
+  tempPassengers: Passengers = {
     adults: 1,
     children: 0,
     infantsWithSeat: 0,
     travelClass: 'economy'
   };
 
-  public travelClass: string = 'Эконом';
-  public selectedDateText: string = '';
-  public isLoading: boolean = false;
+  selectedDateText: string = '';
 
-  public fromCity: string = 'Душанбе';
-  public toCity: string = 'Москва';
-  public backRouteCity: string = '';
-  public fromAirportCode: string = 'DYU';
-  public toAirportCode: string = 'MOW';
-  public flights: any[] = [];
-  public included: Included | undefined;
-  public selectedStartDate: Date | null = null;
-  public selectedEndDate: Date | null = null;
+  selectedDepartureDate: string = '';
+  selectedReturnDate: string = '';
+
+  isLoading: boolean = false;
+  fromCity: string = 'Душанбе';
+  toCity: string = 'Москва';
+  backRouteCity: string = '';
+  fromAirportCode: string = 'DYU';
+  toAirportCode: string = 'MOW';
+  flights: any[] = [];
+  included: Included | undefined;
+  selectedStartDate: Date | null = null;
+  selectedEndDate: Date | null = null;
   selectedFlight: any;
-  public selectedPassenger: any;
-  public isProfileModalOpen: boolean = false;
-  public isSearchButtonVisible: boolean = true;
+  selectedPassenger: any;
+  isProfileModalOpen: boolean = false;
+  isSearchButtonVisible: boolean = true;
 
-  public passengerCount: number = 0;
-  public travelClassText: string = '';
+  passengerCount: number = 0;
+  travelClassText: string = '';
   isPassengerFormValid: boolean = false;
   updatedPassengerData: { name: string, surname: string, birthDate: string; gender: string } = {
     name: '',
@@ -201,38 +205,49 @@ export class AppComponent implements OnInit {
     this.travelClassText = this.getTravelClassText(event.travelClass);
   }
 
-  private formatDate(date: Date): string {
-    const day = date.toLocaleDateString('ru-RU', {day: 'numeric'});
-    const month = date.toLocaleDateString('ru-RU', {month: 'long'}).replace('.', '');
+  private formatDate(date: Date | null): string {
+    const day = date?.toLocaleDateString('ru-RU', {day: 'numeric'});
+    const month = date?.toLocaleDateString('ru-RU', {month: 'long'}).replace('.', '');
 
     return `${day} ${month}`;
   }
 
-  handleSelectedDates(dates: { startDate: Date, endDate: Date | null }) {
-    this.selectedStartDate = dates.startDate;
-    this.selectedEndDate = dates.endDate;
-
-    if (dates.startDate && dates.endDate) {
-      this.selectedDateText = `${this.formatDate(dates.startDate)} ${this.formatDate(dates.endDate)}`;
-    } else if (dates.startDate) {
-      this.selectedDateText = this.formatDate(dates.startDate);
-    } else {
-      const today = new Date();
-      this.selectedDateText = this.formatDate(today);
-    }
-
-    this.selectedDateText = this.generateSelectedDateText(dates);
+  handleSelectedDepartureDate(startDate: Date | null) {
+    this.selectedStartDate = startDate;
+    this.selectedDepartureDate = startDate ? this.formatDate(startDate) : 'Не выбрано';
+    this.generateSelectedDateText();
   }
 
-  private generateSelectedDateText(dates: { startDate: Date, endDate: Date | null }): string {
-    if (dates.startDate && dates.endDate) {
-      return `${this.formatDate(dates.startDate)} ${this.formatDate(dates.endDate)}`;
-    } else if (dates.startDate) {
-      return this.formatDate(dates.startDate);
+
+  handleSelectedReturnDate(endDate: Date | null) {
+    this.selectedEndDate = endDate;
+    this.selectedReturnDate = endDate ? this.formatDate(endDate) : 'Не выбрано';
+    this.generateSelectedDateText();
+  }
+
+  generateSelectedDateText() {
+    if (this.selectedStartDate && this.selectedEndDate) {
+      this.selectedDateText = `${this.formatDate(this.selectedStartDate)} — ${this.formatDate(this.selectedEndDate)}`;
+    } else if (this.selectedStartDate) {
+      this.selectedDateText = this.formatDate(this.selectedStartDate);
     } else {
-      return this.formatDate(new Date());
+      this.selectedDateText = 'Дата не выбрана';
     }
   }
+
+  // handleSelectedDates(dates: { startDate: Date, endDate: Date | null }) {
+  //   this.selectedStartDate = dates.startDate;
+  //   this.selectedEndDate = dates.endDate;
+  //
+  //   if (dates.startDate && dates.endDate) {
+  //     this.selectedDateText = `${this.formatDate(dates.startDate)} ${this.formatDate(dates.endDate)}`;
+  //   } else if (dates.startDate) {
+  //     this.selectedDateText = this.formatDate(dates.startDate);
+  //   } else {
+  //     const today = new Date();
+  //     this.selectedDateText = this.formatDate(today);
+  //   }
+  // }
 
   private getTravelClassText(travelClass: string): string {
     switch (travelClass.toLowerCase()) {

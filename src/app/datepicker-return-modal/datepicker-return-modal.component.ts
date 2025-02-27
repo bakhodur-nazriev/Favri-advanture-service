@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, EventEmitter, model, Output, ViewChild} from '@angular/core';
 import {animate, style, transition, trigger, AnimationEvent} from "@angular/animations";
-import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {CustomDatePickerComponent} from "../custom-date-picker/custom-date-picker.component";
 import {CalendarHeaderComponent, CustomDateAdapter} from '../calendar-header/calendar-header.component';
 
@@ -16,7 +16,7 @@ import {DateAdapter} from "@angular/material/core";
 import {IconComponent} from "../shared/icon/icon.component";
 
 @Component({
-  selector: 'app-datepicker-modal',
+  selector: 'app-datepicker-return-modal',
   standalone: true,
   imports: [
     NgIf,
@@ -32,19 +32,18 @@ import {IconComponent} from "../shared/icon/icon.component";
     MatIconButton,
     CalendarHeaderComponent,
     IconComponent,
-    NgForOf,
-    NgClass
+    NgForOf
   ],
-  templateUrl: './datepicker-modal.component.html',
-  styleUrl: './datepicker-modal.component.scss',
+  templateUrl: './datepicker-return-modal.component.html',
+  styleUrl: './datepicker-return-modal.component.scss',
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
-        style({transform: 'translateY(100%)', opacity: 0}),
-        animate('0.15s ease-in', style({transform: 'translateY(0)', opacity: 1}))
+        style({ transform: 'translateY(100%)', opacity: 0 }),
+        animate('0.1s ease-in', style({ transform: 'translateY(0)', opacity: 1 }))
       ]),
       transition(':leave', [
-        animate('0.15s ease-out', style({transform: 'translateY(100%)', opacity: 0}))
+        animate('0.1s ease-out', style({ transform: 'translateY(100%)', opacity: 0 }))
       ])
     ])
   ],
@@ -55,11 +54,11 @@ import {IconComponent} from "../shared/icon/icon.component";
     },
   ],
 })
-export class DatepickerModalComponent {
-  @Output() startDateSelected = new EventEmitter<{ startDate: Date | null }>();
+export class DatepickerReturnModalComponent {
+  @Output() endDateSelected = new EventEmitter<{ endDate: Date | null }>();
   @ViewChild(MatCalendar) calendar: MatCalendar<Date> | undefined;
 
-  isVisible = true;
+  isVisible = false;
   isAnimating = false;
   selected = model<Date | null>(null);
   startDate: Date | null = null;
@@ -82,7 +81,7 @@ export class DatepickerModalComponent {
     }
   }
 
-  openDepartureModal() {
+  openReturnModal() {
     this.isVisible = true;
   }
 
@@ -101,6 +100,12 @@ export class DatepickerModalComponent {
   }
 
   dateClass = (date: Date): string => {
+    const day = date.getDay();
+
+    if (day === 6 || day === 0) {
+      return 'weekend-day';
+    }
+
     if (this.startDate && !this.endDate) {
       if (date.getTime() === this.startDate.getTime()) {
         return 'mat-calendar-range-start';
@@ -119,18 +124,12 @@ export class DatepickerModalComponent {
       }
     }
 
-    const day = date.getDay();
-
-    if (day === 6 || day === 0) {
-      return 'weekend-day';
-    }
-
     return '';
   };
 
   onDateSelected(date: Date | null) {
     this.selectedDate = date;
-    this.startDateSelected.emit({startDate: date});
+    this.endDateSelected.emit({endDate: date});
     this.cdr.detectChanges();
   }
 
@@ -156,7 +155,7 @@ export class DatepickerModalComponent {
 
   confirmDates() {
     if (this.startDate) {
-      this.startDateSelected.emit({startDate: this.startDate});
+      this.endDateSelected.emit({endDate: this.endDate});
     }
     this.closeModal();
   }

@@ -37,7 +37,11 @@ export class CustomDatePickerComponent {
     this.isVisible = false;
   }
 
+  // onDateChange(event: MatDatepickerInputEvent<Date>) {
+  //   this.selectedDate = event.value;
+  // }
+
   onDateChange(event: MatDatepickerInputEvent<Date>) {
-    this.selectedDate = event.value;
+    this.selectedDate = event.value ?? null;
   }
 }
