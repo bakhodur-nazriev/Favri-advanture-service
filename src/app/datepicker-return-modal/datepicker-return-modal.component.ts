@@ -39,11 +39,11 @@ import {IconComponent} from "../shared/icon/icon.component";
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
-        style({ transform: 'translateY(100%)', opacity: 0 }),
-        animate('0.1s ease-in', style({ transform: 'translateY(0)', opacity: 1 }))
+        style({transform: 'translateY(100%)', opacity: 0}),
+        animate('0.1s ease-in', style({transform: 'translateY(0)', opacity: 1}))
       ]),
       transition(':leave', [
-        animate('0.1s ease-out', style({ transform: 'translateY(100%)', opacity: 0 }))
+        animate('0.1s ease-out', style({transform: 'translateY(100%)', opacity: 0}))
       ])
     ])
   ],
@@ -129,34 +129,37 @@ export class DatepickerReturnModalComponent {
 
   onDateSelected(date: Date | null) {
     this.selectedDate = date;
+
+    if (this.calendar) {
+      this.calendar.updateTodaysDate();
+    }
+
     this.endDateSelected.emit({endDate: date});
+
     this.cdr.detectChanges();
   }
-
-  // onDateSelected(date: Date | null) {
-  //   if (!this.startDate || (this.startDate && this.endDate)) {
-  //     this.startDate = date;
-  //     this.endDate = null;
-  //   } else if (date && this.startDate && date >= this.startDate) {
-  //     this.endDate = date;
-  //   }
-  //
-  //   this.datesSelected.emit({
-  //     startDate: this.startDate as Date,
-  //     endDate: this.endDate,
-  //   });
-  //
-  //   if (this.calendar) {
-  //     this.calendar.updateTodaysDate();
-  //   }
-  //
-  //   this.cdr.detectChanges();
-  // }
 
   confirmDates() {
     if (this.startDate) {
       this.endDateSelected.emit({endDate: this.endDate});
     }
     this.closeModal();
+  }
+
+  clearSelectedDate() {
+    this.selectedDate = null;
+  }
+
+  formatSelectedDate(selectedDate: Date | null): string {
+    if (!selectedDate) return 'дату';
+
+    const day = selectedDate.getDate();
+    const monthNames = [
+      'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+      'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+    ];
+    const month = monthNames[selectedDate.getMonth()];
+
+    return `${day} ${month}`;
   }
 }

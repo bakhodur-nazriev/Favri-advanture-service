@@ -218,7 +218,6 @@ export class AppComponent implements OnInit {
     this.generateSelectedDateText();
   }
 
-
   handleSelectedReturnDate(endDate: Date | null) {
     this.selectedEndDate = endDate;
     this.selectedReturnDate = endDate ? this.formatDate(endDate) : 'Не выбрано';
@@ -234,20 +233,6 @@ export class AppComponent implements OnInit {
       this.selectedDateText = 'Дата не выбрана';
     }
   }
-
-  // handleSelectedDates(dates: { startDate: Date, endDate: Date | null }) {
-  //   this.selectedStartDate = dates.startDate;
-  //   this.selectedEndDate = dates.endDate;
-  //
-  //   if (dates.startDate && dates.endDate) {
-  //     this.selectedDateText = `${this.formatDate(dates.startDate)} ${this.formatDate(dates.endDate)}`;
-  //   } else if (dates.startDate) {
-  //     this.selectedDateText = this.formatDate(dates.startDate);
-  //   } else {
-  //     const today = new Date();
-  //     this.selectedDateText = this.formatDate(today);
-  //   }
-  // }
 
   private getTravelClassText(travelClass: string): string {
     switch (travelClass.toLowerCase()) {

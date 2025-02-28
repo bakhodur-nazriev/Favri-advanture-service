@@ -11,7 +11,7 @@
 
     <div class="d-flex justify-between align-center mb-5">
       <h4 class="date-title">Обратно</h4>
-      <span class="reset-button">Сбросить</span>
+      <span class="reset-button" (click)="clearSelectedDate()">Сбросить</span>
     </div>
 
     <div class="px-3">
@@ -40,7 +40,7 @@
 
       <div class="search-ticket__block" *ngIf="selectedDate">
         <div class="divider"></div>
-        <button class="btn-primary" (click)="confirmDates()">Выбрать дату</button>
+        <button class="btn-primary" (click)="confirmDates()">Выбрать {{ formatSelectedDate(selectedDate) }}</button>
       </div>
     </div>
   </div>

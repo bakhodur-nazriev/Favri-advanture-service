@@ -134,30 +134,27 @@ export class DatepickerModalComponent {
     this.cdr.detectChanges();
   }
 
-  // onDateSelected(date: Date | null) {
-  //   if (!this.startDate || (this.startDate && this.endDate)) {
-  //     this.startDate = date;
-  //     this.endDate = null;
-  //   } else if (date && this.startDate && date >= this.startDate) {
-  //     this.endDate = date;
-  //   }
-  //
-  //   this.datesSelected.emit({
-  //     startDate: this.startDate as Date,
-  //     endDate: this.endDate,
-  //   });
-  //
-  //   if (this.calendar) {
-  //     this.calendar.updateTodaysDate();
-  //   }
-  //
-  //   this.cdr.detectChanges();
-  // }
-
   confirmDates() {
     if (this.startDate) {
       this.startDateSelected.emit({startDate: this.startDate});
     }
     this.closeModal();
+  }
+
+  clearSelectedDate() {
+    this.selectedDate = null;
+  }
+
+  formatSelectedDate(selectedDate: Date | null): string {
+    if (!selectedDate) return 'дату';
+
+    const day = selectedDate.getDate();
+    const monthNames = [
+      'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+      'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+    ];
+    const month = monthNames[selectedDate.getMonth()];
+
+    return `${day} ${month}`;
   }
 }
