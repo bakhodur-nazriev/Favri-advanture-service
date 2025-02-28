@@ -212,9 +212,30 @@ export class AppComponent implements OnInit {
     return `${day} ${month}`;
   }
 
-  handleSelectedDepartureDate(startDate: Date | null) {
-    this.selectedStartDate = startDate;
-    this.selectedDepartureDate = startDate ? this.formatDate(startDate) : 'Не выбрано';
+  // handleSelectedDepartureDate(startDate: Date | null) {
+  //   this.selectedStartDate = startDate;
+  //   this.selectedDepartureDate = startDate ? this.formatDate(startDate) : 'Не выбрано';
+  //   this.generateSelectedDateText();
+  // }
+
+  handleSelectedDepartureDate(dates: Date[]) {
+    if (!dates || dates.length === 0) {
+      this.selectedStartDate = null;
+      this.selectedEndDate = null;
+      this.selectedDepartureDate = 'Не выбрано';
+      this.selectedReturnDate = '';
+    } else if (dates.length === 1) {
+      this.selectedStartDate = dates[0];
+      this.selectedEndDate = null;
+      this.selectedDepartureDate = this.formatDate(dates[0]);
+      this.selectedReturnDate = ''; // Очистка даты возврата
+    } else if (dates.length === 2) {
+      this.selectedStartDate = dates[0];
+      this.selectedEndDate = dates[1];
+      this.selectedDepartureDate = this.formatDate(dates[0]);
+      this.selectedReturnDate = this.formatDate(dates[1]);
+    }
+
     this.generateSelectedDateText();
   }
 

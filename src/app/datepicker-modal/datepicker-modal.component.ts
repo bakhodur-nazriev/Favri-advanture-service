@@ -57,21 +57,67 @@ import {IconComponent} from "../shared/icon/icon.component";
 })
 export class DatepickerModalComponent {
   @Output() startDateSelected = new EventEmitter<{ startDate: Date | null }>();
+  @Output() datesSelected = new EventEmitter<Date[]>
   @ViewChild(MatCalendar) calendar: MatCalendar<Date> | undefined;
 
   isVisible = true;
   isAnimating = false;
   selected = model<Date | null>(null);
-  startDate: Date | null = null;
   selectedDate: Date | null = null;
   calendarHeader = CalendarHeaderComponent;
   months: Date[] = [];
-  weeks: string[] = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+  startDate: Date | null = null;
   minDate: Date = new Date();
   endDate: Date | null = null;
+  weeks: string[] = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
   constructor(private cdr: ChangeDetectorRef) {
     this.generateMonths();
+  }
+
+  onDateSelected(date: Date | null) {
+    if (!this.startDate || (this.startDate && this.endDate)) {
+      this.startDate = date;
+      this.endDate = null;
+    } else if (date && this.startDate && date >= this.startDate) {
+      this.endDate = date;
+    }
+
+    this.datesSelected.emit([this.startDate, this.endDate].filter(d => d !== null) as Date[]);
+
+    if (this.calendar) {
+      this.calendar.updateTodaysDate();
+      this.calendar._goToDateInView(this.startDate || new Date(), 'month');
+    }
+
+    this.cdr.detectChanges();
+  }
+
+  confirmDates() {
+    if (this.startDate) {
+      this.startDateSelected.emit({startDate: this.startDate});
+    }
+    this.closeModal();
+  }
+
+  clearSelectedDate() {
+    this.selectedDate = null;
+    this.startDate = null;
+    this.endDate = null;
+    this.datesSelected.emit([]);
+  }
+
+  formatSelectedDate(selectedDate: Date | null): string {
+    if (!selectedDate) return 'дату';
+
+    const day = selectedDate.getDate();
+    const monthNames = [
+      'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+      'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+    ];
+    const month = monthNames[selectedDate.getMonth()];
+
+    return `${day} ${month}`;
   }
 
   generateMonths() {
@@ -90,13 +136,6 @@ export class DatepickerModalComponent {
     if (!this.isAnimating) {
       this.isAnimating = true;
       this.isVisible = false;
-    }
-  }
-
-  onAnimationEvent(event: AnimationEvent) {
-    if (event.phaseName === 'done' && event.toState === 'void') {
-      this.isVisible = false;
-      this.isAnimating = false;
     }
   }
 
@@ -128,33 +167,10 @@ export class DatepickerModalComponent {
     return '';
   };
 
-  onDateSelected(date: Date | null) {
-    this.selectedDate = date;
-    this.startDateSelected.emit({startDate: date});
-    this.cdr.detectChanges();
-  }
-
-  confirmDates() {
-    if (this.startDate) {
-      this.startDateSelected.emit({startDate: this.startDate});
+  onAnimationEvent(event: AnimationEvent) {
+    if (event.phaseName === 'done' && event.toState === 'void') {
+      this.isVisible = false;
+      this.isAnimating = false;
     }
-    this.closeModal();
-  }
-
-  clearSelectedDate() {
-    this.selectedDate = null;
-  }
-
-  formatSelectedDate(selectedDate: Date | null): string {
-    if (!selectedDate) return 'дату';
-
-    const day = selectedDate.getDate();
-    const monthNames = [
-      'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
-      'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
-    ];
-    const month = monthNames[selectedDate.getMonth()];
-
-    return `${day} ${month}`;
   }
 }

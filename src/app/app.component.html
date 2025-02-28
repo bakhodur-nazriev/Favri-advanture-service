@@ -72,8 +72,8 @@
           <span
             [ngClass]="{'inactive-selected-date': !selectedReturnDate, 'active-selected-date': selectedReturnDate}"
           >
-                  {{ selectedReturnDate || 'Обратно' }}
-                </span>
+            {{ selectedReturnDate || 'Обратно' }}
+          </span>
         </div>
       </div>
     </div>
@@ -113,7 +113,7 @@
 
   <app-datepicker-modal
     #datepickerDepartureModal
-    (startDateSelected)="handleSelectedDepartureDate($event.startDate)"
+    (datesSelected)="handleSelectedDepartureDate($event)"
   />
 
   <app-datepicker-return-modal

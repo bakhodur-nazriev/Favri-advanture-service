@@ -33,13 +33,14 @@
             [dateClass]="dateClass"
             (selectedChange)="onDateSelected($event)">
           </mat-calendar>
-
         </mat-card>
       </div>
 
       <div class="search-ticket__block" *ngIf="selectedDate">
         <div class="divider"></div>
-        <button class="btn-primary" (click)="confirmDates()">Выбрать {{ formatSelectedDate(selectedDate) }}</button>
+        <button class="btn-primary" (click)="confirmDates()">
+          Выбрать {{ formatSelectedDate(selectedDate) }}
+        </button>
       </div>
     </div>
   </div>
