@@ -4,6 +4,7 @@ import {AddPassengerModalComponent} from "../add-passenger-modal/add-passenger-m
 import {ProfileService} from "../services/profile.service";
 import {EditPassengerModalComponent} from "../edit-passenger-modal/edit-passenger-modal.component";
 import {ActivatedRoute} from "@angular/router";
+import {IconComponent} from "../shared/icon/icon.component";
 
 @Component({
   selector: 'app-profile',
@@ -14,7 +15,8 @@ import {ActivatedRoute} from "@angular/router";
     NgForOf,
     EditPassengerModalComponent,
     NgOptimizedImage,
-    JsonPipe
+    JsonPipe,
+    IconComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -54,6 +56,7 @@ export class ProfileComponent implements OnInit {
     this.profileService.getPassengers(this.walletPhone).subscribe({
       next: (data) => {
         this.profileDataList = data.data;
+        console.log(data.data.length);
       },
       error: (err) => {
         console.error('Error loading profile:', err);
@@ -64,12 +67,10 @@ export class ProfileComponent implements OnInit {
   loadTickets(): void {
     this.profileService.getTickets(this.walletPhone).subscribe({
       next: (data) => {
-        console.log(data.data);
         this.ticketsDataList = data.data;
         this.parsedBookDataList = this.ticketsDataList.map((ticket) => {
           return JSON.parse(ticket.bookData);
         });
-        console.log(this.parsedBookDataList);
       },
       error: (err) => {
         console.error('Error loading profile:', err);

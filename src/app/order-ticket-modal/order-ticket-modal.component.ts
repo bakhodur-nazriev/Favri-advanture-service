@@ -8,6 +8,7 @@ import {HttpClient} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {ModalOrderSucceedComponent} from "../modal-order-succeed/modal-order-succeed.component";
 import {ModalStateService} from "../services/modal-state.service";
+import {IconComponent} from "../shared/icon/icon.component";
 
 @Component({
   selector: 'app-order-ticket-modal',
@@ -18,7 +19,8 @@ import {ModalStateService} from "../services/modal-state.service";
     FormsModule,
     NgForOf,
     ModalOrderSucceedComponent,
-    JsonPipe
+    JsonPipe,
+    IconComponent
   ],
   templateUrl: './order-ticket-modal.component.html',
   styleUrl: './order-ticket-modal.component.scss',
@@ -70,13 +72,13 @@ export class OrderTicketModalComponent implements OnInit {
   ) {
   }
 
-  public isLoading: boolean = false;
-  public isValidationTriggered = false;
-  public isVisible: boolean = false;
-  public email: string = '';
-  public phone: string = '';
-  public walletPhone: string = "123456789";
-  public validationPopup: boolean = false;
+  isLoading: boolean = false;
+  isValidationTriggered = false;
+  isVisible: boolean = false;
+  email: string = '';
+  phone: string = '';
+  walletPhone: string = "123456789";
+  validationPopup: boolean = false;
   isDetailModalOpen = true;
 
   openModal() {

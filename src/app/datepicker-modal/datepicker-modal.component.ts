@@ -60,7 +60,7 @@ export class DatepickerModalComponent {
   @Output() datesSelected = new EventEmitter<Date[]>
   @ViewChild(MatCalendar) calendar: MatCalendar<Date> | undefined;
 
-  isVisible = true;
+  isVisible = false;
   isAnimating = false;
   selected = model<Date | null>(null);
   selectedDate: Date | null = null;

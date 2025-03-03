@@ -4,6 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {ProfileService} from "../services/profile.service";
 import {ActivatedRoute} from "@angular/router";
+import {IconComponent} from "../shared/icon/icon.component";
 
 @Component({
   selector: 'app-edit-passenger-modal',
@@ -11,7 +12,8 @@ import {ActivatedRoute} from "@angular/router";
   imports: [
     FormsModule,
     NgForOf,
-    NgIf
+    NgIf,
+    IconComponent
   ],
   templateUrl: './edit-passenger-modal.component.html',
   styleUrl: './edit-passenger-modal.component.scss'

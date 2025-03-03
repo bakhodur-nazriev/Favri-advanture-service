@@ -2,14 +2,16 @@ import {Component} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {animate, AnimationEvent, style, transition, trigger} from "@angular/animations";
 import {FormsModule} from "@angular/forms";
+import {IconComponent} from "../shared/icon/icon.component";
 
 @Component({
   selector: 'app-filter-tickets',
   standalone: true,
-  imports: [
-    NgIf,
-    FormsModule
-  ],
+    imports: [
+        NgIf,
+        FormsModule,
+        IconComponent
+    ],
   templateUrl: './filter-tickets.component.html',
   styleUrl: './filter-tickets.component.scss',
   animations: [
