@@ -1,4 +1,13 @@
-import {ChangeDetectorRef, Component, EventEmitter, model, Output, ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  model,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import {animate, style, transition, trigger, AnimationEvent} from "@angular/animations";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {CustomDatePickerComponent} from "../custom-date-picker/custom-date-picker.component";
@@ -56,18 +65,18 @@ import {IconComponent} from "../shared/icon/icon.component";
 })
 export class DatepickerReturnModalComponent {
   @Output() endDateSelected = new EventEmitter<{ endDate: Date | null }>();
-  @ViewChild(MatCalendar) calendar: MatCalendar<Date> | undefined;
+  @Output() datesSelected = new EventEmitter<Date[]>
+  @ViewChildren(MatCalendar) calendars!: QueryList<MatCalendar<Date>>
 
   isVisible = false;
   isAnimating = false;
-  selected = model<Date | null>(null);
-  startDate: Date | null = null;
-  selectedDate: Date | null = null;
+  selectedDates: Date[] = [];
   calendarHeader = CalendarHeaderComponent;
   months: Date[] = [];
-  weeks: string[] = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+  startDate: Date | null = null;
   minDate: Date = new Date();
   endDate: Date | null = null;
+  weeks: string[] = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
   constructor(private cdr: ChangeDetectorRef) {
     this.generateMonths();
@@ -106,60 +115,76 @@ export class DatepickerReturnModalComponent {
       return 'weekend-day';
     }
 
-    if (this.startDate && !this.endDate) {
-      if (date.getTime() === this.startDate.getTime()) {
-        return 'mat-calendar-range-start';
-      }
-    }
-
-    if (this.startDate && this.endDate) {
-      if (date.getTime() === this.startDate.getTime()) {
-        return 'mat-calendar-range-start';
-      }
-      if (date.getTime() === this.endDate.getTime()) {
-        return 'mat-calendar-range-end';
-      }
-      if (date > this.startDate && date < this.endDate) {
-        return 'mat-calendar-in-range';
-      }
+    if (this.endDate && date.getTime() === this.endDate.getTime()) {
+      return 'mat-calendar-range-end';
     }
 
     return '';
   };
 
   onDateSelected(date: Date | null) {
-    this.selectedDate = date;
+    if (!date) return;
 
-    if (this.calendar) {
-      this.calendar.updateTodaysDate();
+    // Если endDate уже выбран и пользователь нажимает на ту же дату, отменяем выбор
+    if (this.endDate && date.getTime() === this.endDate.getTime()) {
+      this.endDate = null;
+    } else {
+      this.endDate = date;
     }
 
-    this.endDateSelected.emit({endDate: date});
+    // Отправляем выбранную дату
+    this.endDateSelected.emit({ endDate: this.endDate });
+
+    // Обновляем все календари
+    setTimeout(() => {
+      this.calendars.forEach(calendar => calendar.updateTodaysDate());
+    }, 0);
 
     this.cdr.detectChanges();
   }
 
   confirmDates() {
-    if (this.startDate) {
-      this.endDateSelected.emit({endDate: this.endDate});
+    if (this.endDate) {
+      this.endDateSelected.emit({ endDate: this.endDate });
     }
     this.closeModal();
   }
 
-  clearSelectedDate() {
-    this.selectedDate = null;
-  }
-
-  formatSelectedDate(selectedDate: Date | null): string {
-    if (!selectedDate) return 'дату';
-
-    const day = selectedDate.getDate();
+  formatSelectedDate(): string {
     const monthNames = [
       'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
       'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
     ];
-    const month = monthNames[selectedDate.getMonth()];
 
-    return `${day} ${month}`;
+    if (this.startDate && this.endDate) {
+      const startDay = this.startDate.getDate();
+      const endDay = this.endDate.getDate();
+
+      const startMonth = monthNames[this.startDate.getMonth()];
+      const endMonth = monthNames[this.endDate.getMonth()];
+
+      if (this.startDate.getMonth() === this.endDate.getMonth()) {
+        return `${startDay} - ${endDay} ${startMonth}`;
+      } else {
+        return `${startDay} ${startMonth} - ${endDay} ${endMonth}`;
+      }
+    }
+
+    if (this.startDate) {
+      return `${this.startDate.getDate()} ${monthNames[this.startDate.getMonth()]}`;
+    }
+
+    return 'дату';
+  }
+
+  clearSelectedDate() {
+    this.endDate = null;
+    this.endDateSelected.emit({ endDate: null });
+
+    if (this.calendars) {
+      this.calendars.forEach(calendar => calendar.updateTodaysDate());
+    }
+
+    this.cdr.detectChanges();
   }
 }

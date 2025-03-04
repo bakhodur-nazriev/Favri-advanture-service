@@ -78,7 +78,7 @@ export class AppComponent implements OnInit {
   @ViewChild('detailPassengerModal') detailPassengerModal!: DetailPassengerModalComponent;
   @ViewChild('modalOrderSucceed') modalOrderSucceed!: ModalOrderSucceedComponent;
 
-  private readonly companyReqId = 4;
+  private readonly companyReqId = 26;
   private readonly secretKey = '98357c92347b70b6bc0ea97f0acf84040sa2dof5ba7411218c3f1087316fd3663fc6f99';
   private readonly apiUrl = 'https://bft-alpha.55fly.ru/api';
 
@@ -133,6 +133,58 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private passengerDataService: PassengerDataService,
   ) {
+  }
+
+  handleSelectedDepartureDate(dates: Date[]) {
+    if (!dates || dates.length === 0) {
+      this.selectedStartDate = null;
+      this.selectedEndDate = null;
+      this.selectedDepartureDate = '';
+      this.selectedReturnDate = '';
+    } else if (dates.length === 1) {
+      this.selectedStartDate = dates[0];
+      this.selectedEndDate = null;
+      this.selectedDepartureDate = this.formatDate(dates[0]);
+      this.selectedReturnDate = '';
+    } else if (dates.length === 2) {
+      this.selectedStartDate = dates[0];
+      this.selectedEndDate = dates[1];
+      this.selectedDepartureDate = this.formatDate(dates[0]);
+      this.selectedReturnDate = this.formatDate(dates[1]);
+    }
+
+    this.generateSelectedDateText();
+  }
+
+  handleSelectedReturnDate(dates: Date[]) {
+    if (!dates || dates.length === 0) {
+      this.selectedStartDate = null;
+      this.selectedEndDate = null;
+      this.selectedDepartureDate = '';
+      this.selectedReturnDate = '';
+    } else if (dates.length === 1) {
+      this.selectedStartDate = dates[0];
+      this.selectedEndDate = null;
+      this.selectedDepartureDate = this.formatDate(dates[0]);
+      this.selectedReturnDate = '';
+    } else if (dates.length === 2) {
+      this.selectedStartDate = dates[0];
+      this.selectedEndDate = dates[1];
+      this.selectedDepartureDate = this.formatDate(dates[0]);
+      this.selectedReturnDate = this.formatDate(dates[1]);
+    }
+
+    this.generateSelectedDateText();
+  }
+
+  generateSelectedDateText() {
+    if (this.selectedStartDate && this.selectedEndDate) {
+      this.selectedDateText = `${this.formatDate(this.selectedStartDate)} — ${this.formatDate(this.selectedEndDate)}`;
+    } else if (this.selectedStartDate) {
+      this.selectedDateText = this.formatDate(this.selectedStartDate);
+    } else {
+      this.selectedDateText = 'Дата не выбрана';
+    }
   }
 
   onPassengerDataUpdated(data: { name: string, surname: string, birthDate: string; gender: string }) {
@@ -210,49 +262,6 @@ export class AppComponent implements OnInit {
     const month = date?.toLocaleDateString('ru-RU', {month: 'long'}).replace('.', '');
 
     return `${day} ${month}`;
-  }
-
-  // handleSelectedDepartureDate(startDate: Date | null) {
-  //   this.selectedStartDate = startDate;
-  //   this.selectedDepartureDate = startDate ? this.formatDate(startDate) : 'Не выбрано';
-  //   this.generateSelectedDateText();
-  // }
-
-  handleSelectedDepartureDate(dates: Date[]) {
-    if (!dates || dates.length === 0) {
-      this.selectedStartDate = null;
-      this.selectedEndDate = null;
-      this.selectedDepartureDate = 'Не выбрано';
-      this.selectedReturnDate = '';
-    } else if (dates.length === 1) {
-      this.selectedStartDate = dates[0];
-      this.selectedEndDate = null;
-      this.selectedDepartureDate = this.formatDate(dates[0]);
-      this.selectedReturnDate = ''; // Очистка даты возврата
-    } else if (dates.length === 2) {
-      this.selectedStartDate = dates[0];
-      this.selectedEndDate = dates[1];
-      this.selectedDepartureDate = this.formatDate(dates[0]);
-      this.selectedReturnDate = this.formatDate(dates[1]);
-    }
-
-    this.generateSelectedDateText();
-  }
-
-  handleSelectedReturnDate(endDate: Date | null) {
-    this.selectedEndDate = endDate;
-    this.selectedReturnDate = endDate ? this.formatDate(endDate) : 'Не выбрано';
-    this.generateSelectedDateText();
-  }
-
-  generateSelectedDateText() {
-    if (this.selectedStartDate && this.selectedEndDate) {
-      this.selectedDateText = `${this.formatDate(this.selectedStartDate)} — ${this.formatDate(this.selectedEndDate)}`;
-    } else if (this.selectedStartDate) {
-      this.selectedDateText = this.formatDate(this.selectedStartDate);
-    } else {
-      this.selectedDateText = 'Дата не выбрана';
-    }
   }
 
   private getTravelClassText(travelClass: string): string {

@@ -1,4 +1,12 @@
-import {ChangeDetectorRef, Component, EventEmitter, model, Output, ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  model,
+  Output,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
 import {animate, style, transition, trigger, AnimationEvent} from "@angular/animations";
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {CustomDatePickerComponent} from "../custom-date-picker/custom-date-picker.component";
@@ -58,39 +66,20 @@ import {IconComponent} from "../shared/icon/icon.component";
 export class DatepickerModalComponent {
   @Output() startDateSelected = new EventEmitter<{ startDate: Date | null }>();
   @Output() datesSelected = new EventEmitter<Date[]>
-  @ViewChild(MatCalendar) calendar: MatCalendar<Date> | undefined;
+  @ViewChildren(MatCalendar) calendars!: QueryList<MatCalendar<Date>>;
 
   isVisible = false;
   isAnimating = false;
-  selected = model<Date | null>(null);
-  selectedDate: Date | null = null;
-  calendarHeader = CalendarHeaderComponent;
-  months: Date[] = [];
   startDate: Date | null = null;
   minDate: Date = new Date();
   endDate: Date | null = null;
+  months: Date[] = [];
   weeks: string[] = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+  calendarHeader = CalendarHeaderComponent;
+  selectedDates: Date | null = null;
 
   constructor(private cdr: ChangeDetectorRef) {
     this.generateMonths();
-  }
-
-  onDateSelected(date: Date | null) {
-    if (!this.startDate || (this.startDate && this.endDate)) {
-      this.startDate = date;
-      this.endDate = null;
-    } else if (date && this.startDate && date >= this.startDate) {
-      this.endDate = date;
-    }
-
-    this.datesSelected.emit([this.startDate, this.endDate].filter(d => d !== null) as Date[]);
-
-    if (this.calendar) {
-      this.calendar.updateTodaysDate();
-      this.calendar._goToDateInView(this.startDate || new Date(), 'month');
-    }
-
-    this.cdr.detectChanges();
   }
 
   confirmDates() {
@@ -100,24 +89,31 @@ export class DatepickerModalComponent {
     this.closeModal();
   }
 
-  clearSelectedDate() {
-    this.selectedDate = null;
-    this.startDate = null;
-    this.endDate = null;
-    this.datesSelected.emit([]);
-  }
-
-  formatSelectedDate(selectedDate: Date | null): string {
-    if (!selectedDate) return 'дату';
-
-    const day = selectedDate.getDate();
+  formatSelectedDate(): string {
     const monthNames = [
       'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
       'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
     ];
-    const month = monthNames[selectedDate.getMonth()];
 
-    return `${day} ${month}`;
+    if (this.startDate && this.endDate) {
+      const startDay = this.startDate.getDate();
+      const endDay = this.endDate.getDate();
+
+      const startMonth = monthNames[this.startDate.getMonth()];
+      const endMonth = monthNames[this.endDate.getMonth()];
+
+      if (this.startDate.getMonth() === this.endDate.getMonth()) {
+        return `${startDay} - ${endDay} ${startMonth}`;
+      } else {
+        return `${startDay} ${startMonth} - ${endDay} ${endMonth}`;
+      }
+    }
+
+    if (this.startDate) {
+      return `${this.startDate.getDate()} ${monthNames[this.startDate.getMonth()]}`;
+    }
+
+    return 'дату';
   }
 
   generateMonths() {
@@ -147,25 +143,64 @@ export class DatepickerModalComponent {
     }
 
     if (this.startDate && this.endDate) {
-      if (date.getTime() === this.startDate.getTime()) {
+      const time = date.getTime();
+      const start = this.startDate.getTime();
+      const end = this.endDate.getTime();
+
+      if (time === start) {
         return 'mat-calendar-range-start';
       }
-      if (date.getTime() === this.endDate.getTime()) {
+      if (time === end) {
         return 'mat-calendar-range-end';
       }
-      if (date > this.startDate && date < this.endDate) {
+      if (time > start && time < end) {
         return 'mat-calendar-in-range';
       }
     }
 
     const day = date.getDay();
-
     if (day === 6 || day === 0) {
       return 'weekend-day';
     }
 
     return '';
   };
+
+  onDateSelected(date: Date | null) {
+    if (!date) return;
+
+    if (!this.startDate || (this.startDate && this.endDate)) {
+      this.startDate = date;
+      this.endDate = null;
+    } else if (date && this.startDate && date >= this.startDate) {
+      if (this.endDate && date.getTime() === this.endDate.getTime()) {
+        this.startDate = this.endDate;
+        this.endDate = null;
+      } else {
+        this.endDate = date;
+      }
+    }
+
+    this.datesSelected.emit([this.startDate, this.endDate].filter(d => d !== null) as Date[]);
+
+    setTimeout(() => {
+      this.calendars.forEach(calendar => calendar.updateTodaysDate());
+    }, 0);
+
+    this.cdr.detectChanges();
+  }
+
+  clearSelectedDate() {
+    this.startDate = null;
+    this.endDate = null;
+    this.datesSelected.emit([]);
+
+    if (this.calendars) {
+      this.calendars.forEach(calendar => calendar.updateTodaysDate());
+    }
+
+    this.cdr.detectChanges();
+  }
 
   onAnimationEvent(event: AnimationEvent) {
     if (event.phaseName === 'done' && event.toState === 'void') {
