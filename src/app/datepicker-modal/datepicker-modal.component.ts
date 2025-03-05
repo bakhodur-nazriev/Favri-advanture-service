@@ -82,6 +82,17 @@ export class DatepickerModalComponent {
     this.generateMonths();
   }
 
+  openDepartureModal() {
+    this.isVisible = true;
+  }
+
+  closeModal() {
+    if (!this.isAnimating) {
+      this.isAnimating = true;
+      this.isVisible = false;
+    }
+  }
+
   confirmDates() {
     if (this.startDate) {
       this.startDateSelected.emit({startDate: this.startDate});
@@ -124,17 +135,6 @@ export class DatepickerModalComponent {
     }
   }
 
-  openDepartureModal() {
-    this.isVisible = true;
-  }
-
-  closeModal() {
-    if (!this.isAnimating) {
-      this.isAnimating = true;
-      this.isVisible = false;
-    }
-  }
-
   dateClass = (date: Date): string => {
     if (this.startDate && !this.endDate) {
       if (date.getTime() === this.startDate.getTime()) {
@@ -173,8 +173,8 @@ export class DatepickerModalComponent {
       this.startDate = date;
       this.endDate = null;
     } else if (date && this.startDate && date >= this.startDate) {
+
       if (this.endDate && date.getTime() === this.endDate.getTime()) {
-        this.startDate = this.endDate;
         this.endDate = null;
       } else {
         this.endDate = date;
@@ -191,6 +191,7 @@ export class DatepickerModalComponent {
   }
 
   clearSelectedDate() {
+    this.selectedDates = null;
     this.startDate = null;
     this.endDate = null;
     this.datesSelected.emit([]);
@@ -198,7 +199,6 @@ export class DatepickerModalComponent {
     if (this.calendars) {
       this.calendars.forEach(calendar => calendar.updateTodaysDate());
     }
-
     this.cdr.detectChanges();
   }
 

@@ -64,30 +64,22 @@ import {IconComponent} from "../shared/icon/icon.component";
   ],
 })
 export class DatepickerReturnModalComponent {
-  @Output() endDateSelected = new EventEmitter<{ endDate: Date | null }>();
+  @Output() startDateSelected = new EventEmitter<{ startDate: Date | null }>();
   @Output() datesSelected = new EventEmitter<Date[]>
   @ViewChildren(MatCalendar) calendars!: QueryList<MatCalendar<Date>>
 
   isVisible = false;
   isAnimating = false;
-  selectedDates: Date[] = [];
-  calendarHeader = CalendarHeaderComponent;
-  months: Date[] = [];
   startDate: Date | null = null;
   minDate: Date = new Date();
   endDate: Date | null = null;
+  months: Date[] = [];
   weeks: string[] = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+  calendarHeader = CalendarHeaderComponent;
+  selectedDates: Date | null = null;
 
   constructor(private cdr: ChangeDetectorRef) {
     this.generateMonths();
-  }
-
-  generateMonths() {
-    const now = new Date();
-    for (let i = 0; i < 12; i++) {
-      const month = new Date(now.getFullYear(), now.getMonth() + i, 1);
-      this.months.push(month);
-    }
   }
 
   openReturnModal() {
@@ -101,6 +93,52 @@ export class DatepickerReturnModalComponent {
     }
   }
 
+  generateMonths() {
+    const now = new Date();
+    for (let i = 0; i < 12; i++) {
+      const month = new Date(now.getFullYear(), now.getMonth() + i, 1);
+      this.months.push(month);
+    }
+  }
+
+  dateClass = (date: Date): string => {
+    if (this.startDate && !this.endDate) {
+      if (date.getTime() === this.startDate.getTime()) {
+        return 'mat-calendar-range-start';
+      }
+    }
+
+    if (this.startDate && this.endDate) {
+      const time = date.getTime();
+      const start = this.startDate.getTime();
+      const end = this.endDate.getTime();
+
+      if (time === start) {
+        return 'mat-calendar-range-start';
+      }
+      if (time === end) {
+        return 'mat-calendar-range-end';
+      }
+      if (time > start && time < end) {
+        return 'mat-calendar-in-range';
+      }
+    }
+
+    const day = date.getDay();
+    if (day === 6 || day === 0) {
+      return 'weekend-day';
+    }
+
+    return '';
+  };
+
+  confirmDates() {
+    if (this.startDate) {
+      this.startDateSelected.emit({startDate: this.startDate});
+    }
+    this.closeModal();
+  }
+
   onAnimationEvent(event: AnimationEvent) {
     if (event.phaseName === 'done' && event.toState === 'void') {
       this.isVisible = false;
@@ -108,46 +146,28 @@ export class DatepickerReturnModalComponent {
     }
   }
 
-  dateClass = (date: Date): string => {
-    const day = date.getDay();
-
-    if (day === 6 || day === 0) {
-      return 'weekend-day';
-    }
-
-    if (this.endDate && date.getTime() === this.endDate.getTime()) {
-      return 'mat-calendar-range-end';
-    }
-
-    return '';
-  };
-
   onDateSelected(date: Date | null) {
     if (!date) return;
 
-    // Если endDate уже выбран и пользователь нажимает на ту же дату, отменяем выбор
-    if (this.endDate && date.getTime() === this.endDate.getTime()) {
+    if (!this.startDate || (this.startDate && this.endDate)) {
+      this.startDate = date;
       this.endDate = null;
-    } else {
-      this.endDate = date;
+    } else if (date && this.startDate && date >= this.startDate) {
+
+      if (this.endDate && date.getTime() === this.endDate.getTime()) {
+        this.endDate = null;
+      } else {
+        this.endDate = date;
+      }
     }
 
-    // Отправляем выбранную дату
-    this.endDateSelected.emit({ endDate: this.endDate });
+    this.datesSelected.emit([this.startDate, this.endDate].filter(d => d !== null) as Date[]);
 
-    // Обновляем все календари
     setTimeout(() => {
       this.calendars.forEach(calendar => calendar.updateTodaysDate());
     }, 0);
 
     this.cdr.detectChanges();
-  }
-
-  confirmDates() {
-    if (this.endDate) {
-      this.endDateSelected.emit({ endDate: this.endDate });
-    }
-    this.closeModal();
   }
 
   formatSelectedDate(): string {
@@ -178,13 +198,14 @@ export class DatepickerReturnModalComponent {
   }
 
   clearSelectedDate() {
+    this.selectedDates = null;
+    this.startDate = null;
     this.endDate = null;
-    this.endDateSelected.emit({ endDate: null });
+    this.datesSelected.emit([]);
 
     if (this.calendars) {
       this.calendars.forEach(calendar => calendar.updateTodaysDate());
     }
-
     this.cdr.detectChanges();
   }
 }

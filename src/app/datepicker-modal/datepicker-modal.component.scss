@@ -103,7 +103,8 @@
   border: none !important;
 }
 
-::ng-deep .mat-calendar-range-start {
+::ng-deep .mat-calendar-range-start,
+::ng-deep .mat-calendar-range-end {
   background-color: var(--primary-color) !important;
   color: #fff !important;
   border-radius: 10px !important;
@@ -128,6 +129,7 @@
 ::ng-deep .mat-calendar-body-cell-content {
   border-radius: 10px !important;
   font-size: 16px !important;
+  //color: #;
 }
 
 ::ng-deep .mat-calendar-content {
