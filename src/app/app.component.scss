@@ -78,6 +78,11 @@
   .left-block,
   .right-block {
     width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
 
     .button-dates {
       display: flex;
@@ -114,6 +119,7 @@
     align-items: center;
     padding-left: 15px;
   }
+
 }
 
 .input-from__block,
@@ -136,4 +142,14 @@
 
 .active-selected-date {
   color: #030712;
+}
+
+.invalid-date {
+  border: 1px solid #FF1216 !important;
+  border-radius: 8px !important;
+}
+
+.invalid-date__title {
+  color: #FF1216;
+  font-size: 14px;
 }

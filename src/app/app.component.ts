@@ -117,6 +117,7 @@ export class AppComponent implements OnInit {
   selectedPassenger: any;
   isProfileModalOpen: boolean = false;
   isSearchButtonVisible: boolean = true;
+  isDateValid: boolean = true;
 
   passengerCount: number = 0;
   travelClassText: string = '';
@@ -141,37 +142,19 @@ export class AppComponent implements OnInit {
       this.selectedEndDate = null;
       this.selectedDepartureDate = '';
       this.selectedReturnDate = '';
+      this.isDateValid = false;
     } else if (dates.length === 1) {
       this.selectedStartDate = dates[0];
       this.selectedEndDate = null;
       this.selectedDepartureDate = this.formatDate(dates[0]);
       this.selectedReturnDate = '';
+      this.isDateValid = true;
     } else if (dates.length === 2) {
       this.selectedStartDate = dates[0];
       this.selectedEndDate = dates[1];
       this.selectedDepartureDate = this.formatDate(dates[0]);
       this.selectedReturnDate = this.formatDate(dates[1]);
-    }
-
-    this.generateSelectedDateText();
-  }
-
-  handleSelectedReturnDate(dates: Date[]) {
-    if (!dates || dates.length === 0) {
-      this.selectedStartDate = null;
-      this.selectedEndDate = null;
-      this.selectedDepartureDate = '';
-      this.selectedReturnDate = '';
-    } else if (dates.length === 1) {
-      this.selectedStartDate = dates[0];
-      this.selectedEndDate = null;
-      this.selectedDepartureDate = this.formatDate(dates[0]);
-      this.selectedReturnDate = '';
-    } else if (dates.length === 2) {
-      this.selectedStartDate = dates[0];
-      this.selectedEndDate = dates[1];
-      this.selectedDepartureDate = this.formatDate(dates[0]);
-      this.selectedReturnDate = this.formatDate(dates[1]);
+      this.isDateValid = true;
     }
 
     this.generateSelectedDateText();
@@ -278,6 +261,13 @@ export class AppComponent implements OnInit {
   }
 
   searchTickets() {
+    if (!this.selectedStartDate) {
+      this.isDateValid = false;
+      return;
+    }
+
+    this.isDateValid = true;
+
     this.isSearchButtonVisible = false;
     this.passengerDataService.sendPassengersEvent(this.tempPassengers);
 

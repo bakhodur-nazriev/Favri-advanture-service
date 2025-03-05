@@ -152,10 +152,10 @@ export class DatepickerReturnModalComponent {
     if (!this.startDate || (this.startDate && this.endDate)) {
       this.startDate = date;
       this.endDate = null;
-    } else if (date && this.startDate && date >= this.startDate) {
-
-      if (this.endDate && date.getTime() === this.endDate.getTime()) {
-        this.endDate = null;
+    } else {
+      if (date < this.startDate) {
+        this.endDate = this.startDate;
+        this.startDate = date;
       } else {
         this.endDate = date;
       }

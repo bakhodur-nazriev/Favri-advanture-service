@@ -50,9 +50,10 @@
   </div>
 
   <div class="date-passengers__block">
-    <div class="d-flex justify-center gap-2">
+    <div class="d-flex justify-center align-start gap-2">
       <div class="left-block">
-        <div class="button-dates" (click)="datepickerDepartureModal.openDepartureModal()">
+        <div [ngClass]="{'invalid-date': !isDateValid}" class="button-dates"
+             (click)="datepickerDepartureModal.openDepartureModal()">
           <app-icon *ngIf="selectedDepartureDate" icon="calendar-icon" color="none"/>
           <app-icon *ngIf="!selectedDepartureDate" icon="calendar-inactive-icon" color="none"/>
 
@@ -62,6 +63,7 @@
             {{ selectedDepartureDate || 'Когда' }}
           </span>
         </div>
+        <span *ngIf=" !isDateValid" class="invalid-date__title">Укажите дату</span>
       </div>
 
       <div class="right-block">
