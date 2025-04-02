@@ -245,7 +245,7 @@
       <li class="inputs-list__item">
         <div
           class="inputs-list__item-block"
-          [class.error]="isValidationExpirationTriggered && !isValidDate(passengerDataList[selectedIndex]?.expiration_date)"
+          [class.error]="isValidationExpirationTriggered && !isValidDate(passengerDataList[selectedIndex].expiration_date)"
         >
           <span class="date-icon">
             <app-icon icon="calendar-inactive-icon" color="none"/>

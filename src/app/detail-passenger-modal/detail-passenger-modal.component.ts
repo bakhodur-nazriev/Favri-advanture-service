@@ -5,8 +5,6 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/m
 import {FormsModule} from "@angular/forms";
 import {PassengerDataService} from "../services/passenger-data.service";
 import {COUNTRIES} from '../../coutries';
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs";
 import {ProfileService} from "../services/profile.service";
 import {ActivatedRoute} from "@angular/router";
 import {ModalStateService} from "../services/modal-state.service";
@@ -42,7 +40,7 @@ import {IconComponent} from "../shared/icon/icon.component";
 export class DetailPassengerModalComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Input() passenger: any = {};
-  @Output() validationStatusChanged = new EventEmitter<boolean>();
+  @Output() validationStatusChanged = new EventEmitter<any>();
   @Output() passengerDataUpdated = new EventEmitter<{
     name: string,
     surname: string,
@@ -97,15 +95,20 @@ export class DetailPassengerModalComponent implements OnInit {
 
     const [day, month, year] = dateString.split('.').map(Number);
     const date = new Date(year, month - 1, day);
-    return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+    return date.getFullYear() === year &&
+      date.getMonth() === month - 1 &&
+      date.getDate() === day;
   }
 
   formatDateInput(event: Event): void {
     const input = event.target as HTMLInputElement;
     let value = input.value.replace(/\D/g, '').slice(0, 8);
 
-    if (value.length >= 3) value = value.slice(0, 2) + '.' + value.slice(2);
-    if (value.length >= 6) value = value.slice(0, 5) + '.' + value.slice(5);
+    if (value.length > 4) {
+      value = value.slice(0, 2) + '.' + value.slice(2, 4) + '.' + value.slice(4);
+    } else if (value.length > 2) {
+      value = value.slice(0, 2) + '.' + value.slice(2);
+    }
 
     input.value = value;
     this.selectedDate = value;
@@ -115,8 +118,11 @@ export class DetailPassengerModalComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     let value = input.value.replace(/\D/g, '').slice(0, 8);
 
-    if (value.length >= 3) value = value.slice(0, 2) + '.' + value.slice(2);
-    if (value.length >= 6) value = value.slice(0, 5) + '.' + value.slice(5);
+    if (value.length > 4) {
+      value = value.slice(0, 2) + '.' + value.slice(2, 4) + '.' + value.slice(4);
+    } else if (value.length > 2) {
+      value = value.slice(0, 2) + '.' + value.slice(2);
+    }
 
     input.value = value;
     this.selectedDocumentExpireDate = value;
@@ -261,7 +267,9 @@ export class DetailPassengerModalComponent implements OnInit {
         citizenship: this.selectedCountryCode,
       }
     }
-    this.selectedPassenger.isValidPassenger = true
+
+    this.updatePassengerData();
+    this.selectedPassenger.isValidPassenger = true;
     this.passengerDataService.setPassengersDataList(this.passengerDataList);
     this.closeModal();
   }
@@ -335,6 +343,10 @@ export class DetailPassengerModalComponent implements OnInit {
   formatDateToDDMMYYYY(dateString: string): string {
     if (!dateString) return '';
 
+    if (/^([0-2]\d|3[0-1])\.(0\d|1[0-2])\.\d{4}$/.test(dateString)) {
+      return dateString;
+    }
+
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return '';
 
@@ -345,31 +357,44 @@ export class DetailPassengerModalComponent implements OnInit {
     return `${day}.${month}.${year}`;
   }
 
-
   choosePassenger(passenger: any) {
-    this.passengerDataList[this.selectedIndex].name = passenger.firstName;
-    this.passengerDataList[this.selectedIndex].surname = passenger.surName;
-    this.passengerDataList[this.selectedIndex].middle_name = passenger.middleName;
-    this.passengerDataList[this.selectedIndex].date_of_birth = this.formatDateToDDMMYYYY(passenger.birthDate);
-    this.passengerDataList[this.selectedIndex].phone = passenger.phone;
-    this.passengerDataList[this.selectedIndex].email = passenger.email;
-    this.passengerDataList[this.selectedIndex].gender = passenger.gender;
-    this.passengerDataList[this.selectedIndex].document_type = passenger.documentType;
-    this.passengerDataList[this.selectedIndex].document_number = passenger.documentNumber;
-    this.passengerDataList[this.selectedIndex].expiration_date = this.formatDateToDDMMYYYY(passenger.expirationDate);
-    this.passengerDataList[this.selectedIndex].citizenship = passenger.citizenShip;
-    this.passengerDataList[this.selectedIndex].walletPhone = passenger.walletPhone;
+    if (!this.passengerDataList[this.selectedIndex]) {
+      this.passengerDataList[this.selectedIndex] = {};
+    }
+
+    this.passengerDataList[this.selectedIndex] = {
+      ...this.passengerDataList[this.selectedIndex],
+      name: passenger.firstName || '',
+      surname: passenger.surName || '',
+      middle_name: passenger.middleName || '',
+      date_of_birth: this.formatDateToDDMMYYYY(passenger.birthDate) || '',
+      phone: passenger.phone || '',
+      email: passenger.email || '',
+      gender: passenger.gender || '',
+      document_type: passenger.documentType || '',
+      document_number: passenger.documentNumber || '',
+      expiration_date: this.formatDateToDDMMYYYY(passenger.expirationDate) || '',
+      citizenship: passenger.citizenShip || '',
+      walletPhone: passenger.walletPhone || ''
+    };
+
+    this.selectedGender = passenger.gender || '';
+    this.selectedCountry = this.countries.find(c => c.code === passenger.citizenShip)?.name || '';
+    this.selectedCountryCode = passenger.citizenShip || '';
 
     this.updatePassengerData();
     this.isPassengersModal = false;
   }
 
   updatePassengerData() {
+    if (!this.passengerDataList[this.selectedIndex]) return;
+
+    const passenger = this.passengerDataList[this.selectedIndex];
     this.passengerDataUpdated.emit({
-      birthDate: this.passengerDataList[this.selectedIndex].date_of_birth,
-      gender: this.passengerDataList[this.selectedIndex].gender,
-      name: this.passengerDataList[this.selectedIndex].name,
-      surname: this.passengerDataList[this.selectedIndex].surname
+      birthDate: passenger.date_of_birth || '',
+      gender: passenger.gender || '',
+      name: passenger.name || '',
+      surname: passenger.surname || ''
     });
   }
 }
