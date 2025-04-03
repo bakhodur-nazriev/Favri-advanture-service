@@ -55,7 +55,7 @@
 
           <div class="d-flex justify-between top-titles__block">
             <span class="order-title">Заказ {{ ticket.data.airline_booking_number | json }}</span>
-            <span class="date-title">21 августа 12:33</span>
+            <span class="date-title">{{ formatDate(ticket.createdDateTime) }}</span>
           </div>
 
           <div class="horizontal-line"></div>
@@ -63,40 +63,46 @@
           <div class="d-flex flex-column justify-between gap-3 pa-3 pt-0">
             <div class="d-flex justify-between">
               <div class="d-flex flex-column directions-titles__block">
-                <span>Душанбе → Москва </span>
-                <small>Прямой рейс</small>
+                <span>
+                  {{ ticket.data.included.city[ticket.data.routes[0].segments[0].departure.city].name.ru }} →
+                  {{ ticket.data.included.city[ticket.data.routes[0].segments[ticket.data.routes[0].segments.length - 1].arrival.city].name.ru }}
+                </span>
+                <small>{{ isDirectFlight(ticket) ? 'Прямой рейс' : 'С пересадкой' }}</small>
               </div>
               <div class="d-flex flex-column prices-titles__block">
-                <span>{{ ticket.data.total_price.TJS | json }} TJS</span>
-                <small class="text-end text-green">Приобретено</small>
+                <span>{{ ticket.data.total_price.TJS }} TJS</span>
+                <small class="text-end" [class]="getStatusClass(ticket.status)">
+                  {{ getStatusText(ticket.status) }}
+                </small>
               </div>
             </div>
 
             <div class="d-flex align-center gap-3">
-              <img ngSrc="assets/suppliers/SZ.png" alt="" height="30" width="90">
-              <span>Уральские авиалинии</span>
+              <img
+                ngSrc="assets/suppliers/{{ticket.data.validating_supplier}}.png"
+                alt=""
+                height="30"
+                width="90"
+              >
+              <span>{{ getAirlineName(ticket, ticket.data.validating_supplier) }}</span>
             </div>
 
-            <div class="d-flex align-center justify-between">
+            <div *ngFor="let segment of ticket.data.routes[0].segments" class="d-flex align-center justify-between segment-block">
               <div class="d-flex flex-column airport-title__block gap-1">
-                <strong>17:00</strong>
-                <span>Душанбе</span>
-                <small>(DYU)</small>
+                <strong>{{ segment.departure.time.split(' ')[1] }}</strong>
+                <span>{{ ticket.data.included.city[segment.departure.city].name.ru }}</span>
+                <small>({{ segment.departure.airport }})</small>
               </div>
 
               <div class="d-flex flex-column align-center time-title__block">
-                <svg width="31" height="30" viewBox="0 0 31 30" fill="none">
-                  <path
-                    d="M6.90884 20.0738L8.19901 17.3159C8.3982 16.9001 8.24808 16.3399 7.86772 16.0795L5.37145 14.3362C4.97089 13.8844 5.06087 13.177 5.56934 12.8337L6.74014 12.0645C7.02077 11.8754 7.50323 11.86 7.79717 12.0297L10.587 13.6323C10.7855 13.7551 11.1283 13.7978 11.3504 13.7383L14.1033 13.0007C14.509 12.892 14.622 12.5408 14.3665 12.2055L11.0479 8.01147C10.5299 7.35311 10.7629 6.63846 11.5742 6.42106L12.8203 6.08718C13.4674 5.91377 14.3406 6.19744 14.7522 6.72903L18.5269 11.5048C18.6359 11.6412 18.875 11.7221 19.0489 11.6755L21.9467 10.8991C22.8546 10.6558 24.1054 11.035 24.7381 11.7351C24.9607 11.986 25.0513 12.3241 24.984 12.6527C24.7861 13.5754 23.8828 14.5317 22.9749 14.775L20.0771 15.5515C19.9032 15.5981 19.7366 15.7876 19.7104 15.9603L18.8267 21.9739C18.7457 22.6375 18.1314 23.3198 17.4842 23.4932L16.2382 23.827C15.4268 24.0444 14.8677 23.542 14.9872 22.7129L15.7641 17.4215C15.83 17.0104 15.5443 16.7557 15.1386 16.8644L12.3857 17.602C12.1636 17.6615 11.8881 17.8699 11.775 18.0659L10.1602 20.8486C9.99048 21.1426 9.57462 21.3679 9.2274 21.3471L7.82883 21.2663C7.22201 21.2425 6.78073 20.6775 6.90884 20.0738Z"
-                    stroke="#00B06C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>В пути 4ч 35 мин</span>
+                <app-icon icon="airplane-icon" color="none"/>
+                <span>{{ convertDuration(segment.duration) }}</span>
               </div>
 
               <div class="d-flex flex-column gap-1 align-end airport-title__block">
-                <strong>19:40</strong>
-                <span>Москва</span>
-                <small>(VKO)</small>
+                <strong>{{ segment.arrival.time.split(' ')[1] }}</strong>
+                <span>{{ ticket.data.included.city[segment.arrival.city].name.ru }}</span>
+                <small>({{ segment.arrival.airport }})</small>
               </div>
             </div>
 

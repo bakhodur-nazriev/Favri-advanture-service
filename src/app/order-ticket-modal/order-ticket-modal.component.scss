@@ -173,38 +173,14 @@
   gap: 12px;
 }
 
-.loader-layout {
-  width: 100%;
-  height: 100vh;
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: flex;
-  background-color: #fff;
-
-  .loader-block {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .loader {
-      width: 50px;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: radial-gradient(farthest-side, #00B06C 94%, #0000) top/8px 8px no-repeat,
-      conic-gradient(#0000 30%, #00B06C);
-      -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
-      animation: l13 1s infinite linear;
-    }
-
-    @keyframes l13 {
-      100% {
-        transform: rotate(1turn)
-      }
-    }
-  }
-}
+//.loader-layout {
+//  width: 100%;
+//  height: 100vh;
+//  position: absolute;
+//  left: 0;
+//  top: 0;
+//  display: flex;
+//}
 
 .validation-popup__layout {
   position: absolute;

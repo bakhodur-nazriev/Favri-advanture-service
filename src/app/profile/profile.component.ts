@@ -5,6 +5,7 @@ import {ProfileService} from "../services/profile.service";
 import {EditPassengerModalComponent} from "../edit-passenger-modal/edit-passenger-modal.component";
 import {ActivatedRoute} from "@angular/router";
 import {IconComponent} from "../shared/icon/icon.component";
+import {tick} from "@angular/core/testing";
 
 @Component({
   selector: 'app-profile',
@@ -34,6 +35,15 @@ export class ProfileComponent implements OnInit {
   showAddPassengerModal: boolean = false;
   passenger = {};
 
+  readonly TicketStatus = {
+    Book: 1,
+    Ticketing: 2,
+    Success: 3,
+    Failed: 4,
+    CancelBook: 5,
+    ExpiredBook: 6
+  };
+
   constructor(
     private profileService: ProfileService,
     private route: ActivatedRoute
@@ -42,6 +52,40 @@ export class ProfileComponent implements OnInit {
 
   closeModal() {
     this.closeModalEvent.emit();
+  }
+
+  // Метод для получения текста статуса
+  getStatusText(status: number): string {
+    switch (status) {
+      case this.TicketStatus.Book:
+        return 'Бронирование';
+      case this.TicketStatus.Ticketing:
+        return 'Оформление';
+      case this.TicketStatus.Success:
+        return 'Оформлен';
+      case this.TicketStatus.Failed:
+        return 'Ошибка';
+      case this.TicketStatus.CancelBook:
+        return 'Отменен';
+      case this.TicketStatus.ExpiredBook:
+        return 'Просрочен';
+      default:
+        return 'Неизвестный статус';
+    }
+  }
+
+  getStatusClass(status: number): string {
+    switch (status) {
+      case this.TicketStatus.Success:
+        return 'status-success';
+      case this.TicketStatus.Failed:
+        return 'status-failed';
+      case this.TicketStatus.CancelBook:
+      case this.TicketStatus.ExpiredBook:
+        return 'status-warning';
+      default:
+        return 'status-info';
+    }
   }
 
   ngOnInit(): void {
@@ -56,7 +100,6 @@ export class ProfileComponent implements OnInit {
     this.profileService.getPassengers(this.walletPhone).subscribe({
       next: (data) => {
         this.profileDataList = data.data;
-        console.log(data.data.length);
       },
       error: (err) => {
         console.error('Error loading profile:', err);
@@ -67,13 +110,18 @@ export class ProfileComponent implements OnInit {
   loadTickets(): void {
     this.profileService.getTickets(this.walletPhone).subscribe({
       next: (data) => {
+        console.log(data);
         this.ticketsDataList = data.data;
         this.parsedBookDataList = this.ticketsDataList.map((ticket) => {
-          return JSON.parse(ticket.bookData);
+          const parsed = JSON.parse(ticket.bookData);
+          // Добавляем дату создания из основного объекта
+          parsed.createdDateTime = ticket.createdDateTime;
+          parsed.status = ticket.status;
+          return parsed;
         });
       },
       error: (err) => {
-        console.error('Error loading profile:', err);
+        console.error('Error loading tickets:', err);
       }
     });
   }
@@ -97,5 +145,36 @@ export class ProfileComponent implements OnInit {
 
   closeEditPassengerModal(): void {
     this.showEditPassengerModal = false;
+  }
+
+  getAirlineName(ticket: any, supplierCode: string): string {
+    return ticket.data.included.supplier[supplierCode]?.name?.ru || supplierCode;
+  }
+
+  isDirectFlight(ticket: any): boolean {
+    return ticket.data.routes[0].segments.length === 1;
+  }
+
+  formatDate(dateString: string): string {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ru-RU', {day: 'numeric', month: 'long'});
+  }
+
+  convertDuration(duration: number): string {
+    const hours = Math.floor(duration / 3600)
+    const minutes = Math.floor(duration % 3600) / 60;
+
+    let result = 'В пути ';
+
+    if (hours > 0) {
+      result += `${hours} ч `;
+    }
+
+    if (minutes > 0) {
+      result += `${minutes} мин`
+    }
+
+    return result.trim();
   }
 }
