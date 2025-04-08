@@ -5,7 +5,7 @@ import {ProfileService} from "../services/profile.service";
 import {EditPassengerModalComponent} from "../edit-passenger-modal/edit-passenger-modal.component";
 import {ActivatedRoute} from "@angular/router";
 import {IconComponent} from "../shared/icon/icon.component";
-import {tick} from "@angular/core/testing";
+import {PdfService} from "../services/pdf.service";
 
 @Component({
   selector: 'app-profile',
@@ -46,7 +46,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private profileService: ProfileService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private pdfService: PdfService
   ) {
   }
 
@@ -54,7 +55,6 @@ export class ProfileComponent implements OnInit {
     this.closeModalEvent.emit();
   }
 
-  // Метод для получения текста статуса
   getStatusText(status: number): string {
     switch (status) {
       case this.TicketStatus.Book:
@@ -114,7 +114,6 @@ export class ProfileComponent implements OnInit {
         this.ticketsDataList = data.data;
         this.parsedBookDataList = this.ticketsDataList.map((ticket) => {
           const parsed = JSON.parse(ticket.bookData);
-          // Добавляем дату создания из основного объекта
           parsed.createdDateTime = ticket.createdDateTime;
           parsed.status = ticket.status;
           return parsed;
@@ -176,5 +175,16 @@ export class ProfileComponent implements OnInit {
     }
 
     return result.trim();
+  }
+
+  downloadTicket(ticket: any) {
+    try {
+      const passengerData = this.profileDataList.length > 0 ? this.profileDataList[0] : {};
+      this.pdfService.generateTicketPdf(ticket, passengerData).then(r => {
+        console.log(r);
+      });
+    } catch (error) {
+      console.error('Ошибка при генерации PDF:', error);
+    }
   }
 }

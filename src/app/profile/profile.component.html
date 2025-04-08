@@ -87,7 +87,8 @@
               <span>{{ getAirlineName(ticket, ticket.data.validating_supplier) }}</span>
             </div>
 
-            <div *ngFor="let segment of ticket.data.routes[0].segments" class="d-flex align-center justify-between segment-block">
+            <div *ngFor="let segment of ticket.data.routes[0].segments"
+                 class="d-flex align-center justify-between segment-block">
               <div class="d-flex flex-column airport-title__block gap-1">
                 <strong>{{ segment.departure.time.split(' ')[1] }}</strong>
                 <span>{{ ticket.data.included.city[segment.departure.city].name.ru }}</span>
@@ -106,7 +107,7 @@
               </div>
             </div>
 
-            <button class="btn-primary">Скачать билет (PDF)</button>
+            <button class="btn-primary" (click)="downloadTicket(ticket)">Скачать билет (PDF)</button>
           </div>
         </li>
       </ul>
